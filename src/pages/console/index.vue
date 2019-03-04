@@ -4,7 +4,7 @@
 		<div class="consoleIndexOperWrap">
 			<div class="commonTitle_two">操作选项</div>
 			
-			<el-row  class="row-bg" :gutter="30" >
+			<el-row  class="row-bg" :gutter="30" style="margin-right:0;">
 			  <el-col 
 					:lg="6" 
 					v-for="(item,index) in operParams"

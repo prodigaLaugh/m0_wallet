@@ -27,9 +27,10 @@
 						
 						
 						<el-col :lg="24">
-							<!-- <div class="createAccountBtn">恢复</div> -->
+							<div class="createAccountBtn">导入钱包</div>
 						</el-col>
 					</el-row>
+					
 				</el-col>
 			</el-row>
 		</div>

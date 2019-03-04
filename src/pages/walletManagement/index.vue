@@ -1,10 +1,10 @@
 <template>
 	<div class="outerWrap accountIndexWrap">
-		<div class="commonTitle_one">账户管理</div>
-		<div class="addAccountWrap">
+		<div class="commonTitle_one">钱包管理</div>
+		<!-- <div class="addAccountWrap">
 			<div class="commonTitle_two">添加账户</div>
 			
-			<el-row  class="row-bg" :gutter="30" justify="center">
+			<el-row  class="row-bg" :gutter="30" justify="center" style="margin-right:0;">
 			  <el-col :lg="8" >
 						<div class="addAccountItem" @click="$router.push('/main/createAccout')">新建账户</div>
 				</el-col>
@@ -15,10 +15,16 @@
 						<div class="addAccountItem" @click="$router.push('/main/importBackup')">备份导入</div>
 				</el-col>
 			</el-row>
-		</div>
+		</div> -->
 		
 		<div class="selectAccountWrap">
-			<div class="commonTitle_two">选择账户</div>
+			<div class="commonTitle_two">
+				我的钱包
+				<div>
+					<span @click="$router.push('/main/importBackup')">导入钱包</span>
+					<span @click="$router.push('/main/createAccout')">创建钱包</span>
+				</div>
+			</div>
 			
 			
 			<el-row  class="selectAccountItem use" type="flex" justify="center">
@@ -30,11 +36,12 @@
 						Account01
 						<span>多签</span>
 					</div>
-					<div class="blue leftText">公钥:jkjl32434hkjkj</div>
+					<div class="blue leftText">关联密钥:jkjl32434hkjkj</div>
 					<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
 				</el-col>
 				<el-col :lg="6" class="right">
-					<div>登录</div>
+					<div>载入</div>
+					<div @click="$router.push('/main/walletDetail')">详情</div>
 					<div @click="$router.push('/main/backupType')">备份</div>
 					<div>删除</div>
 				</el-col>
@@ -48,11 +55,12 @@
 						Account01
 						<span>多签</span>
 					</div>
-					<div class="blue leftText">公钥:jkjl32434hkjkj</div>
+					<div class="blue leftText">关联密钥:jkjl32434hkjkj</div>
 					<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
 				</el-col>
 				<el-col :lg="6" class="right">
-					<div>登录</div>
+					<div>载入</div>
+					<div @click="$router.push('/main/walletDetail')">详情</div>
 					<div @click="$router.push('/main/backupType')">备份</div>
 					<div>删除</div>
 				</el-col>
@@ -186,8 +194,12 @@
 							background-image:url(../../assets/account/accountIndex_selectIcon2.png);
 						}
 						&:nth-of-type(3){
-							color:red;
+							color:$blue;
 							background-image:url(../../assets/account/accountIndex_selectIcon3.png);
+						}
+						&:nth-of-type(4){
+							color:red;
+							background-image:url(../../assets/account/accountIndex_selectIcon4.png);
 						}
 					}
 				}

@@ -2,8 +2,8 @@
 	<div class="left_outerWrap hidden-xs-only">
 		<div class="left_wrap">
 				<router-link to="/main/assetWalletIndex">资产钱包</router-link>
-				<router-link to="/main/consoleIndex">操作台</router-link>
-				<router-link to="/main/assetManagementIndex">资产管理</router-link>
+				<router-link to="/main/consoleIndex">资产操作</router-link>
+				<router-link to="/main/assetManagementIndex">创建资产</router-link>
 				<router-link to="/main/addressManagementIndex">地址管理</router-link>
 				<router-link to="/main/systemStatusIndex">系统状态</router-link>
 				<div class="left_progressWrap">

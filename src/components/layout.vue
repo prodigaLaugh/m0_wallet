@@ -15,6 +15,7 @@
 		padding:40px 0 20px;
 		display:flex;
 		align-items:flex-end;
+		position:relative;
 		>span{
 			display:flex;
 			align-items: flex-end;
@@ -27,7 +28,46 @@
 				font-weight:normal;
 			}
 		}
+		>div{
+			position:absolute;
+			right:0;
+			bottom:0;
+			line-height:32px;
+			padding:0 30px;
+			background:#5c6ac4;
+			border-radius:5px;
+			color:#fff;
+			font-size:13px;
+			cursor:pointer;
+		}
 	}
+	// 二级标题
+	.commonTitle_two{
+		font-size:18px;
+		padding:20px 0;
+		display:flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-right:30px;
+		>span,
+		>div>span{
+			line-height:32px;
+			padding:0 30px;
+			background:#5c6ac4;
+			border-radius:5px;
+			color:#fff;
+			font-size:13px;
+			cursor:pointer;
+		}
+		>div{
+			display:flex;
+			justify-content: flex-end;
+			>span{
+				margin-left:20px;
+			}
+		}
+	}
+
 	// 导航样式
 	.contentNavWrap{
 		border-bottom:1px solid #333;
@@ -356,6 +396,25 @@
 			}
 		}
 		
+	}
+
+
+	//头部
+	.commonHeaderWrap{
+		.dialogContentWrap{
+			.title{
+				line-height:20px;
+			}
+			.visitcode{
+				height:140px;
+				line-height:140px;
+				text-align:center;
+				background:#eee;
+				font-size:30px;
+				color:#333;
+				margin-top:20px;
+			}
+		}
 	}
 
 	

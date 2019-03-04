@@ -42,41 +42,62 @@ const router=new VueRouter({
 				// requiresAuth: true
 			},
 			children:[
+				// 秘钥管理
+				{
+					path:'privatekeyManagement',
+					component:resolve => require(['@/pages/privatekeyManagement'], resolve),
+					meta: {},
+				},
 				
 				// 账户管理
 				{
-					path:'accountIndex',
-					component:resolve => require(['@/pages/accountManagement'], resolve),
+					path:'walletIndex',
+					component:resolve => require(['@/pages/walletManagement'], resolve),
 					meta: {},
 				},
 				{
 					path:'createAccout',
-					component:resolve => require(['@/pages/accountManagement/createAccout'], resolve),
+					component:resolve => require(['@/pages/walletManagement/createAccout'], resolve),
+					meta: {},
+				},
+				{
+					path:'createWalletM',//创建多签钱包
+					component:resolve => require(['@/pages/walletManagement/createMoresignWallet'], resolve),
+					meta: {},
+				},
+				{
+					path:'createWalletS',//创建单签钱包
+					component:resolve => require(['@/pages/walletManagement/createSinglesignWallet'], resolve),
 					meta: {},
 				},
 				{
 					path:'recoveryMnemonic',
-					component:resolve => require(['@/pages/accountManagement/recoveryMnemonic'], resolve),
+					component:resolve => require(['@/pages/walletManagement/recoveryMnemonic'], resolve),
 					meta: {},
 				},
 				{
 					path:'importBackup',
-					component:resolve => require(['@/pages/accountManagement/importBackup'], resolve),
+					component:resolve => require(['@/pages/walletManagement/importBackup'], resolve),
 					meta: {},
 				},
 				{
 					path:'backupType',
-					component:resolve => require(['@/pages/accountManagement/backupType'], resolve),
+					component:resolve => require(['@/pages/walletManagement/backupType'], resolve),
 					meta: {},
 				},
 				{
 					path:'recordMnemonic',
-					component:resolve => require(['@/pages/accountManagement/recordMnemonic'], resolve),
+					component:resolve => require(['@/pages/walletManagement/recordMnemonic'], resolve),
 					meta: {},
 				},
 				{
 					path:'verifyMnemonic',
-					component:resolve => require(['@/pages/accountManagement/verifyMnemonic'], resolve),
+					component:resolve => require(['@/pages/walletManagement/verifyMnemonic'], resolve),
+					meta: {},
+				},
+				{
+					path:'walletDetail',
+					component:resolve => require(['@/pages/walletManagement/walletDetail'], resolve),
 					meta: {},
 				},
 				
