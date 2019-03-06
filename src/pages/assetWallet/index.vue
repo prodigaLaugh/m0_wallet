@@ -21,7 +21,7 @@
 					</div>
 				</el-col>
 				
-				<el-col :lg="8">
+				<!-- <el-col :lg="8">
 					<div class="assetSelectItemWrap">
 						<span>所在地址</span>
 						<el-select v-model="value" placeholder="请选择">
@@ -33,7 +33,7 @@
 							</el-option>
 						</el-select>
 					</div>
-				</el-col>
+				</el-col> -->
 				
 				<el-col :lg="8">
 					<div class="assetSelectItemWrap">
@@ -54,17 +54,20 @@
 			<div class="assetListsWrap">
 				<div v-for="item in 3"  class="selectAccountItem " >
 					<el-row :gutter="30" class="selectAccountItemTitleWrap">
-						<el-col :lg="16" class="left">
+						<el-col :lg="14" :md="14" class="left">
 							<div>小麦2019</div>
 							<div>jlkj2jkh1hjhjh</div>
 						</el-col>
-						<el-col :lg="8" class="right">
+						<el-col :lg="6" :md="6" class="right">
 							<div>当前余额:</div>
 							<div>12332.9766</div>
 						</el-col>
+						<el-col :lg="4" :md="4" class="transactionRecordIcon">
+							<div>交易记录</div>
+						</el-col>
 					</el-row>
 					
-					<el-row  :gutter="30" class="selectAccountItemTransactionWrap">
+					<!-- <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
 						<el-col :lg="16" class="left">
 							<div>所在地址：jlkj23234jkh2j4n21mk</div>
 						</el-col>
@@ -72,6 +75,30 @@
 							<span @click="$router.push('/main/transactionRecord')">交易记录</span>
 							<span>转账</span>
 							<span>销毁</span>
+						</el-col>
+					</el-row> -->
+					<div style="margin-top:20px;"></div>
+					<el-row  :gutter="20" class="selectAccountItemTransactionWrap">
+						<el-col :lg="9" :md="9" class="left">
+							所在地址
+						</el-col>
+						<el-col :lg="8" :md="8" class="center">
+							地址余额
+						</el-col>
+						<el-col :lg="7" :md="7" class="right">
+							操作
+						</el-col>
+					</el-row>
+					<el-row  :gutter="20" class="selectAccountItemTransactionWrap" v-for="item in 3">
+						<el-col :lg="9" :md="9" class="left">
+							3CqBquEFMYY548fNBz8u2MBw3HKprS3Xft
+						</el-col>
+						<el-col :lg="8" :md="8" class="center">
+							56000.03000000
+						</el-col>
+						<el-col :lg="7" :md="7" class="right">
+							<span @click="$router.push('/main/transactionRecord')">交易记录</span>
+							<span>转出资产</span>
 						</el-col>
 					</el-row>
 					
@@ -172,44 +199,63 @@
 						font-weight:bold;
 					}
 				}
+				>.transactionRecordIcon{
+					width:92px;
+					height:63px;
+					background:#fff url(../../assets/assetwallet/transactionRecordsIcon.png) no-repeat center 5px;
+					text-align:center;
+					border:1px solid #333;
+					border-radius:5px;
+					padding-top:44px;
+					
+				}
 			}
 			
 			
 			.selectAccountItemTransactionWrap{
-				>.left,>.right{
-					
-					height:54px;
-				}
-				>.left{
-					display:flex;
-					align-items: flex-end;
-					color:#888;
-					font-size:13px;
-				}
-				>.right{
-					display:flex;
-					align-items: flex-end;
-					justify-content: center;
+				background:#fff;
+				line-height:40px;
+				.right{
+					text-align:center;
 					>span{
-						padding-top:30px;
-						background:url(../../assets/assetwallet/operIcon1.png) no-repeat center top;
-						background-size:24px 18px;
-						margin-right:20px;
-						min-width:26px;
-						text-align:center;
-						cursor:pointer;
-						&:nth-of-type(2){
-							background-image:url(../../assets/assetwallet/operIcon2.png);
-							background-size:26px 20px;
-						}
-						&:nth-of-type(3){
-							background-image:url(../../assets/assetwallet/operIcon3.png);
-							color:red;
-							background-size:24px 26px;
-							margin-right:0;
-						}
+						color:$blue;
+						margin:0 6px;
 					}
 				}
+				// >.left,>.right{
+					
+				// 	height:54px;
+				// }
+				// >.left{
+				// 	display:flex;
+				// 	align-items: flex-end;
+				// 	color:#888;
+				// 	font-size:13px;
+				// }
+				// >.right{
+				// 	display:flex;
+				// 	align-items: flex-end;
+				// 	justify-content: center;
+				// 	>span{
+				// 		padding-top:30px;
+				// 		background:url(../../assets/assetwallet/operIcon1.png) no-repeat center top;
+				// 		background-size:24px 18px;
+				// 		margin-right:20px;
+				// 		min-width:26px;
+				// 		text-align:center;
+				// 		cursor:pointer;
+				// 		&:nth-of-type(2){
+				// 			background-image:url(../../assets/assetwallet/operIcon2.png);
+				// 			background-size:26px 20px;
+				// 		}
+				// 		&:nth-of-type(3){
+				// 			background-image:url(../../assets/assetwallet/operIcon3.png);
+				// 			color:red;
+				// 			background-size:24px 26px;
+				// 			margin-right:0;
+				// 		}
+				// 	}
+				// }
 			}
 			
 		}

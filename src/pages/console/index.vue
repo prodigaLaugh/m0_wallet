@@ -1,6 +1,6 @@
 <template>
 	<div class="outerWrap consoleIndexWrap">
-		<div class="commonTitle_one">操作台</div>
+		<div class="commonTitle_one">资产操作</div>
 		<div class="consoleIndexOperWrap">
 			<div class="commonTitle_two">操作选项</div>
 			

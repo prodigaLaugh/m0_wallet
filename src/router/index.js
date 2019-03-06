@@ -56,7 +56,7 @@ const router=new VueRouter({
 					meta: {},
 				},
 				{
-					path:'createAccout',
+					path:'createAccount',
 					component:resolve => require(['@/pages/walletManagement/createAccout'], resolve),
 					meta: {},
 				},
@@ -164,6 +164,23 @@ const router=new VueRouter({
 				{
 					path:'assetDetail',
 					component:resolve => require(['@/pages/assetManagement/assetDetail'], resolve),
+					meta: {},
+				},
+
+				// 链上存证
+				{
+					path:'chainDeposit',
+					component:resolve => require(['@/pages/chainDeposit'], resolve),
+					meta: {},
+				},
+				{
+					path:'uploadDeposit',
+					component:resolve => require(['@/pages/chainDeposit/uploadDeposit'], resolve),
+					meta: {},
+				},
+				{
+					path:'depositDetail',
+					component:resolve => require(['@/pages/chainDeposit/depositDetail'], resolve),
 					meta: {},
 				},
 				

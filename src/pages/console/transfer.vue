@@ -1,7 +1,7 @@
 <template>
 	<div class="outerWrap transferWrap">
 		<div class="commonTitle_one">
-			操作台
+			资产操作
 			<span>
 				<i class="el-icon-arrow-right"></i>
 				<span>转账</span>

@@ -110,10 +110,9 @@ export default {
 						}
 						&.user{
 							position:relative;
-							transition:height .5s;
+							
 							&:hover>div{
-								display:block;
-								height:auto;
+								height:80px;
 							}
 							>div{
 								position:absolute;
@@ -122,6 +121,7 @@ export default {
 								top:66px;
 								height:0;
 								overflow:hidden;
+								transition:height .5s;
 								
 								>span{
 									line-height:40px;

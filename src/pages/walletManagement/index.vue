@@ -22,7 +22,7 @@
 				我的钱包
 				<div>
 					<span @click="$router.push('/main/importBackup')">导入钱包</span>
-					<span @click="$router.push('/main/createAccout')">创建钱包</span>
+					<span @click="$router.push('/main/createAccount')">创建钱包</span>
 				</div>
 			</div>
 			
