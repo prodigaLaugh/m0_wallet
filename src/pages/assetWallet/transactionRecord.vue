@@ -1,65 +1,68 @@
 <template>
 	<div class="outerWrap transactionRecordWrap">
-		
-		<div class="commonTitle_one">
-			资产钱包
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>交易记录</span>
-			</span>
-		</div>
-		
-		
-		<div class="consoleRecordsWrap">
-			<div class="commonTitle_two">交易记录</div>
-			
-			<el-row class="transactionRecordContentWrap">
-				<el-col :lg="24">
-					<span>所在地址</span>
-					<span>37x6JnDNhbsBw95bvEreB7WHWA74gGR17y</span>
-				</el-col>
-				<el-col :lg="24">
-					<span>资产类型</span>
-					<span>37x6JnDNhbsBw95bvEreB7WHWA74gGR17y</span>
-				</el-col>
-			</el-row>
-			
-			<div class="consoleListsWrap">
-				<div class="consoleListWrap" v-for="item in 3">
-					<el-row 
-						class="consoleListIDWrap" 
-						:gutter="20">
-						<el-col :lg="12">
-							<span>交易ID</span>
-							<span>34g435tg0wf431231ace30d0915fe7</span>
-							<span>已确认</span>
+		<el-row>
+			<el-col >
+				
+				<div class="commonTitle_one">
+					资产钱包
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>交易记录</span>
+					</span>
+				</div>
+				
+				
+				<div class="consoleRecordsWrap">
+					<div class="commonTitle_two">交易记录</div>
+					
+					<el-row class="transactionRecordContentWrap">
+						<el-col :lg="24">
+							<span>所在地址</span>
+							<span>37x6JnDNhbsBw95bvEreB7WHWA74gGR17y</span>
 						</el-col>
-						<el-col :lg="12">
-							2019-01-02 10:12:25
+						<el-col :lg="24">
+							<span>资产类型</span>
+							<span>37x6JnDNhbsBw95bvEreB7WHWA74gGR17y</span>
 						</el-col>
 					</el-row>
 					
-					<el-row 
-						:gutter="20"
-						class="consoleList_list">
-						<el-col :lg="4">
-							<span>收入</span>
-						</el-col>
-						<el-col :lg="10">
-							<span>To</span>
-							<span>37x6JnDNhbsBw95bvEreB7WHWA74gGR17y（account001</span>
-						</el-col>
-						<el-col :lg="6">+ 0.006782700</el-col>
-						<el-col :lg="4">M0COIN</el-col>
-					</el-row>
+					<div class="consoleListsWrap">
+						<div class="consoleListWrap" v-for="item in 3">
+							<el-row 
+								class="consoleListIDWrap" 
+								:gutter="20">
+								<el-col :lg="12">
+									<span>交易ID</span>
+									<span>34g435tg0wf431231ace30d0915fe7</span>
+									<span>已确认</span>
+								</el-col>
+								<el-col :lg="12">
+									2019-01-02 10:12:25
+								</el-col>
+							</el-row>
+							
+							<el-row 
+								:gutter="20"
+								class="consoleList_list">
+								<el-col :lg="4">
+									<span>收入</span>
+								</el-col>
+								<el-col :lg="10">
+									<span>To</span>
+									<span>37x6JnDNhbsBw95bvEreB7WHWA74gGR17y（account001</span>
+								</el-col>
+								<el-col :lg="6">+ 0.006782700</el-col>
+								<el-col :lg="4">M0COIN</el-col>
+							</el-row>
+						</div>
+						
+					</div>
+					
+					
 				</div>
-				
-			</div>
-			
-			
-			
-			
-		</div>
+		
+			</el-col>
+		</el-row>
 		
 	</div>
 </template>

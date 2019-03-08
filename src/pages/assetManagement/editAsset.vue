@@ -1,40 +1,44 @@
 <template>
 	<div class="outerWrap createAssetWrap">
-		<div class="commonTitle_one">
-			资产管理
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>编辑资产</span>
-			</span>
-		</div>
-			
-		<div class="commonTitle_two">编辑资产</div>
-		
-		<div class="transferInpWrap">
-			<el-row>
-				<el-col :lg="16" md="12">
-					<el-row class="transferInpListsWrap">
-						<el-col :lg="24">
-							<div class="transferInpListLeft">名称</div>
-							<el-input v-model="input" placeholder=""></el-input>
-						</el-col>
-						<el-col :lg="24">
-							<div class="transferInpListLeft">描述</div>
-							<el-input 
-								type="textarea"
-								placeholder=""
-								:rows="3"></el-input>
-						</el-col>
-						
-						<el-col :lg="24">
-							<div class="createAssetBtn">保存</div>
+		<el-row>
+			<el-col :lg="20" :md="22">
+				
+				<div class="commonTitle_one">
+					资产管理
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>编辑资产</span>
+					</span>
+				</div>
+					
+				<div class="commonTitle_two">编辑资产</div>
+				
+				<div class="transferInpWrap">
+					<el-row>
+						<el-col :lg="16" md="12">
+							<el-row class="transferInpListsWrap">
+								<el-col :lg="24">
+									<div class="transferInpListLeft">名称</div>
+									<el-input v-model="input" placeholder=""></el-input>
+								</el-col>
+								<el-col :lg="24">
+									<div class="transferInpListLeft">描述</div>
+									<el-input 
+										type="textarea"
+										placeholder=""
+										:rows="3"></el-input>
+								</el-col>
+								
+								<el-col :lg="24">
+									<div class="createAssetBtn">保存</div>
+								</el-col>
+							</el-row>
 						</el-col>
 					</el-row>
-				</el-col>
-			</el-row>
-		</div>
+				</div>
 		
-		
+			</el-col>
+		</el-row>
 		
 	</div>
 </template>

@@ -1,46 +1,48 @@
 <template>
 	<div class="outerWrap uploadDepositWrap">
-		<div class="commonTitle_one">
-			链上存证
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>上传存证</span>
-			</span>
-            <div>返回</div>
-		</div>
+		<el-row>
+			<el-col :lg="20" :md="22">
 			
-		<div class="commonTitle_two">上传存证</div>
-		
-		<div class="transferInpWrap">
-			<el-row>
-				<el-col :lg="16" md="12">
+				<div class="commonTitle_one">
+					链上存证
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>上传存证</span>
+					</span>
+					<div>返回</div>
+				</div>
+					
+				<div class="commonTitle_two">上传存证</div>
+				
+				<div class="transferInpWrap">
+					
 					<el-row class="transferInpListsWrap">
 						<el-col :lg="24">
 							<div class="transferInpListLeft">存证名称</div>
 							<el-input v-model="value" placeholder=""></el-input>
 						</el-col>
 
-                        <el-col :lg="24">
+						<el-col :lg="24">
 							<div class="transferInpListLeft">存证文件</div>
 							<div class="uploadFile">
-                                <input type="file">
-                                <div>+选择上传文件</div>
-                            </div>
+								<input type="file">
+								<div>+选择上传文件</div>
+							</div>
 						</el-col>
 
 						<el-col :lg="24">
 							<div class="transferInpListLeft">存证数据</div>
 							<el-input 
-                                v-model="value" 
-                                type="textarea"
-                                :rows="5" placeholder=""></el-input>
+								v-model="value" 
+								type="textarea"
+								:rows="5" placeholder=""></el-input>
 						</el-col>
 						<el-col :lg="24">
 							<div class="transferInpListLeft">备注信息</div>
 							<el-input 
-                                v-model="value" 
-                                type="textarea"
-                                :rows="5" placeholder=""></el-input>
+								v-model="value" 
+								type="textarea"
+								:rows="5" placeholder=""></el-input>
 						</el-col>
 						
 						
@@ -48,9 +50,11 @@
 							<div class="createAccountBtn">提交上链</div>
 						</el-col>
 					</el-row>
-				</el-col>
-			</el-row>
-		</div>
+						
+				</div>
+		
+			</el-col>
+		</el-row>
 		
 		
 		

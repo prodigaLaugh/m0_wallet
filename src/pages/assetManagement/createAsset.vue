@@ -1,18 +1,21 @@
 <template>
 	<div class="outerWrap createAssetWrap">
-		<div class="commonTitle_one">
-			资产管理
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>创建资产</span>
-			</span>
-		</div>
+		<el-row>
+			<el-col :lg="20" :md="22">
 			
-		<div class="commonTitle_two">创建资产</div>
-		
-		<div class="transferInpWrap">
-			<el-row>
-				<el-col :lg="16" md="12">
+				<div class="commonTitle_one">
+					资产管理
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>创建资产</span>
+					</span>
+					<div>返回</div>
+				</div>
+					
+				<div class="commonTitle_two">创建资产</div>
+				
+				<div class="transferInpWrap">
+					
 					<el-row class="transferInpListsWrap">
 						<el-col :lg="24">
 							<div class="transferInpListLeft">名称</div>
@@ -30,9 +33,11 @@
 							<div class="createAssetBtn">保存</div>
 						</el-col>
 					</el-row>
-				</el-col>
-			</el-row>
-		</div>
+						
+				</div>
+		
+			</el-col>
+		</el-row>
 		
 		
 		

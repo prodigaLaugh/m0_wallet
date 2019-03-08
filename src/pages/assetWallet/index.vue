@@ -1,111 +1,117 @@
 <template>
 	<div class="outerWrap assetWalletIndexWrap">
-		<div class="commonTitle_one">资产钱包</div>
-		<div class="addAccountWrap">
-			<div class="commonTitle_two">
-				我的资产
-				<span @click="$router.push('/main/receiveTransfer')">接受转账</span>
-			</div>
-			<el-row  class="row-bg" :gutter="30" justify="center">
-				<el-col :lg="8" >
-					<div class="assetSelectItemWrap">
-						<span>排序方式</span>
-						<el-select v-model="value" placeholder="请选择">
-							<el-option
-							  v-for="item in options"
-							  :key="item.value"
-							  :label="item.label"
-							  :value="item.value">
-							</el-option>
-						</el-select>
-					</div>
-				</el-col>
-				
-				<!-- <el-col :lg="8">
-					<div class="assetSelectItemWrap">
-						<span>所在地址</span>
-						<el-select v-model="value" placeholder="请选择">
-							<el-option
-							v-for="item in options"
-							:key="item.value"
-							:label="item.label"
-							:value="item.value">
-							</el-option>
-						</el-select>
-					</div>
-				</el-col> -->
-				
-				<el-col :lg="8">
-					<div class="assetSelectItemWrap">
-						<span>资产类型</span>
-						<el-select v-model="value" placeholder="请选择">
-							<el-option
-							v-for="item in options"
-							:key="item.value"
-							:label="item.label"
-							:value="item.value">
-							</el-option>
-						</el-select>
-					</div>
-				</el-col>
-			</el-row>
+		<el-row>
+			<el-col :lg="20" :md="22">
 			
-			
-			<div class="assetListsWrap">
-				<div v-for="item in 3"  class="selectAccountItem " >
-					<el-row :gutter="30" class="selectAccountItemTitleWrap">
-						<el-col :lg="14" :md="14" class="left">
-							<div>小麦2019</div>
-							<div>jlkj2jkh1hjhjh</div>
+				<div class="commonTitle_one">资产钱包</div>
+				<div class="addAccountWrap">
+					<div class="commonTitle_two">
+						我的资产
+						<span @click="$router.push('/main/receiveTransfer')">接受转账</span>
+					</div>
+					<el-row  class="row-bg" :gutter="30" justify="center">
+						<el-col :lg="8" >
+							<div class="assetSelectItemWrap">
+								<span>排序方式</span>
+								<el-select v-model="value" placeholder="请选择">
+									<el-option
+									  v-for="item in options"
+									  :key="item.value"
+									  :label="item.label"
+									  :value="item.value">
+									</el-option>
+								</el-select>
+							</div>
 						</el-col>
-						<el-col :lg="6" :md="6" class="right">
-							<div>当前余额:</div>
-							<div>12332.9766</div>
-						</el-col>
-						<el-col :lg="4" :md="4" class="transactionRecordIcon">
-							<div>交易记录</div>
+						
+						<!-- <el-col :lg="8">
+							<div class="assetSelectItemWrap">
+								<span>所在地址</span>
+								<el-select v-model="value" placeholder="请选择">
+									<el-option
+									v-for="item in options"
+									:key="item.value"
+									:label="item.label"
+									:value="item.value">
+									</el-option>
+								</el-select>
+							</div>
+						</el-col> -->
+						
+						<el-col :lg="8">
+							<div class="assetSelectItemWrap">
+								<span>资产类型</span>
+								<el-select v-model="value" placeholder="请选择">
+									<el-option
+									v-for="item in options"
+									:key="item.value"
+									:label="item.label"
+									:value="item.value">
+									</el-option>
+								</el-select>
+							</div>
 						</el-col>
 					</el-row>
 					
-					<!-- <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
-						<el-col :lg="16" class="left">
-							<div>所在地址：jlkj23234jkh2j4n21mk</div>
-						</el-col>
-						<el-col :lg="8" class="right">
-							<span @click="$router.push('/main/transactionRecord')">交易记录</span>
-							<span>转账</span>
-							<span>销毁</span>
-						</el-col>
-					</el-row> -->
-					<div style="margin-top:20px;"></div>
-					<el-row  :gutter="20" class="selectAccountItemTransactionWrap">
-						<el-col :lg="9" :md="9" class="left">
-							所在地址
-						</el-col>
-						<el-col :lg="8" :md="8" class="center">
-							地址余额
-						</el-col>
-						<el-col :lg="7" :md="7" class="right">
-							操作
-						</el-col>
-					</el-row>
-					<el-row  :gutter="20" class="selectAccountItemTransactionWrap" v-for="item in 3">
-						<el-col :lg="9" :md="9" class="left">
-							3CqBquEFMYY548fNBz8u2MBw3HKprS3Xft
-						</el-col>
-						<el-col :lg="8" :md="8" class="center">
-							56000.03000000
-						</el-col>
-						<el-col :lg="7" :md="7" class="right">
-							<span @click="$router.push('/main/transactionRecord')">交易记录</span>
-							<span>转出资产</span>
-						</el-col>
-					</el-row>
+					
+					<div class="assetListsWrap">
+						<div class="selectAccountItem " >
+							<el-row :gutter="30" class="selectAccountItemTitleWrap">
+								<el-col :lg="14" :md="14" class="left">
+									<div>小麦2019</div>
+									<div>jlkj2jkh1hjhjh</div>
+								</el-col>
+								<el-col :lg="6" :md="6" class="right">
+									<div>当前余额:</div>
+									<div>12332.9766</div>
+								</el-col>
+								<el-col :lg="4" :md="4" class="transactionRecordIcon">
+									<div>交易记录</div>
+								</el-col>
+							</el-row>
+							
+							<!-- <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
+								<el-col :lg="16" class="left">
+									<div>所在地址：jlkj23234jkh2j4n21mk</div>
+								</el-col>
+								<el-col :lg="8" class="right">
+									<span @click="$router.push('/main/transactionRecord')">交易记录</span>
+									<span>转账</span>
+									<span>销毁</span>
+								</el-col>
+							</el-row> -->
+							<div style="margin-top:20px;"></div>
+							<el-row  :gutter="20" class="selectAccountItemTransactionWrap">
+								<el-col :lg="9" :md="9" class="left">
+									所在地址
+								</el-col>
+								<el-col :lg="8" :md="8" class="center">
+									地址余额
+								</el-col>
+								<el-col :lg="7" :md="7" class="right">
+									操作
+								</el-col>
+							</el-row>
+							<el-row  :gutter="20" class="selectAccountItemTransactionWrap">
+								<el-col :lg="9" :md="9" class="left">
+									3CqBquEFMYY548fNBz8u2MBw3HKprS3Xft
+								</el-col>
+								<el-col :lg="8" :md="8" class="center">
+									56000.03000000
+								</el-col>
+								<el-col :lg="7" :md="7" class="right">
+									<span @click="$router.push('/main/transactionRecord')">交易记录</span>
+									<span>转出资产</span>
+								</el-col>
+							</el-row>
+							
+						</div>
+					</div>
 					
 				</div>
-			</div>
-			
-		</div>
+		
+			</el-col>
+		</el-row>
 		
 		
 	</div>
@@ -164,7 +170,7 @@
 		
 		.selectAccountItem{
 			background:#eee;
-			padding:20px 30px;
+			padding:20px 30px 40px;
 			margin-bottom:30px;
 			.selectAccountItemTitleWrap{
 				border-bottom:1px solid #333;

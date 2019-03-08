@@ -1,73 +1,79 @@
 <template>
 	<div class="outerWrap accountIndexWrap">
-		<div class="commonTitle_one">钱包管理</div>
-		<!-- <div class="addAccountWrap">
-			<div class="commonTitle_two">添加账户</div>
+		<el-row>
+			<el-col :lg="20" :md="22">
 			
-			<el-row  class="row-bg" :gutter="30" justify="center" style="margin-right:0;">
-			  <el-col :lg="8" >
-						<div class="addAccountItem" @click="$router.push('/main/createAccout')">新建账户</div>
-				</el-col>
-			  <el-col :lg="8">
-						<div class="addAccountItem" @click="$router.push('/main/recoveryMnemonic')">助记词恢复</div>
-				</el-col>
-			  <el-col :lg="8">
-						<div class="addAccountItem" @click="$router.push('/main/importBackup')">备份导入</div>
-				</el-col>
-			</el-row>
-		</div> -->
+				<div class="commonTitle_one">钱包管理</div>
+				<!-- <div class="addAccountWrap">
+					<div class="commonTitle_two">添加账户</div>
+					
+					<el-row  class="row-bg" :gutter="30" justify="center" style="margin-right:0;">
+					  <el-col :lg="8" >
+								<div class="addAccountItem" @click="$router.push('/main/createAccout')">新建账户</div>
+						</el-col>
+					  <el-col :lg="8">
+								<div class="addAccountItem" @click="$router.push('/main/recoveryMnemonic')">助记词恢复</div>
+						</el-col>
+					  <el-col :lg="8">
+								<div class="addAccountItem" @click="$router.push('/main/importBackup')">备份导入</div>
+						</el-col>
+					</el-row>
+				</div> -->
+				
+				<div class="selectAccountWrap">
+					<div class="commonTitle_two">
+						我的钱包
+						<div>
+							<span @click="$router.push('/main/importBackup')">导入钱包</span>
+							<span @click="$router.push('/main/createAccount')">创建钱包</span>
+						</div>
+					</div>
+					
+					
+					<el-row  class="selectAccountItem use" type="flex" justify="center">
+						<div class="leftTag">
+							<span>使&#10;用{{'\n'}}中</span>
+						</div>
+						<el-col :lg="18" class="left">
+							<div class="title">
+								Account01
+								<span>多签</span>
+							</div>
+							<div class="blue leftText">关联密钥:jkjl32434hkjkj</div>
+							<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
+						</el-col>
+						<el-col :lg="6" class="right">
+							<div>载入</div>
+							<div @click="$router.push('/main/walletDetail')">详情</div>
+							<div @click="$router.push('/main/backupType')">备份</div>
+							<div>删除</div>
+						</el-col>
+					</el-row>
+					<el-row  class="selectAccountItem " type="flex" justify="center">
+						<div class="leftTag">
+							<span>未&#10;使{{'\n'}}用</span>
+						</div>
+						<el-col :lg="18" class="left">
+							<div class="title">
+								Account01
+								<span>多签</span>
+							</div>
+							<div class="blue leftText">关联密钥:jkjl32434hkjkj</div>
+							<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
+						</el-col>
+						<el-col :lg="6" class="right">
+							<div>载入</div>
+							<div @click="$router.push('/main/walletDetail')">详情</div>
+							<div @click="$router.push('/main/backupType')">备份</div>
+							<div>删除</div>
+						</el-col>
+					</el-row>
+					
+					
+				</div>
 		
-		<div class="selectAccountWrap">
-			<div class="commonTitle_two">
-				我的钱包
-				<div>
-					<span @click="$router.push('/main/importBackup')">导入钱包</span>
-					<span @click="$router.push('/main/createAccount')">创建钱包</span>
-				</div>
-			</div>
-			
-			
-			<el-row  class="selectAccountItem use" type="flex" justify="center">
-				<div class="leftTag">
-					<span>使&#10;用{{'\n'}}中</span>
-				</div>
-				<el-col :lg="18" class="left">
-					<div class="title">
-						Account01
-						<span>多签</span>
-					</div>
-					<div class="blue leftText">关联密钥:jkjl32434hkjkj</div>
-					<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
-				</el-col>
-				<el-col :lg="6" class="right">
-					<div>载入</div>
-					<div @click="$router.push('/main/walletDetail')">详情</div>
-					<div @click="$router.push('/main/backupType')">备份</div>
-					<div>删除</div>
-				</el-col>
-			</el-row>
-			<el-row  class="selectAccountItem " type="flex" justify="center">
-				<div class="leftTag">
-					<span>未&#10;使{{'\n'}}用</span>
-				</div>
-				<el-col :lg="18" class="left">
-					<div class="title">
-						Account01
-						<span>多签</span>
-					</div>
-					<div class="blue leftText">关联密钥:jkjl32434hkjkj</div>
-					<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
-				</el-col>
-				<el-col :lg="6" class="right">
-					<div>载入</div>
-					<div @click="$router.push('/main/walletDetail')">详情</div>
-					<div @click="$router.push('/main/backupType')">备份</div>
-					<div>删除</div>
-				</el-col>
-			</el-row>
-			
-			
-		</div>
+			</el-col>
+		</el-row>
 	</div>
 </template>
 

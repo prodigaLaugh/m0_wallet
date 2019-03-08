@@ -1,21 +1,21 @@
 <template>
 	<div class="outerWrap createAccountWrap">
-		<div class="commonTitle_one">
-			账户管理
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>创建账户</span>
-			</span>
-		</div>
+		<el-row>
+			<el-col :lg="20" :md="22">
 			
-		<div class="commonTitle_two">
-			创建账户
-			<span>返回</span>
-		</div>
-		
-		<div class="transferInpWrap">
-			<el-row>
-				<el-col :lg="16" md="12">
+				<div class="commonTitle_one">
+					账户管理
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>创建账户</span>
+					</span>
+					<div>返回</div>
+				</div>
+					
+				<div class="commonTitle_two">创建账户</div>
+				
+				<div class="transferInpWrap">
+					
 					<el-row class="transferInpListsWrap">
 						<el-col :lg="24">
 							<div class="transferInpListLeft">账户名称</div>
@@ -71,11 +71,11 @@
 							<div class="createAccountBtn">创建账户</div>
 						</el-col>
 					</el-row>
-				</el-col>
-			</el-row>
-		</div>
+						
+				</div>
 		
-		
+			</el-col>
+		</el-row>
 		
 	</div>
 </template>

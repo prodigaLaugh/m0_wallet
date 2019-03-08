@@ -1,18 +1,23 @@
 <template>
 	<div class="outerWrap transferWrap">
-		<div class="commonTitle_one">
-			资产操作
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>销毁</span>
-			</span>
-		</div>
+		<el-row>
+			<el-col :lg="20" :md="22">
+				<div class="commonTitle_one">
+					资产操作
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>销毁</span>
+					</span>
+					<div>返回</div>
+				</div>
+			</el-col>
+		</el-row>
 			
 		<div class="commonTitle_two">销毁</div>
 		
 		<div class="transferInpWrap">
 			<el-row>
-				<el-col :lg="16" md="12">
+				<el-col :lg="20" :md="22">
 					<el-row class="transferInpListsWrap">
 						<el-col :lg="24">
 							<div class="transferInpListLeft">所在地址</div>

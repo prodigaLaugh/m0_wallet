@@ -1,17 +1,23 @@
 <template>
 	<div class="outerWrap signatureWrap">
-		<div class="commonTitle_one">
-			资产操作
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>签名</span>
-			</span>
-		</div>
+		<el-row>
+			<el-col :lg="20" :md="22">
+				<div class="commonTitle_one">
+					资产操作
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>签名</span>
+					</span>
+					<div>返回</div>
+				</div>
+			</el-col>
+		</el-row>
+		
 			
 		<div class="commonTitle_two">签名交易</div>
 		
 		<el-row>
-			<el-col :lg="18" :md="18">
+			<el-col :lg="20" :md="22">
 				
 				<div class="signatureInpWrap">
 					<input type="file">

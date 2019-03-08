@@ -71,7 +71,7 @@
 	// 导航样式
 	.contentNavWrap{
 		border-bottom:1px solid #333;
-		padding-bottom:4px;
+		padding-bottom:8px;
 		
 		>span{
 			font-size:16px;
@@ -92,7 +92,7 @@
 				position:absolute;
 				left:0;
 				right:0;
-				bottom:-2px;
+				bottom:-6px;
 				height:4px;
 				background:none;
 			}
@@ -103,7 +103,7 @@
 	// 地址管理列表
 	.addressManagementIndexListWrap{
 		background:#ddd;
-		padding:20px 30px;
+		padding:20px 30px 30px;
 		margin-bottom:20px;
 		>div{
 			height:80px;

@@ -1,38 +1,42 @@
 <template>
 	<div class="outerWrap chainDepositWrap">
-		<div class="commonTitle_one">链上存证</div>
+		<el-row>
+			<el-col :lg="20" :md="24">
+				
+				<div class="commonTitle_one">链上存证</div>
 
-		<div class="commonTitle_two">
-            我的存证
-            <span @click="$router.push('/main/uploadDeposit')">上传存证</span>
-        </div>
-			
+				<div class="commonTitle_two">
+					我的存证
+					<span @click="$router.push('/main/uploadDeposit')">上传存证</span>
+				</div>
+					
 
-        <div class="chainDepositListsWrap">
-            <div v-for="item in 3"  class="chainDepositItem" >
-                <el-row :gutter="30" class="chainDepositItemTitleWrap">
-                    <el-col :lg="20" :md="20" class="left">
-                        <div>我的存证00001</div>
-                        <div>
-                            <span v-for="item in 10">832kb</span>
-                        </div>
-                    </el-col>
-                    <el-col :lg="4" :md="4" class="right">
-                        <span @click="$router.push('/main/depositDetail')">查看存证</span>
-                    </el-col>
-                </el-row>
-                
-                <el-row  :gutter="20" class="chainDepositItemContent">
-                    <el-col :lg="24" :md="24" class="center">
-                        此处展示备注信息。。此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息
-                    </el-col>
-                </el-row>
-               
-                
-            </div>
-        </div>
+				<div class="chainDepositListsWrap">
+					<div v-for="item in 3"  class="chainDepositItem" >
+						<el-row :gutter="30" class="chainDepositItemTitleWrap">
+							<el-col :lg="20" :md="20" class="left">
+								<div>我的存证00001</div>
+								<div>
+									<span v-for="item in 10">832kb</span>
+								</div>
+							</el-col>
+							<el-col :lg="4" :md="4" class="right">
+								<span @click="$router.push('/main/depositDetail')">查看存证</span>
+							</el-col>
+						</el-row>
+						
+						<el-row  :gutter="20" class="chainDepositItemContent">
+							<el-col :lg="24" :md="22" class="center">
+								此处展示备注信息。。此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息
+							</el-col>
+						</el-row>
+					   
+						
+					</div>
+				</div>
 	
-		
+			</el-col>
+		</el-row>
 		
 	
 	</div>
