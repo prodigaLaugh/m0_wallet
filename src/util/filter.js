@@ -27,6 +27,23 @@ let filterMoney = str => {
 	
 }
 	
+let transactionTextByType = str =>{
+	var json = {
+		1:'转账',
+		2:'发行',
+		3:'销毁'
+	} 
+	return json[str]||'--';
+}
+let recordTextByType = str =>{
+	var json = {
+		1:'已确认',
+		2:'失败',
+		3:'执行中'
+	}
+	return json[str]||'--'
+}
+
 
 
 
@@ -46,4 +63,10 @@ let timestampToTime = (timestamp) => {
 
 
 
-export { interceptPubStr, interceptStr,  timestampToTime, filterMoney }
+export { 
+	interceptPubStr, 
+	interceptStr,  
+	timestampToTime, 
+	filterMoney,
+	recordTextByType
+}

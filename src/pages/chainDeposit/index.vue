@@ -12,22 +12,25 @@
 					
 
 				<div class="chainDepositListsWrap">
-					<div v-for="item in 3"  class="chainDepositItem" >
+					<div 
+						v-for="(item,index) in lists"
+						:key="index"
+						class="chainDepositItem" >
 						<el-row :gutter="30" class="chainDepositItemTitleWrap">
 							<el-col :lg="20" :md="20" class="left">
-								<div>我的存证00001</div>
+								<div>{{item.evidence_name}}</div>
 								<div>
-									<span v-for="item in 10">832kb</span>
+									<span >{{item.file_size}}</span>
 								</div>
 							</el-col>
 							<el-col :lg="4" :md="4" class="right">
-								<span @click="$router.push('/main/depositDetail')">查看存证</span>
+								<span @click="$router.push({path:'/main/depositDetail',query:{id:item.id}})">查看存证</span>
 							</el-col>
 						</el-row>
 						
 						<el-row  :gutter="20" class="chainDepositItemContent">
 							<el-col :lg="24" :md="22" class="center">
-								此处展示备注信息。。此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息此处展示备注信息
+								{{item.describe}}
 							</el-col>
 						</el-row>
 					   
@@ -44,6 +47,8 @@
 
 <script>
 	
+	import { getEvidenceLists } from '@/util/server.js'
+
 	import Vue from 'vue';
 	import { Row, Col } from 'element-ui';
 		
@@ -53,11 +58,15 @@
 	
 	export default {
 		created(){
-			
+			getEvidenceLists.bind(this)('0R031M6800A02')
+				.then(({data})=>{
+					console.log(data,333)
+					this.lists = data.data
+				})
 		},
 		data(){
 			return {
-			
+				lists:[]
 			}
 		},
 		methods:{

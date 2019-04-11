@@ -9,7 +9,7 @@
 						<i class="el-icon-arrow-right"></i>
 						<span>存证详情</span>
 					</span>
-					<div>返回</div>
+					<div @click="$router.go(-1)">返回</div>
 				</div>
 					
 				<div class="commonTitle_two">
@@ -20,19 +20,19 @@
 					<el-row class="systemStatusIndexContentItem">
 						<el-col :lg="6">存证名称</el-col>
 						<el-col :lg="18">
-							<span>存证0020193</span>
+							<span>{{detail.evidence_name}}</span>
 						</el-col>
 					</el-row>
 					<el-row class="systemStatusIndexContentItem">
 						<el-col :lg="6">上链交易hash</el-col>
 						<el-col :lg="18">
-							<span>3GTXRviDFhp2G6kETXZuG2hZ5H3AA1yPf8</span>
+							<span>{{detail.tx_id}}</span>
 						</el-col>
 					</el-row>
 					<el-row class="systemStatusIndexContentItem">
 						<el-col :lg="6">备注信息</el-col>
 						<el-col :lg="18">
-							<span style="width:auto;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed</span>
+							<span style="width:auto;">{{detail.describe}}</span>
 						</el-col>
 					</el-row>
 				</div>
@@ -41,15 +41,23 @@
 				
 				<div class="systemStatusIndexContentWrap">
 					<el-row class="systemStatusIndexContentItem">
-						<el-col :lg="6">文件名</el-col>
-						<el-col :lg="4">
+						<el-col :lg="8">文件名</el-col>
+						<el-col :lg="6">
 							<span>文件大小</span>
 						</el-col>
+						<el-col :lg="10">操作</el-col>
 					</el-row>
 					<el-row class="systemStatusIndexContentItem">
-						<el-col :lg="6">fileName00102</el-col>
-						<el-col :lg="4">
-							<span>45mb</span>
+						<el-col :lg="8">{{detail.file_name||'--'}}</el-col>
+						<el-col :lg="6">
+							<span>{{detail.file_size||'--'}}</span>
+						</el-col>
+						<el-col :lg="10">
+							<span 
+								@click="download(detail.uuid, detail.file_name)"
+								class="blue">下载链上文件</span>
+							<span class="blue">校验我的文件</span>
+
 						</el-col>
 					</el-row>
 					
@@ -60,8 +68,9 @@
 				<div class="commonTitle_two">存证数据</div>
 
 				<div class="depositDataContent">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
+					description
 				</div>
+				
 		
 			
 			</el-col>
@@ -71,24 +80,51 @@
 </template>
 
 <script>
-	
+	import { getEvidenceDetail, evidenceDownload } from '@/util/server.js'
+
 	import Vue from 'vue';
-	import { Row, Col } from 'element-ui';
+	import { Row, Col, Dialog } from 'element-ui';
 		
 	Vue.use(Row);
 	Vue.use(Col);
+	Vue.use(Dialog);
 	
 	
 	export default {
 		created(){
-			
+			let id = this.$route.query.id;
+			getEvidenceDetail.bind(this)(id)
+				.then(({data})=>{
+					console.log(data,111)
+					var data = data.data;
+					this.detail = data;
+						
+				})
 		},
 		data(){
 			return {
-				
+				downloadUrl:'',
+				detail:{
+					
+				}
 			}
 		},
 		methods:{
+			download(uuid, file_name){
+				var formdata = new FormData();
+				formdata.append('uuid',uuid);
+				formdata.append('file_name',file_name)
+				
+				evidenceDownload.bind(this)(formdata)
+					.then(({data})=>{
+						console.log(data,4444)
+						var blob = new Blob([data])
+						var a = document.createElement('a');
+						a.download = file_name;
+						a.href=window.URL.createObjectURL(blob)
+						a.click()
+					})
+			}
 			
 		},
 	}
@@ -96,6 +132,7 @@
 
 <style lang="scss">
 	.depositDetailWrap{
+		padding-bottom:80px;
 		.systemStatusIndexContentWrap{
 			padding:20px 0;
 			.systemStatusIndexContentItem{

@@ -12,13 +12,8 @@ import Login from '@/pages/login'
 
 let token = getCookie('USERTOKEN');
 let autoLogin = getCookie('autoLogin');
+var redirectUrl = '/login'
 if(token){
-	let hour = autoLogin == 'true' ? 24*3 : 24;
-	delCookie('USERTOKEN')
-	setCookie('USERTOKEN',token,hour)
-
-	delCookie('autoLogin')
-	setCookie('autoLogin',autoLogin,hour)
 	redirectUrl = '/main'
 }
 
@@ -46,142 +41,142 @@ const router=new VueRouter({
 				{
 					path:'privatekeyManagement',
 					component:resolve => require(['@/pages/privatekeyManagement'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				
 				// 账户管理
 				{
 					path:'walletIndex',
 					component:resolve => require(['@/pages/walletManagement'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'createAccount',
 					component:resolve => require(['@/pages/walletManagement/createAccout'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'createWalletM',//创建多签钱包
 					component:resolve => require(['@/pages/walletManagement/createMoresignWallet'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'createWalletS',//创建单签钱包
 					component:resolve => require(['@/pages/walletManagement/createSinglesignWallet'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'recoveryMnemonic',
 					component:resolve => require(['@/pages/walletManagement/recoveryMnemonic'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'importBackup',
 					component:resolve => require(['@/pages/walletManagement/importBackup'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'backupType',
 					component:resolve => require(['@/pages/walletManagement/backupType'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'recordMnemonic',
 					component:resolve => require(['@/pages/walletManagement/recordMnemonic'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'verifyMnemonic',
 					component:resolve => require(['@/pages/walletManagement/verifyMnemonic'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'walletDetail',
 					component:resolve => require(['@/pages/walletManagement/walletDetail'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				
 				// 资产钱包
 				{
 					path:'assetWalletIndex',
 					component:resolve => require(['@/pages/assetWallet'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'receiveTransfer',
 					component:resolve => require(['@/pages/assetWallet/receiveTransfer'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'transactionRecord',
 					component:resolve => require(['@/pages/assetWallet/transactionRecord'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				
 				// 控制台
 				{
 					path:'consoleIndex',
 					component:resolve => require(['@/pages/console'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'transfer',
 					component:resolve => require(['@/pages/console/transfer'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'signature',
 					component:resolve => require(['@/pages/console/signature'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'issue',
 					component:resolve => require(['@/pages/console/issue'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'destroy',
 					component:resolve => require(['@/pages/console/destroy'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				
 				//资产管理
 				{
-					path:'assetManagementIndex',
-					component:resolve => require(['@/pages/assetManagement'], resolve),
-					meta: {},
+					path:'createAssetIndex',
+					component:resolve => require(['@/pages/createAsset'], resolve),
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'createAsset',
-					component:resolve => require(['@/pages/assetManagement/createAsset'], resolve),
-					meta: {},
+					component:resolve => require(['@/pages/createAsset/createAsset'], resolve),
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'editAsset',
-					component:resolve => require(['@/pages/assetManagement/editAsset'], resolve),
-					meta: {},
+					component:resolve => require(['@/pages/createAsset/editAsset'], resolve),
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'assetDetail',
-					component:resolve => require(['@/pages/assetManagement/assetDetail'], resolve),
-					meta: {},
+					component:resolve => require(['@/pages/createAsset/assetDetail'], resolve),
+					meta: {requiresAuth: true},
 				},
 
 				// 链上存证
 				{
 					path:'chainDeposit',
 					component:resolve => require(['@/pages/chainDeposit'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'uploadDeposit',
 					component:resolve => require(['@/pages/chainDeposit/uploadDeposit'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				{
 					path:'depositDetail',
 					component:resolve => require(['@/pages/chainDeposit/depositDetail'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				
 				
@@ -189,19 +184,19 @@ const router=new VueRouter({
 				{
 					path:'addressManagementIndex',
 					component:resolve => require(['@/pages/addressManagement'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				// 系统状态
 				{
 					path:'systemStatusIndex',
 					component:resolve => require(['@/pages/systemStatus'], resolve),
-					meta: {},
+					meta: {requiresAuth: true},
 				},
 				
 				
 				{
 					path:'',
-					redirect:'accountIndex'
+					redirect:'assetWalletIndex'
 				}
 				
 			]
@@ -209,7 +204,7 @@ const router=new VueRouter({
 		
 		{
 			path:'',
-			redirect:'/login'
+			redirect:redirectUrl
 		}
 		
 	],
@@ -224,21 +219,21 @@ const router=new VueRouter({
 
 
 
-// router.beforeEach((to, from, next) => {
-// 	const USERTOKEN=window.localStorage.USERTOKEN;
-// 	if (to.matched.some(record => record.meta.requiresAuth)) {
-// // 		if (!USERTOKEN) {
-// // 			next({
-// // 				path: '/login',
-// // 				query: { redirect: to.fullPath }
-// // 			})
-// // 	    } else {
-// // 	      	next()
-// // 		}
-// 		next()
-// 	} else {
-// 	    next() // 确保一定要调用 next()
-// 	}
-// })
+router.beforeEach((to, from, next) => {
+	const USERTOKEN=getCookie('USERTOKEN');
+	if (to.matched.some(record => record.meta.requiresAuth)) {
+		if (!USERTOKEN) {
+			next({
+				path: '/login',
+				query: { redirect: to.fullPath }
+			})
+	    } else {
+	      	next()
+		}
+		
+	} else {
+	    next() // 确保一定要调用 next()
+	}
+})
 
 export default router;

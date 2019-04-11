@@ -58,6 +58,7 @@
 <script>
 import SIdentify from '@/components/identify'
 import {setCookie, getCookie } from '@/util/cookie'
+import { login } from '@/util/server.js'
 
 import Vue from 'vue'
 import { Input, Checkbox } from 'element-ui';
@@ -70,7 +71,7 @@ export default {
   },
   data() {
     return {
-      identifyCodes: "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ",
+			identifyCodes: "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ",
 			identifyCode: "",
 			verifycode:"",
 
@@ -79,7 +80,7 @@ export default {
 
 			loginParams:{
 				user_name:'',
-				password:''
+				password:'',
 			}
     };
   },
@@ -89,7 +90,6 @@ export default {
   },
   methods: {
 		login(){
-			let url = `/deploy_user/login`
 			let params = this.loginParams;
 
 			if(!this.loginParams.user_name ||
@@ -104,8 +104,8 @@ export default {
 
 			if(this.verifycode.toLocaleLowerCase() !== this.identifyCode.toLocaleLowerCase()){
 					this.$message ({
-							message: '验证码不正确',
-							type: 'warning'
+						message: '验证码不正确',
+						type: 'warning'
 					});
 					return false;
 			}
@@ -114,52 +114,50 @@ export default {
 
 
 			if(!this.loginFlag){
-					return false;
+				return false;
 			}
 			this.loginFlag = false;
 
-			this.$http.post(url,params)
-					.then(({data})=>{
-						this.addUserFlag = false;
-						let type = 'warning',
-							message = '登录成功',
-							hour = 1,
-							autoLogin = 'false';
-						if(data.code === '0'){
-								type = 'success';
-								if(this.autoLogin){
-									hour = 24 * 3;
-									autoLogin = 'true';
-								}
-								setCookie('USERTOKEN',data.data.token,hour)
-								setCookie('autoLogin',autoLogin,hour)
-								setTimeout(()=>{
-									location.href  = '/main';
-								},1500)
-								
-						}else{
-							message = data.msg
-						}
+			login.bind(this)(params)
+				.then(({data})=>{
+					
+					let hour = 1,
+						autoLogin = 'false';
+					if(data.status === 'success'){
+							if(this.autoLogin){
+								hour = 24 * 3;
+								autoLogin = 'true';
+							}
+							setCookie('USERTOKEN',this.loginParams.user_name,hour)
+							setCookie('autoLogin',autoLogin,hour)
+							localStorage.USERTOKEN = this.loginParams.user_name
+							setTimeout(()=>{
+								location.href  = '/main';
+							},1500)
+							this.$message ({
+								message: '登录成功',
+								type: 'success'
+							});
+							
+					}else{
+						var msg = data.detail;
 						this.$message ({
-								message: message,
-								type: type
+							message: msg,
+							type: 'warning'
 						});
-						
-						setTimeout(()=>{
-							this.loginFlag = true;
-						},1500)
-
-
-					})
-					.catch(({data})=>{
-						console.log(data)
-						this.$message ({
-								message: data && data.data,
-								type: 'warning'
-						});
+					}
+					
+					
+					setTimeout(()=>{
 						this.loginFlag = true;
-					})
-			// USERTOKEN
+					},1500)
+
+
+				})
+				.catch(({data})=>{
+					console.log(data)
+					this.loginFlag = true;
+				})
 		},
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);

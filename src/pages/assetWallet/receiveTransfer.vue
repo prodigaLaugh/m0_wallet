@@ -17,21 +17,27 @@
 				
 				<div class="addressManagementIndexListsWrap">
 					
-					<el-row class="addressManagementIndexListWrap" >
+					<el-row 
+						class="addressManagementIndexListWrap" 
+						v-for="(item,index) in lists"
+						:key="index">
 						<el-col :lg="12" class="addressManagementIndexListLeft">
-							<div>3D2oetdNuZUqQHPJmcMDDHYoqkyNVsFk9r</div>
+							<div>{{item.address_id}}</div>
 							<div>
 								<span>包含资产：</span>
 								<div>
-									<span>asset0001</span>
-									<span>asset0002</span>
-									<span>asset0003</span>
+									<span  
+										v-for="(list,i) in item.asset_names"
+										:key="i">{{list}}</span>
 								</div>
 							</div>
 						</el-col>
 						<el-col :lg="12" class="addressManagementIndexListRight">
 							<div>
-								<span>复制地址</span>
+								<span 
+									class="tag-read blue" 
+									:data-clipboard-text="item.address_id" 
+									@click="copy">拷贝地址</span>
 							</div>
 						</el-col>
 					</el-row>
@@ -47,6 +53,9 @@
 </template>
 
 <script>
+	import { getAddressLists } from '@/util/server.js'
+	import Clipboard from 'clipboard'
+
 	
 	import Vue from 'vue';
 	import { Row, Col } from 'element-ui';
@@ -57,14 +66,47 @@
 	
 	export default {
 		created(){
-			
+			this.getLists();
 		},
 		data(){
 			return {
-				
+				lists:[],
 			}
 		},
 		methods:{
+			getLists(){
+				var accountInfo = this.getLocalAccountInfo();
+				var account_alias = accountInfo.account_alias
+				var params = {account_alias:account_alias}
+				getAddressLists.bind(this)(params)
+					.then(({data})=>{
+						if(data.status=='success'){
+							this.lists = data.data;
+						}else{
+							this.lists.splice(0,999);
+						}
+						
+						console.log(data,111)
+					})
+			},
+			copy() {
+			        var clipboard = new Clipboard('.tag-read')
+			        clipboard.on('success', e => {
+			          	console.log('复制成功')
+						this.$message({
+							type:'success',
+							message:'复制成功'
+						})
+			          	// 释放内存
+			          	clipboard.destroy()
+			        })
+			        clipboard.on('error', e => {
+			          // 不支持复制
+			          console.log('该浏览器不支持自动复制')
+			          // 释放内存
+			          clipboard.destroy()
+			        })
+			     },
 			
 		},
 	}

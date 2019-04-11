@@ -7,6 +7,27 @@
 <style lang="scss">
 	@import url("../css/reset.css");
 	@import url("../css/common.css");
+	.noresult{
+		padding-left:15px;
+		line-height:50px;
+		font-size:14px;
+	}
+	//弹窗内容样式
+	.dialogContentWrap{
+	    .title{
+	        padding:20px 0 10px;
+	        color:#333;
+	    }
+	    .tips{
+	        font-size:13px;
+	        color:#999;
+	        line-height:18px;
+	        padding-bottom:4px;
+	    }
+	    >.el-input{
+	        margin-bottom:10px;
+	    }
+	}
 	// 一级标题样式
 	.commonTitle_one{
 		font-size:24px;
@@ -166,7 +187,7 @@
 	.consoleListsWrap{
 		.consoleListWrap{
 			margin-bottom:30px;
-			>div{
+			>div,>.inner>div{
 				border:1px solid #ddd;
 				margin-top:-1px;
 				padding:0 10px;
@@ -195,6 +216,25 @@
 									padding:0 10px;
 								}
 								&:nth-of-type(3){
+									&.error,
+									&.going{
+										background:none;
+										padding-right:4px;
+										i{
+											font-size: 14px;
+											font-weight: bold;
+										}
+									}
+									&.error{
+										i{
+											color:red;
+										}
+									}
+									&.going{
+										i{
+											color:green;
+										}
+									}
 									background:url(../assets/console/confirmIcon.png) no-repeat right center;
 									padding-right:20px;
 									line-height:16px;
@@ -219,6 +259,19 @@
 								background-size:17px 20px;
 								&.out{
 									background-image:url(../assets/console/transferIcon2.png);
+									background-size:24px 25px;
+								}
+								&.sign{
+									background-image:url(../assets/console/transferIcon3.png);
+									background-size:16px;
+								}
+								&.issue{
+									background-image:url(../assets/console/transferIcon4.png);
+									background-size:16px;
+								}
+								&.retire{
+									background-image:url(../assets/console/transferIcon5.png);
+									background-size:16px 17px;
 								}
 							}
 						}
@@ -294,6 +347,7 @@
 							display:flex;
 							>span{
 								margin-left:20px;
+								cursor:pointer;
 								&:nth-of-type(1){
 									color:$blue;
 								}
@@ -405,17 +459,73 @@
 			.title{
 				line-height:20px;
 			}
-			.visitcode{
-				height:140px;
-				line-height:140px;
-				text-align:center;
+			.visitSelectWrap{
+				.visitBtn{
+					padding:12px 20px;
+					line-height:14px;
+					font-size:14px;
+					border:1px solid #666;
+					@include pointer;
+					text-align:center;
+					border-radius:5px;
+				}
+			}
+			.visitcodeWrap{
 				background:#eee;
-				font-size:30px;
-				color:#333;
+				padding:10px 15px;
+				line-height:30px;
 				margin-top:20px;
+				.tag-read{
+					margin-left:30px;
+				}
+			}
+			
+		}
+	}
+	// 创建 编辑资产样式
+	.createAssetWrap,.transferWrap{
+		.createAssetBtn{
+			width:264px;
+			height:40p;
+			line-height:40px;
+			text-align:center;
+			border-radius:5px;
+			background:$blue;
+			margin:0 auto;
+			color:#fff;
+			font-size:13px;
+		}
+		.paraWrap{
+			background:#eee;
+			margin-top:-20px;
+			padding:20px;
+			.top{
+				padding-bottom:8px;
+			}
+			.btn{
+				line-height:40px;
+				color:red;
+			}
+			.addBtn{
+				>div{
+					text-align:center;
+					.addBtnWrap{
+						border:1px solid #999;
+						border-radius:5px;
+						line-height:30px;
+						text-align:center;
+						width:240px;
+						margin: 20px auto 0;
+						display:inline-block;
+						font-size:14px;
+						@include pointer;
+					}
+				}
+				
 			}
 		}
 	}
+	
 
 	
 </style>

@@ -24,78 +24,234 @@
 					<div class="commonTitle_two">
 						我的钱包
 						<div>
-							<span @click="$router.push('/main/importBackup')">导入钱包</span>
-							<span @click="$router.push('/main/createAccount')">创建钱包</span>
+							<!-- <span @click="$router.push('/main/importBackup')">导入钱包</span> -->
+							<span @click="createFlag=true">创建钱包</span>
 						</div>
 					</div>
 					
 					
-					<el-row  class="selectAccountItem use" type="flex" justify="center">
+					<el-row  
+						v-for="(item,index) in lists"
+						:key="index"
+						:class="['selectAccountItem',{use:item.status!=0}]" 
+						type="flex" 
+						justify="center">
 						<div class="leftTag">
-							<span>使&#10;用{{'\n'}}中</span>
+							<span v-if="item.status==0">未&#10;使{{'\n'}}用</span>
+							<span v-else>使&#10;用{{'\n'}}中</span>
 						</div>
 						<el-col :lg="18" class="left">
 							<div class="title">
-								Account01
-								<span>多签</span>
+								{{item.account_alias}}
+								<span>{{(item.sign_key_num-0)>1 ?'多签' :'单签'}}</span>
 							</div>
-							<div class="blue leftText">关联密钥:jkjl32434hkjkj</div>
+							<div class="blue leftText">
+								<span>关联密钥:</span>
+								<div>
+									<div  
+										v-for="(list,i) in item.xpubs"
+										:key="i">{{list}}</div>
+								</div>
+							</div>
 							<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
 						</el-col>
 						<el-col :lg="6" class="right">
-							<div>载入</div>
-							<div @click="$router.push('/main/walletDetail')">详情</div>
+							<div @click="zairu(item)">载入</div>
+							<div 
+								@click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
 							<div @click="$router.push('/main/backupType')">备份</div>
-							<div>删除</div>
+							<div @click="del(item,index)">删除</div>
 						</el-col>
 					</el-row>
-					<el-row  class="selectAccountItem " type="flex" justify="center">
-						<div class="leftTag">
-							<span>未&#10;使{{'\n'}}用</span>
-						</div>
-						<el-col :lg="18" class="left">
-							<div class="title">
-								Account01
-								<span>多签</span>
-							</div>
-							<div class="blue leftText">关联密钥:jkjl32434hkjkj</div>
-							<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
-						</el-col>
-						<el-col :lg="6" class="right">
-							<div>载入</div>
-							<div @click="$router.push('/main/walletDetail')">详情</div>
-							<div @click="$router.push('/main/backupType')">备份</div>
-							<div>删除</div>
-						</el-col>
-					</el-row>
+				
 					
 					
 				</div>
 		
 			</el-col>
 		</el-row>
+		
+		
+		<!-- 点击秘钥管理输入密码弹窗 -->
+		<el-dialog
+		  title="请输入账户密码"
+		  :center="true"
+		  :visible.sync="openDialogFlag"
+		  width="40%">
+		  <div class="dialogContentWrap">
+			  <div class="tips">⚠️请输入账户对应的密码，已确认身份</div>
+			  <el-input v-model="value" placeholder="输入密码"></el-input>
+		  </div>
+		  <span slot="footer" class="dialog-footer">
+			<el-button @click="openDialogFlag = false">取 消</el-button>
+			<el-button type="primary" @click="openDialogFlag = false">确 定</el-button>
+		  </span>
+		</el-dialog>
+		
+		<!-- 点击秘钥管理输入密码弹窗 -->
+		<el-dialog
+		  title="请输选择创建钱包的类型"
+		  :center="true"
+		  :visible.sync="createFlag"
+		  width="40%">
+		  <div class="selectWalletWrap">
+			  <el-row>
+				  <el-col :md="10">
+					  <div 
+						@click="changeWalletType(0)"
+						:class="['contentWrap',{active:walletIndex===0}]">
+						  <div class="title">单签钱包</div>
+						  <div class="content">单签钱包内的资产由您本人所有和支配，创建单签钱包需要关联一把密钥，一把密钥只能关联一个单签钱包。</div>
+					  </div>
+				  </el-col>
+				  <el-col :md="2">&nbsp;</el-col>
+				  <el-col :md="10">
+					  <div
+						@click="changeWalletType(1)"
+						:class="['contentWrap',{active:walletIndex===1}]">
+						  <div class="title">多签钱包</div>
+						  <div class="content">多签钱包内的资产由多方共同所有和支配，创建多签钱包需要关联一把密钥，一把密钥可关联多个多签钱包。</div>
+					  </div>
+				  </el-col>
+			  </el-row>
+		  </div>
+		  <span slot="footer" class="dialog-footer">
+			<el-button @click="createFlag = false">取 消</el-button>
+			<el-button type="primary" @click="createWallet">确 定</el-button>
+		  </span>
+		</el-dialog>
+		
 	</div>
 </template>
 
 <script>
 	
 	import Vue from 'vue';
-	import { Row, Col } from 'element-ui';
+	import { Row, Col, Input, Button, Dialog } from 'element-ui';
+	
+	import { getAccountLists, loadWallet, deleteWallet } from '@/util/server.js'
 		
 	Vue.use(Row);
 	Vue.use(Col);
+	Vue.use(Button);
+	Vue.use(Input);
+	Vue.use(Dialog);
 	
 	export default {
 		created(){
-			
+			this.getLists()
+		
 		},
 		data(){
 			return {
+				submitFlag:true,
+				createFlag:false,
+				walletIndex:0,
 				
+				openDialogFlag:false,
+				value:'',
+				
+				lists:[],
 			}
 		},
 		methods:{
-			
+			del(item,index){
+				var account_alias =  item.account_alias;
+				let para = {
+					account_alias:account_alias
+				}
+				if(!this.submitFlag){
+					return false;
+				}
+				this.submitFlag = false;
+				deleteWallet.bind(this)(para)
+					.then(({data})=>{
+						if(data.status =='success'){
+							this.$message({
+								type:'success',
+								message:'删除成功'
+							})
+							this.lists.splice(index,1);
+						}else{
+							this.$message({
+								type:"warning",
+								message:data.detail||'载入失败'
+							})
+						}
+						setTimeout(()=>{
+							this.submitFlag = true;
+						},200)
+						console.log(data)
+					})
+			},
+			zairu(item){
+				var account_alias = item.account_alias; 
+				var pre_account_alias = this.getLocalAccountInfo().account_alias||'';
+				let para = {
+					account_alias: account_alias,
+					pre_account_alias: pre_account_alias,
+				}
+				if(!this.submitFlag){
+					return false;
+				}
+				this.submitFlag = false;
+				loadWallet.bind(this)(para)
+					.then(({data})=>{
+						console.log(data,111)
+						if(data.status =='success'){
+							this.$message({
+								type:'success',
+								message:'载入成功'
+							})
+							this.getLists();
+							
+							setTimeout(()=>{
+								this.submitFlag = true;
+							},200)
+							
+						}else{
+							this.$message({
+								type:"warning",
+								message:data.detail||'载入失败'
+							})
+						}
+						
+						
+					})
+			},
+			changeWalletType(num){
+				this.walletIndex = num;
+			},
+			createWallet(){
+				var url = this.walletIndex ===0
+						?'/main/createWalletS'
+						:'/main/createWalletM';
+				this.$router.push(url)
+			},
+			getLists(){
+// 				let user_name = localStorage.USERTOKEN
+// 				let params = {user_name:'user1'||user_name}
+				getAccountLists.bind(this)()
+					.then(({data})=>{
+						console.log(data,11)
+						
+						localStorage.accountInfo = JSON.stringify({})
+						if(data.status=='success'){
+							var lists = data.data;
+							lists.map((item, index)=>{
+								if(item.status==1){
+									localStorage.accountInfo  = JSON.stringify(item);
+								}
+								
+							})
+							this.lists.splice(0,999,...lists);
+							
+						}else{
+							this.lists.splice(0,999);
+						}
+						
+					})
+			}
 		},
 	}
 </script>
@@ -174,6 +330,19 @@
 					}
 					>.leftText{
 						color:#999;
+						display:flex;
+						>span{
+							width:100px;
+						}
+						>div{
+							width:300px;
+							>div{
+								white-space: nowrap;
+								text-overflow: ellipsis;
+								overflow:hidden;
+							}
+							
+						}
 						&.blue{
 							font-weight:bold;
 							color:$blue;
@@ -208,6 +377,22 @@
 							background-image:url(../../assets/account/accountIndex_selectIcon4.png);
 						}
 					}
+				}
+			}
+		}
+		.selectWalletWrap{
+			.contentWrap{
+				text-align:center;
+				padding:15px 10px;
+				cursor:pointer;
+				border:1px solid #999;
+				.title{
+					padding-bottom:20px;
+					font-size:16px;
+				}
+				&.active{
+					color:#409EFF;
+					border-color:#409EFF;
 				}
 			}
 		}

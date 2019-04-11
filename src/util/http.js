@@ -9,7 +9,7 @@ let token = getCookie('USERTOKEN');
 const myAxios = axios.create({
     baseURL:'/api' ,
     timeout:60*1000000000,
-    headers: {'token':token},
+    // headers: {'token':token},
     validateStatus: function (status) {
         return status < 500; 
     }

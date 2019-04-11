@@ -2,6 +2,7 @@
 	<div class="outerWrap assetWalletIndexWrap">
 		<el-row>
 			<el-col :lg="20" :md="22">
+				
 			
 				<div class="commonTitle_one">资产钱包</div>
 				<div class="addAccountWrap">
@@ -10,12 +11,12 @@
 						<span @click="$router.push('/main/receiveTransfer')">接受转账</span>
 					</div>
 					<el-row  class="row-bg" :gutter="30" justify="center">
-						<el-col :lg="8" >
+						<el-col :lg="12" >
 							<div class="assetSelectItemWrap">
 								<span>排序方式</span>
-								<el-select v-model="value" placeholder="请选择">
+								<el-select v-model="params.order_by" placeholder="请选择">
 									<el-option
-									  v-for="item in options"
+									  v-for="item in orderOptions"
 									  :key="item.value"
 									  :label="item.label"
 									  :value="item.value">
@@ -38,15 +39,15 @@
 							</div>
 						</el-col> -->
 						
-						<el-col :lg="8">
+						<el-col :lg="12">
 							<div class="assetSelectItemWrap">
 								<span>资产类型</span>
-								<el-select v-model="value" placeholder="请选择">
+								<el-select v-model="params.asset_id" placeholder="请选择">
 									<el-option
-									v-for="item in options"
-									:key="item.value"
-									:label="item.label"
-									:value="item.value">
+										v-for="item in allAssetsLists"
+										:key="item.value"
+										:label="item.asset_name"
+										:value="item.asset_id">
 									</el-option>
 								</el-select>
 							</div>
@@ -55,18 +56,25 @@
 					
 					
 					<div class="assetListsWrap">
-						<div class="selectAccountItem " >
+						<div 
+							class="selectAccountItem"
+							v-for="(item,index) in lists"
+							:key="index">
 							<el-row :gutter="30" class="selectAccountItemTitleWrap">
 								<el-col :lg="14" :md="14" class="left">
-									<div>小麦2019</div>
-									<div>jlkj2jkh1hjhjh</div>
+									<div>{{item.asset_name}}</div>
+									<div>
+										资产ID:&nbsp;&nbsp;{{item.asset_id | interceptStr}}
+									</div>
 								</el-col>
 								<el-col :lg="6" :md="6" class="right">
 									<div>当前余额:</div>
-									<div>12332.9766</div>
+									<div>{{item.amount}}</div>
 								</el-col>
-								<el-col :lg="4" :md="4" class="transactionRecordIcon">
-									<div>交易记录</div>
+								<el-col :lg="4" :md="4" >
+									<div 
+										@click="$router.push({path:'/main/transactionRecord',query:getParams(item,'','tx')})"
+										class="transactionRecordIcon">交易记录</div>
 								</el-col>
 							</el-row>
 							
@@ -92,16 +100,20 @@
 									操作
 								</el-col>
 							</el-row>
-							<el-row  :gutter="20" class="selectAccountItemTransactionWrap">
+							<el-row  
+								:gutter="20" 
+								class="selectAccountItemTransactionWrap"
+								v-for="(list,i) in item.address_balance"
+								:key="i">
 								<el-col :lg="9" :md="9" class="left">
-									3CqBquEFMYY548fNBz8u2MBw3HKprS3Xft
+									{{list.address_id}}
 								</el-col>
 								<el-col :lg="8" :md="8" class="center">
-									56000.03000000
+									{{list.balance}}
 								</el-col>
 								<el-col :lg="7" :md="7" class="right">
-									<span @click="$router.push('/main/transactionRecord')">交易记录</span>
-									<span>转出资产</span>
+									<span @click="$router.push({path:'/main/transactionRecord',query:getParams(item,list.address_id,'address')})">交易记录</span>
+									<span @click="getTransferParams(item,list.address_id)">转出资产</span>
 								</el-col>
 							</el-row>
 							
@@ -119,6 +131,7 @@
 
 <script>
 	
+	import { getAssetWalletLists, getAssetLists } from '@/util/server.js'
 	import Vue from 'vue';
 	import { Row, Col, Select, Option } from 'element-ui';
 		
@@ -129,31 +142,86 @@
 	
 	export default {
 		created(){
+			var accountInfo = this.getLocalAccountInfo()
+			var account_id = accountInfo.account_id;
+			var account_type = accountInfo.account_type;
 			
+			this.params.account_id = account_id;
+					
+			var formdata = new FormData();
+			formdata.append('account_id',account_id)
+			getAssetLists.bind(this)(formdata)
+				.then(({data})=>{
+					var data = data.data;
+					var asset_unissue = data.asset_unissue || [];
+					var asset_issue = data.asset_issue || [];
+					this.allAssetsLists = [{asset_id: "",asset_name: "全部"},...asset_unissue,...asset_issue]
+					
+					
+				})
+			this.getLists();
 		},
 		data(){
 			return {
-				options: [{
-				  value: '选项1',
-				  label: '黄金糕'
+				allAssetsLists:[],
+				
+				params:{
+					account_id:'',
+					asset_name:'',
+					asset_id:'',
+					order_by:'time_asc',
+					
+// 					user_name:"123",
+// 					"account_id":"0R031M6800A02",
+// 					"asset_name":"zcj1",
+// 					"asset_id":"ce8c9a975056cb6e5f951c8223a3cdf1f15e0918a0943005701660c1a63975b9",
+// 					"order_by":"amount_asc"
+
+				},
+				
+				orderOptions: [{
+					value: 'time_asc',
+					label: '按时间排序（新到旧）'
 				}, {
-				  value: '选项2',
-				  label: '双皮奶'
+					value: 'time_desc',
+					label: '按时间排序（旧到新）'
 				}, {
-				  value: '选项3',
-				  label: '蚵仔煎'
+					value: 'amount_asc',
+					label: '按金额排序（大到小）'
 				}, {
-				  value: '选项4',
-				  label: '龙须面'
-				}, {
-				  value: '选项5',
-				  label: '北京烤鸭'
+					value: 'amount_desc',
+					label: '按金额排序（小到大）'
 				}],
-				value: ''
+				lists:[]
 			}
 		},
 		methods:{
-			
+			getTransferParams(item,id){
+				var obj = {
+					address_id:id,
+					amount:item.amount,
+					asset_id:item.asset_id,
+					asset_name:item.asset_name
+				}
+				this.$router.push({path:'/main/transfer',query: obj })
+			},
+			getParams(item,id,type){
+				return {
+					asset_name:item.asset_name,
+					asset_id:item.asset_id,
+					type:type,
+					address_id:id
+				}
+			},
+			getLists(){
+				getAssetWalletLists.bind(this)(this.params)
+					.then(({data})=>{
+						console.log(data,8887)
+						if(data.status=='success'){
+							this.lists = data.data;
+						}
+					})
+			}
 		},
 	}
 </script>
@@ -189,7 +257,6 @@
 					}
 					>div:nth-of-type(2){
 						font-size:14px;
-						color:$blue;
 					}
 					
 				}
@@ -205,7 +272,7 @@
 						font-weight:bold;
 					}
 				}
-				>.transactionRecordIcon{
+				.transactionRecordIcon{
 					width:92px;
 					height:63px;
 					background:#fff url(../../assets/assetwallet/transactionRecordsIcon.png) no-repeat center 5px;
@@ -213,6 +280,7 @@
 					border:1px solid #333;
 					border-radius:5px;
 					padding-top:44px;
+					@include pointer;
 					
 				}
 			}
@@ -224,7 +292,7 @@
 				.right{
 					text-align:center;
 					>span{
-						color:$blue;
+						@include pointer;
 						margin:0 6px;
 					}
 				}

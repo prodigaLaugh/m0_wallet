@@ -3,7 +3,7 @@
 		<div class="left_wrap">
 				<router-link to="/main/assetWalletIndex">资产钱包</router-link>
 				<router-link to="/main/consoleIndex">资产操作</router-link>
-				<router-link to="/main/assetManagementIndex">创建资产</router-link>
+				<router-link to="/main/createAssetIndex">创建资产</router-link>
 				<router-link to="/main/chainDeposit">链上存证</router-link>
 				<router-link to="/main/addressManagementIndex">地址管理</router-link>
 				<router-link to="/main/systemStatusIndex">系统状态</router-link>

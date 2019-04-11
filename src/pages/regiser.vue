@@ -27,7 +27,7 @@
 			<div class="loginInpWrap">
 				<span>确认密码</span>
 				<el-input 
-					v-model="loginParams.password" 
+					v-model="loginParams.againPassword" 
 					placeholder="请再次输入密码"
 					type="password"
 					autocomplete="new-password"></el-input>
@@ -35,7 +35,7 @@
 			<div class="loginInpWrap">
 				<span>邀请码</span>
 				<el-input 
-					v-model="loginParams.password" 
+					v-model="loginParams.invite_code" 
 					placeholder="请输入邀请码(必填)"
 					type="password"
 					autocomplete="new-password"></el-input>
@@ -66,8 +66,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
 import SIdentify from '@/components/identify'
-import {setCookie, getCookie } from '@/util/cookie'
 
 import Vue from 'vue'
 import { Input, Checkbox } from 'element-ui';
@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      identifyCodes: "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ",
+			identifyCodes: "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ",
 			identifyCode: "",
 			verifycode:"",
 
@@ -88,8 +88,10 @@ export default {
 			loginFlag:true,
 
 			loginParams:{
-				user_name:'',
-				password:''
+				invite_code: "",
+				password: "",
+				againPassword:'',
+				user_name: ""
 			}
     };
   },
@@ -99,17 +101,27 @@ export default {
   },
   methods: {
 		login(){
-			let url = `/deploy_user/login`
-			let params = this.loginParams;
+			let url = `${BASEURL1}/v1/user/register_user`
+			let params = Object.assign({},this.loginParams,{invite_code:'MMMMM6'}) ;
+			
 
 			if(!this.loginParams.user_name ||
 				!this.loginParams.password ||
-				!this.verifycode){
+				!this.loginParams.againPassword ||
+				!this.loginParams.invite_code
+				||!this.verifycode){
 					this.$message ({
 							message: '请完善信息',
 							type: 'warning'
 					});
 					return false;
+			}
+			if(this.verifycode.password!=this.verifycode.againPassword){
+				this.$message ({
+					message: '两次密码不一致',
+					type: 'warning'
+				});
+				return false;
 			}
 
 			if(this.verifycode.toLocaleLowerCase() !== this.identifyCode.toLocaleLowerCase()){
@@ -120,7 +132,6 @@ export default {
 					return false;
 			}
 		
-			
 
 
 			if(!this.loginFlag){
@@ -128,45 +139,32 @@ export default {
 			}
 			this.loginFlag = false;
 
-			this.$http.post(url,params)
+			axios.post(url,params)
 					.then(({data})=>{
-						this.addUserFlag = false;
-						let type = 'warning',
-							message = '登录成功',
-							hour = 1,
-							autoLogin = 'false';
-						if(data.code === '0'){
-								type = 'success';
-								if(this.autoLogin){
-									hour = 24 * 3;
-									autoLogin = 'true';
-								}
-								setCookie('USERTOKEN',data.data.token,hour)
-								setCookie('autoLogin',autoLogin,hour)
-								setTimeout(()=>{
-									location.href  = '/main';
-								},1500)
-								
-						}else{
-							message = data.msg
-						}
-						this.$message ({
+						if(data.status =='success'){
+							this.$message ({
 								message: message,
-								type: type
-						});
+								type: 'success'
+							});
+							setTimeout(()=>{
+								this.$router.go(-1);
+								this.loginFlag = true;
+							},1500)
+						}else{
+							var msg = data.detail;
+							this.$message ({
+								message: msg,
+								type: 'warning'
+							});
+						}
 						
-						setTimeout(()=>{
-							this.loginFlag = true;
-						},1500)
+						this.loginFlag = true;
+						
 
 
 					})
 					.catch(({data})=>{
 						console.log(data)
-						this.$message ({
-								message: data && data.data,
-								type: 'warning'
-						});
 						this.loginFlag = true;
 					})
 			// USERTOKEN

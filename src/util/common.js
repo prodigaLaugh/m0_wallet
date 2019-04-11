@@ -61,6 +61,16 @@ export default{
       })
       return obj;
     }
+		
+		Vue.prototype.goBack = function () {
+		  this.$router.go(-1)
+		} 
+		Vue.prototype.getLocalAccountInfo = function () {
+		   return localStorage.accountInfo ? JSON.parse(localStorage.accountInfo):{}
+		} 
+		Vue.prototype.judgeIsSingleSign = function () {
+		   return this.getLocalAccountInfo().account_type ==1
+		} 
     
     
   }

@@ -15,20 +15,20 @@
 		
 		<div class="transferInpWrap">
 			<el-row>
-				<el-col :lg="16" md="12">
+				<el-col :lg="16" :md="12">
 					<el-row class="transferInpListsWrap">
-						<el-col :lg="24">
+						<el-col :md="24">
 							<div class="transferInpListLeft">钱包名称</div>
-							<el-input v-model="input" placeholder=""></el-input>
+							<el-input v-model="params.alias" placeholder=""></el-input>
 						</el-col>
-						<el-col :lg="24">
+						<el-col :md="24">
 							<div class="transferInpListLeft">钱包秘钥</div>
-							<el-select v-model="value" placeholder="请选择钱包所使用的密钥">
+							<el-select v-model="params.xpub" placeholder="请选择钱包所使用的密钥">
 								<el-option
-									v-for="item in options"
-									:key="item.value"
-									:label="item.label"
-									:value="item.value">
+									v-for="item in lists"
+									:key="item.xpub"
+									:label="item.alias"
+									:value="item.xpub">
 								</el-option>
 							</el-select>
 						</el-col>
@@ -36,8 +36,10 @@
 						
 						
 						
-						<el-col :lg="24">
-							<div class="createAccountBtn">创建账户</div>
+						<el-col :md="24">
+							<div 
+								@click="create"
+								class="createAccountBtn">创建账户</div>
 						</el-col>
 					</el-row>
 				</el-col>
@@ -50,7 +52,8 @@
 </template>
 
 <script>
-	
+	import { createSingleWallet, getPrivateKeyLists } from '@/util/server.js'
+
 	import Vue from 'vue';
 	import { Row, Col, Radio, Input, Select, Option, MessageBox } from 'element-ui';
 		
@@ -64,15 +67,51 @@
 	
 	export default {
 		created(){
-			
+			let user_name = localStorage.USERTOKEN;
+			this.params.user_name = user_name;
+			let para  = {user_name: 'user1'}
+			getPrivateKeyLists.bind(this)(para)
+				.then(({data})=>{
+					console.log(data,8887)
+					this.lists = data.data;
+				})
 		},
 		data(){
 			return {
-				value: ''
+				submitFlag:true,
+				lists:[],
+				params:{
+					alias: "",
+					user_name: "",
+					xpub: ""
+				}
 			}
 		},
 		methods:{
-			
+			create(){
+				let para = Object.assign({},this.params);
+				if(!this.submitFlag){
+					return false;
+				}
+				this.submitFlag = false;
+				createSingleWallet.bind(this)(para)
+					.then(({data})=>{
+						if(data.status=='success'){
+							this.$message({
+								type:'success',
+								message:'创建成功'
+							})
+						}else{
+							var msg = data.detail;
+							this.$message({
+								type:'warning',
+								message:msg
+							})
+						}
+						this.submitFlag = true;
+						console.log(data)
+					})
+			}
 		},
 	}
 </script>

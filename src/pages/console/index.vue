@@ -13,7 +13,7 @@
 							:lg="6" 
 							v-for="(item,index) in operParams"
 							:key="index">
-							<div class="addAccountItem"@click="$router.push(item.route)">{{item.text}}</div>
+							<div class="addAccountItem" @click="$router.push(item.route)">{{item.text}}</div>
 						</el-col>
 				
 					</el-row>
@@ -22,31 +22,39 @@
 				<div class="consoleRecordsWrap">
 					<div class="commonTitle_two">操作记录</div>
 					<div class="contentNavWrap">
-						<span :class="{active:operIndex===0}" @click="operIndex=0">转账</span>
-						<span :class="{active:operIndex===1}" @click="operIndex=1">签名</span>
-						<span :class="{active:operIndex===2}" @click="operIndex=2">发行</span>
-						<span :class="{active:operIndex===3}" @click="operIndex=3">销毁</span>
+						<span 
+							:class="{active:operIndex===0}" 
+							@click="toggleNav(0)">转账</span>
+						<span 
+							:class="{active:operIndex===1}" 
+							@click="toggleNav(1)">签名</span>
+						<span 
+							:class="{active:operIndex===2}" 
+							@click="toggleNav(2)">发行</span>
+						<span 
+							:class="{active:operIndex===3}" 
+							@click="toggleNav(3)">销毁</span>
 					</div>
 					
 					<el-row  class="consoleInpWrap" :gutter="30" >
 						<el-col :lg="18" class="consoleInpItem">
 							<el-col :lg="12">
 								<span>资产类型</span>
-								<el-select v-model="value" placeholder="请选择">
+								<el-select v-model="params.asset_id" placeholder="请选择">
 									<el-option
-										v-for="item in options"
+										v-for="item in allAssetsLists"
 										:key="item.value"
-										:label="item.label"
-										:value="item.value">
+										:label="item.asset_name"
+										:value="item.asset_id">
 									</el-option>
 								</el-select>
 							</el-col>
 							
 							<el-col :lg="12">
 								<span>排序方式</span>
-								<el-select v-model="value" placeholder="请选择">
+								<el-select v-model="params.order_by" placeholder="请选择">
 									<el-option
-										v-for="item in options"
+										v-for="item in orderOptions"
 										:key="item.value"
 										:label="item.label"
 										:value="item.value">
@@ -57,18 +65,98 @@
 						</el-col>
 					</el-row>
 					
-					<div class="consoleListsWrap">
-						<div class="consoleListWrap" v-for="item in 3">
+					<div class="consoleListsWrap" v-if="operIndex==0">
+						<div class="noresult" v-if="!transfterLists.length">暂无数据</div>
+						<div 
+							class="consoleListWrap" 
+							v-for="(item,index) in transfterLists"
+							:key="index">
 							<el-row 
 								class="consoleListIDWrap" 
 								:gutter="20">
 								<el-col :lg="12">
 									<span>交易ID</span>
-									<span>34g435tg0wf431231ace30d0915fe7</span>
-									<span>已确认</span>
+									<span>{{item.tx_id}}</span>
+									
+									<span 
+										:class="{error:item.status==2,going:item.status==3}">
+										{{item.status | recordTextByType}}
+										<i 
+											class="el-icon-warning" 
+											v-if="item.status==2"></i>
+										<i 
+											class="el-icon-refresh"
+											v-if="item.status==3"></i>
+									</span>
 								</el-col>
 								<el-col :lg="12">
-									2019-01-02 10:12:25
+									{{item.create_time}}
+								</el-col>
+							</el-row>
+							
+							
+							
+							<el-row 
+								:gutter="20"
+								class="consoleList_list"
+								v-for="(list,i) in item.to.address_account">
+								<el-col :lg="4">
+									<span>收入</span>
+								</el-col>
+								<el-col :lg="10">
+									<span>To</span>
+									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
+								</el-col>
+								<el-col :lg="6">+ {{item.to.amount}}</el-col>
+								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
+							</el-row>
+							
+							<el-row 
+								:gutter="20"
+								class="consoleList_list"
+								v-for="(list,i) in item.from.address_account"
+								:key="i">
+								<el-col :lg="4">
+									<span class="out">支出</span>
+								</el-col>
+								<el-col :lg="10">
+									<span>To</span>
+									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
+								</el-col>
+								<el-col :lg="6">+ {{item.to.amount}}</el-col>
+								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
+							</el-row>
+							
+						</div>
+						
+					</div>
+					
+					<div class="consoleListsWrap" v-if="operIndex==1">
+						<div class="noresult" v-if="!signLists.length">暂无数据</div>
+						<div 
+							class="consoleListWrap" 
+							v-for="(item,index) in signLists"
+							:key="index">
+							<el-row 
+								class="consoleListIDWrap" 
+								:gutter="20">
+								<el-col :lg="12">
+									<span>交易ID</span>
+									<span>{{item.tx_id}}</span>
+									
+									<span 
+										:class="{error:item.status==2,going:item.status==3}">
+										{{item.status | recordTextByType}}
+										<i 
+											class="el-icon-warning" 
+											v-if="item.status==2"></i>
+										<i 
+											class="el-icon-refresh"
+											v-if="item.status==3"></i>
+									</span>
+								</el-col>
+								<el-col :lg="12">
+									{{item.create_time}}
 								</el-col>
 							</el-row>
 							
@@ -76,15 +164,115 @@
 								:gutter="20"
 								class="consoleList_list">
 								<el-col :lg="4">
-									<span>收入</span>
+									<span class="sign">签名</span>
+								</el-col>
+								<el-col :lg="10">
+									<span>From</span>
+									<span>{{item.from_user}}</span>
+								</el-col>
+								<el-col :lg="6"> </el-col>
+								<el-col :lg="4">{{item.asset_name}}</el-col>
+							</el-row>
+							
+							
+						</div>
+						
+					</div>
+					
+					<div class="consoleListsWrap" v-if="operIndex==2">
+						<div class="noresult" v-if="!issueLists.length">暂无数据</div>
+						<div 
+							class="consoleListWrap" 
+							v-for="(item,index) in issueLists"
+							:key="index">
+							<el-row 
+								class="consoleListIDWrap" 
+								:gutter="20">
+								<el-col :lg="12">
+									<span>交易ID</span>
+									<span>{{item.tx_id}}</span>
+									
+									<span 
+										:class="{error:item.status==2,going:item.status==3}">
+										{{item.status | recordTextByType}}
+										<i 
+											class="el-icon-warning" 
+											v-if="item.status==2"></i>
+										<i 
+											class="el-icon-refresh"
+											v-if="item.status==3"></i>
+									</span>
+								</el-col>
+								<el-col :lg="12">
+									{{item.create_time}}
+								</el-col>
+							</el-row>
+							
+							<el-row 
+								:gutter="20"
+								class="consoleList_list"
+								v-for="(list,i) in item.to.address_account"
+								:key="i">
+								<el-col :lg="4">
+									<span class="issue">发行</span>
 								</el-col>
 								<el-col :lg="10">
 									<span>To</span>
-									<span>37x6JnDNhbsBw95bvEreB7WHWA74gGR17y（account001</span>
+									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
 								</el-col>
-								<el-col :lg="6">+ 0.006782700</el-col>
-								<el-col :lg="4">M0COIN</el-col>
+								<el-col :lg="6">+ {{item.to.amount}}</el-col>
+								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
 							</el-row>
+						</div>
+						
+					</div>
+					
+					<div class="consoleListsWrap" v-if="operIndex==3">
+						<div class="noresult" v-if="!retireLists.length">暂无数据</div>
+						<div 
+							class="consoleListWrap" 
+							v-for="(item,index) in retireLists"
+							:key="index">
+							<el-row 
+								class="consoleListIDWrap" 
+								:gutter="20">
+								<el-col :lg="12">
+									<span>交易ID</span>
+									<span>{{item.tx_id}}</span>
+									
+									<span 
+										:class="{error:item.status==2,going:item.status==3}">
+										{{item.status | recordTextByType}}
+										<i 
+											class="el-icon-warning" 
+											v-if="item.status==2"></i>
+										<i 
+											class="el-icon-refresh"
+											v-if="item.status==3"></i>
+									</span>
+								</el-col>
+								<el-col :lg="12">
+									{{item.create_time}}
+								</el-col>
+							</el-row>
+							
+							
+							<el-row 
+								:gutter="20"
+								class="consoleList_list"
+								v-for="(list,i) in item.from.address_account"
+								:key="i">
+								<el-col :lg="4">
+									<span class="retire">销毁</span>
+								</el-col>
+								<el-col :lg="10">
+									<span>From</span>
+									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
+								</el-col>
+								<el-col :lg="6">- {{item.to.amount}}</el-col>
+								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
+							</el-row>
+							
 						</div>
 						
 					</div>
@@ -101,6 +289,14 @@
 </template>
 
 <script>
+	import { 
+		getAddressLists, 
+		getAssetLists, 
+		transferRecord, 
+		signRecord, 
+		issueRecord,
+		retireRecord
+	} from '@/util/server.js'
 	
 	import Vue from 'vue';
 	import { Row, Col, Select, Option } from 'element-ui';
@@ -113,9 +309,29 @@
 	export default {
 		created(){
 			
+			var accountInfo = this.getLocalAccountInfo()
+			var account_id = accountInfo.account_id;
+			var account_type = accountInfo.account_type;
+			
+			this.params.account_id = account_id;
+			this.params.account_type = account_type;
+		
+			var formdata = new FormData();
+			formdata.append('account_id',account_id)
+			getAssetLists.bind(this)(formdata)
+				.then(({data})=>{
+					var data = data.data;
+					var asset_unissue = data.asset_unissue || [];
+					var asset_issue = data.asset_issue || [];
+					this.allAssetsLists = [{asset_id: "",asset_name: "全部"},...asset_unissue,...asset_issue]
+					
+					this.toggleNav(0)
+				})
+				
 		},
 		data(){
 			return {
+				
 				operParams:[
 					{text:'转账',route:'/main/transfer'},
 					{text:'签名',route:'/main/signature'},
@@ -124,27 +340,104 @@
 				],
 				operIndex:0,
 				
-				options: [{
-					value: '选项1',
-					label: '黄金糕'
+				allAssetsLists:[],
+				
+				transfterLists:[],
+				signLists:[],
+				issueLists:[],
+				retireLists:[],
+				
+				params:{
+					asset_name:'',
+					asset_id:'',
+					order_by:'time_asc',
+				},
+				
+				orderOptions: [{
+					value: 'time_asc',
+					label: '按时间排序（新到旧）'
 				}, {
-					value: '选项2',
-					label: '双皮奶'
+					value: 'time_desc',
+					label: '按时间排序（旧到新）'
 				}, {
-					value: '选项3',
-					label: '蚵仔煎'
+					value: 'amount_asc',
+					label: '按金额排序（大到小）'
 				}, {
-					value: '选项4',
-					label: '龙须面'
-				}, {
-					value: '选项5',
-					label: '北京烤鸭'
+					value: 'amount_desc',
+					label: '按金额排序（小到大）'
 				}],
-				value: ''
+				
 			}
 		},
 		methods:{
+			toggleNav(index){
+				this.operIndex = index||0;
+				var list = this.allAssetsLists.filter((item,index)=>{
+					return item.asset_id ==this.params.asset_id
+				})
+				var asset_name = list[0].asset_name;
+				this.params.asset_name = asset_name;
+				if(!this.params.asset_id){
+					this.params.asset_name = '';
+				}
+				
+				if(index===0){
+					this.getTransfer();
+				}else if(index===1){
+					this.getSsign();
+				}else if(index===2){
+					this.getIssue();
+				}else{
+					this.getRetire()
+				}
+				
 			
+				
+			},
+			getTransfer(){
+				transferRecord.bind(this)(this.params)
+					.then(({data})=>{
+						console.log(data,111)
+						var lists = [];
+						if(data.status=='success'){
+							lists = data.data;
+						}
+						this.transfterLists.splice(0,999,...lists)
+					})
+			},
+			getSsign(){
+				signRecord.bind(this)(this.params)
+					.then(({data})=>{
+						console.log(data,222)
+						var lists = [];
+						if(data.status=='success'){
+							lists = data.data;
+						}
+						this.signLists.splice(0,999,...lists)
+					})
+			},
+			getIssue(){
+				issueRecord.bind(this)(this.params)
+					.then(({data})=>{
+						console.log(data,333)
+						var lists = [];
+						if(data.status=='success'){
+							lists = data.data;
+						}
+						this.issueLists.splice(0,999,...lists)
+					})
+			},
+			getRetire(){
+				retireRecord.bind(this)(this.params)
+					.then(({data})=>{
+						console.log(data,444)
+						var lists = [];
+						if(data.status=='success'){
+							lists = data.data;
+						}
+						this.retireLists.splice(0,999,...lists)
+					})
+			}
 		},
 	}
 </script>
