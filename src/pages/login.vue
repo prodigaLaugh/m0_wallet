@@ -132,7 +132,7 @@ export default {
 							setCookie('autoLogin',autoLogin,hour)
 							localStorage.USERTOKEN = this.loginParams.user_name
 							setTimeout(()=>{
-								location.href  = '/main';
+								location.href  = '/main/privatekeyManagement';
 							},1500)
 							this.$message ({
 								message: '登录成功',

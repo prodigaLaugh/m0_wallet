@@ -27,10 +27,23 @@
 								<span @click="$router.push({path:'/main/depositDetail',query:{id:item.id}})">查看存证</span>
 							</el-col>
 						</el-row>
+						<el-row>
+							<el-col>
+								<div class="hashWrap">
+									存证hash：{{item.tx_hash | interceptPubStr}}
+									<span 
+										class="tag-read blue el-icon-document " 
+										:data-clipboard-text="item.tx_hash" 
+										@click="copy"
+										style="font-size:18px;margin-left:10px;"></span>
+									
+								</div>
+							</el-col>
+						</el-row>
 						
 						<el-row  :gutter="20" class="chainDepositItemContent">
 							<el-col :lg="24" :md="22" class="center">
-								{{item.describe}}
+								{{item.describe||'--'}}
 							</el-col>
 						</el-row>
 					   
@@ -46,7 +59,7 @@
 </template>
 
 <script>
-	
+	import Clipboard from 'clipboard'
 	import { getEvidenceLists } from '@/util/server.js'
 
 	import Vue from 'vue';
@@ -58,7 +71,9 @@
 	
 	export default {
 		created(){
-			getEvidenceLists.bind(this)('0R031M6800A02')
+			var accountInfo = this.getLocalAccountInfo()
+			var account_id = accountInfo.account_id;
+			getEvidenceLists.bind(this)(account_id)
 				.then(({data})=>{
 					console.log(data,333)
 					this.lists = data.data
@@ -70,7 +85,24 @@
 			}
 		},
 		methods:{
-			
+			copy() {
+			        var clipboard = new Clipboard('.tag-read')
+			        clipboard.on('success', e => {
+						console.log('复制成功')
+						this.$message({
+							type:'success',
+							message:'复制成功'
+						})
+				        // 释放内存
+				        clipboard.destroy()
+			        })
+			        clipboard.on('error', e => {
+			          // 不支持复制
+			          console.log('该浏览器不支持自动复制')
+			          // 释放内存
+			          clipboard.destroy()
+			        })
+			    },
 		},
 	}
 </script>
@@ -116,7 +148,10 @@
                     }
                 }
             }
-
+			.hashWrap{
+				font-size:14px;
+				padding:4px 0 10px;
+			}
             .chainDepositItemContent{
                 background:#fff;
                 font-size:12px;

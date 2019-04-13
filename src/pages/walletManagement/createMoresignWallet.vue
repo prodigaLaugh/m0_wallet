@@ -1,84 +1,90 @@
 <template>
 	<div class="outerWrap createAccountWrap">
-		<div class="commonTitle_one">
-			钱包管理
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>创建多签钱包</span>
-			</span>
-		</div>
-			
-		<div class="commonTitle_two">
-			创建多签钱包
-			<span @click="$router.go(-1)">返回</span>
-		</div>
-		
-		<div class="transferInpWrap">
-			<el-row>
-				<el-col :lg="16" :md="12">
-					<el-row class="transferInpListsWrap">
-						<el-col :md="24">
-							<div class="transferInpListLeft">钱包名称</div>
-							<el-input v-model="params.alias" placeholder=""></el-input>
-						</el-col>
-						<el-col :md="24">
-							<div class="transferInpListLeft">钱包秘钥</div>
-							<el-select 
-								v-model="privatekey" 
-								@change="selectChange"
-								placeholder="请选择钱包所使用的密钥">
-								<el-option
-									v-for="item in lists"
-									:key="item.xpub"
-									:label="item.alias"
-									:value="item.xpub">
-								</el-option>
-							</el-select>
-						</el-col>
+		<el-row>
+			<el-col :lg="20" :md="22">
+				
+				<div class="commonTitle_one">
+					钱包管理
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>创建多签钱包</span>
+					</span>
+				</div>
 					
-						<el-col :md="24">
-							<div class="transferInpListLeft">可签名秘钥</div>
-							<div class="signaturedAccountWrap">
-								<div class="signaturedAccountListsWrap">
-									<div 
-										class="signaturedAccountListWrap" 
-										v-for="(item,index) in xpubs"
-										:key="index">
-										<div>{{item}}</div>
-										<div>
-											<span @click="openDialog(item,index)">编辑</span>
-											<span @click="del(index)">删除</span>
+				<div class="commonTitle_two">
+					创建多签钱包
+					<span @click="$router.go(-1)">返回</span>
+				</div>
+				
+				<div class="transferInpWrap">
+					<el-row>
+						<el-col >
+							<el-row class="transferInpListsWrap">
+								<el-col :md="24">
+									<div class="transferInpListLeft">钱包名称</div>
+									<el-input v-model="params.alias" placeholder=""></el-input>
+								</el-col>
+								<el-col :md="24">
+									<div class="transferInpListLeft">钱包秘钥</div>
+									<el-select 
+										v-model="privatekey" 
+										@change="selectChange"
+										placeholder="请选择钱包所使用的密钥">
+										<el-option
+											v-for="item in lists"
+											:key="item.xpub"
+											:label="item.alias"
+											:value="item.xpub">
+										</el-option>
+									</el-select>
+								</el-col>
+							
+								<el-col :md="24">
+									<div class="transferInpListLeft">可签名秘钥</div>
+									<div class="signaturedAccountWrap">
+										<div class="signaturedAccountListsWrap">
+											<div 
+												class="signaturedAccountListWrap" 
+												v-for="(item,index) in xpubs"
+												:key="index">
+												<div>{{item}}</div>
+												<div>
+													<span @click="openDialog(item,index)">编辑</span>
+													<span @click="del(index)">删除</span>
+												</div>
+											</div>
+											
 										</div>
+										<div 
+											class="signaturedAccountAdd"
+											@click="addAccount">+添加可签名账户</div>
 									</div>
-									
-								</div>
-								<div 
-									class="signaturedAccountAdd"
-									@click="addAccount">+添加可签名账户</div>
-							</div>
-						</el-col>
-						<el-col :md="24">
-							<div class="transferInpListLeft">所需签名数</div>
-							<el-select v-model="params.quorum" placeholder="请选择">
-								<el-option
-								  v-for="item in signNums"
-								  :key="item"
-								  :label="item"
-								  :value="item">
-								</el-option>
-							</el-select>
-						</el-col>
-						
-						
-						<el-col :lg="24">
-							<div
-								@click="create"
-								class="createAccountBtn">创建账户</div>
+								</el-col>
+								<el-col :md="24">
+									<div class="transferInpListLeft">所需签名数</div>
+									<el-select v-model="params.quorum" placeholder="请选择">
+										<el-option
+										  v-for="item in signNums"
+										  :key="item"
+										  :label="item"
+										  :value="item">
+										</el-option>
+									</el-select>
+								</el-col>
+								
+								
+								<el-col :lg="24">
+									<div
+										@click="create"
+										class="createAccountBtn">创建账户</div>
+								</el-col>
+							</el-row>
 						</el-col>
 					</el-row>
-				</el-col>
-			</el-row>
-		</div>
+				</div>
+				
+			</el-col>
+		</el-row>
 		
 		
 		<el-dialog
@@ -121,10 +127,7 @@
 	
 	export default {
 		created(){
-			let user_name = localStorage.USERTOKEN;
-			this.params.user_name = user_name;
-			let para  = {user_name: 'user1'}
-			getPrivateKeyLists.bind(this)(para)
+			getPrivateKeyLists.bind(this)()
 				.then(({data})=>{
 					
 					var data = data.data;
@@ -145,7 +148,6 @@
 				params:{
 					alias: "",
 					quorum: 1,
-					user_name: "",
 					xpubs: []
 				},
 				xpubs:[],//已经添加的公钥
@@ -202,6 +204,13 @@
 					
 			},
 			create(){
+				if(this.xpubs.length >= (this.params.quorum-1)){
+					this.$message({
+						type:'warning',
+						message:'秘钥总数不能大于所需签名数'
+					})
+					return;
+				}
 				
 				let para = Object.assign({},this.params);
 				let xpubs = [this.privatekey,...this.xpubs];
@@ -217,31 +226,27 @@
 								type:'success',
 								message:'创建成功'
 							})
-							this.$router.go(-1);
+							setTimeout(()=>{
+								this.$router.go(-1);
+								this.submitFlag = true;
+							},1500)
 						}else{
 							var msg = data.detail;
 							this.$message({
 								type:'warning',
 								message:msg
 							})
+							setTimeout(()=>{
+								this.submitFlag = true;
+							},200)
 						}
-						setTimeout(()=>{
-							this.submitFlag = true;
-						},200)
-						
 
 						console.log(data,111)
 					})
 			},
 			addAccount(){
 				
-				if(this.xpubs.length >= (this.params.quorum-1)){
-					this.$message({
-						type:'warning',
-						message:'秘钥总数不能大于所需签名数'
-					})
-					return;
-				}
+				
 				this.addPrivatekeyFlag = true;
 				this.addPrivateKey = '';
 				this.editIndex = -1;

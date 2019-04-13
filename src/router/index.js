@@ -115,28 +115,28 @@ const router=new VueRouter({
 				
 				// 控制台
 				{
-					path:'consoleIndex',
-					component:resolve => require(['@/pages/console'], resolve),
+					path:'assetManagementIndex',
+					component:resolve => require(['@/pages/assetManagement'], resolve),
 					meta: {requiresAuth: true},
 				},
 				{
 					path:'transfer',
-					component:resolve => require(['@/pages/console/transfer'], resolve),
+					component:resolve => require(['@/pages/assetManagement/transfer'], resolve),
 					meta: {requiresAuth: true},
 				},
 				{
 					path:'signature',
-					component:resolve => require(['@/pages/console/signature'], resolve),
+					component:resolve => require(['@/pages/assetManagement/signature'], resolve),
 					meta: {requiresAuth: true},
 				},
 				{
 					path:'issue',
-					component:resolve => require(['@/pages/console/issue'], resolve),
+					component:resolve => require(['@/pages/assetManagement/issue'], resolve),
 					meta: {requiresAuth: true},
 				},
 				{
 					path:'destroy',
-					component:resolve => require(['@/pages/console/destroy'], resolve),
+					component:resolve => require(['@/pages/assetManagement/destroy'], resolve),
 					meta: {requiresAuth: true},
 				},
 				

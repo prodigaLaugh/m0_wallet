@@ -50,7 +50,8 @@
 								<el-row 
 									:gutter="20"
 									class="consoleList_list"
-									v-for="(list,i) in item.to">
+									v-for="(list,i) in item.to"
+									:key="i">
 									<el-col :lg="4">
 										<span>收入</span>
 									</el-col>

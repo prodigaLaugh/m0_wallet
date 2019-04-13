@@ -14,7 +14,10 @@
 						<el-col :lg="12" >
 							<div class="assetSelectItemWrap">
 								<span>排序方式</span>
-								<el-select v-model="params.order_by" placeholder="请选择">
+								<el-select 
+									v-model="params.order_by" 
+									placeholder="请选择"
+									@change="getLists">
 									<el-option
 									  v-for="item in orderOptions"
 									  :key="item.value"
@@ -42,7 +45,10 @@
 						<el-col :lg="12">
 							<div class="assetSelectItemWrap">
 								<span>资产类型</span>
-								<el-select v-model="params.asset_id" placeholder="请选择">
+								<el-select 
+									v-model="params.asset_id" 
+									placeholder="请选择"
+									@change="getLists">
 									<el-option
 										v-for="item in allAssetsLists"
 										:key="item.value"

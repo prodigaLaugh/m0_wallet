@@ -127,17 +127,17 @@
 					});
 					return false;
 				}
-				var flag = false;
-				flag = this.param.parameters.some((item,index)=>{
-					return !item.key||!item.value
-				})
-				if(flag){
-					this.$message ({
-						message: '请完善资产参数',
-						type: 'warning'
-					});
-					return false;
-				}
+// 				var flag = false;
+// 				flag = this.param.parameters.some((item,index)=>{
+// 					return !item.key||!item.value
+// 				})
+// 				if(flag){
+// 					this.$message ({
+// 						message: '请完善资产参数',
+// 						type: 'warning'
+// 					});
+// 					return false;
+// 				}
 				let accountInfo = this.getLocalAccountInfo();
 				let param = Object.assign({},accountInfo,this.param) ;
 				if(!this.submitFlag){

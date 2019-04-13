@@ -22,7 +22,14 @@
 							<el-input 
 								v-model="params.evidence_name" 
 								autocomplete="off"
-								placeholder=""></el-input>
+								placeholder="请输入上传存证的名称"></el-input>
+						</el-col>
+						<el-col :lg="24">
+							<div class="transferInpListLeft">关联存证</div>
+							<el-input 
+								v-model="params.associate_evidence" 
+								autocomplete="off"
+								placeholder="请输入关联的存证hash"></el-input>
 						</el-col>
 
 						<el-col :lg="24">
@@ -110,7 +117,12 @@
 	
 	export default {
 		created(){
+			var accountInfo = this.getLocalAccountInfo()
+			var account_id = accountInfo.account_id;
+			var account_type = accountInfo.account_type;
 			
+			this.params.account_id = account_id;
+			this.params.account_type = account_type;
 		},
 		data(){
 			return {
@@ -118,12 +130,11 @@
 				params:{
 					myfile:'',
 					password:'',
-					account_id :'0R031M6800A02',
-					account_type:1,
-					
 					evidence_name:'',
+					associate_evidence:'',
 					evidence_data:'',
 					tx_info:'',
+
 				},
 				fileName:'',
 				file:'',
@@ -138,12 +149,12 @@
 				
 				formdata.append('myfile',this.file);
 				
-				
-				formdata.append('account_id','0R031M6800A02');
-				formdata.append('account_type',1);
+				formdata.append('account_id', para.account_id);
+				formdata.append('account_type',para.account_id);
 				
 				formdata.append('password',para.password);
 				formdata.append('evidence_name',para.evidence_name);
+				formdata.append('associate_evidence',para.associate_evidence);
 				formdata.append('tx_info',para.tx_info);
 				formdata.append('evidence_data',para.evidence_data);
 				

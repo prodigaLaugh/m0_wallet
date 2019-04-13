@@ -123,7 +123,7 @@
 				};
 				
 				createAddress.bind(this)(para)
-					.then((data)=>{
+					.then(({data})=>{
 						console.log(data,666)
 						if(data.status =='success'){
 							this.$message({

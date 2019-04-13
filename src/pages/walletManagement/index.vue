@@ -237,14 +237,17 @@
 						
 						localStorage.accountInfo = JSON.stringify({})
 						if(data.status=='success'){
-							var lists = data.data;
-							lists.map((item, index)=>{
-								if(item.status==1){
-									localStorage.accountInfo  = JSON.stringify(item);
-								}
-								
-							})
-							this.lists.splice(0,999,...lists);
+							if(data.data){
+								var lists = data.data;
+								lists.map((item, index)=>{
+									if(item.status==1){
+										localStorage.accountInfo  = JSON.stringify(item);
+									}
+									
+								})
+								this.lists.splice(0,999,...lists);
+							}
+							
 							
 						}else{
 							this.lists.splice(0,999);

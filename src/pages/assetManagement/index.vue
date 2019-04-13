@@ -40,7 +40,10 @@
 						<el-col :lg="18" class="consoleInpItem">
 							<el-col :lg="12">
 								<span>资产类型</span>
-								<el-select v-model="params.asset_id" placeholder="请选择">
+								<el-select 
+									v-model="params.asset_id" 
+									placeholder="请选择"
+									@change="toggleNav">
 									<el-option
 										v-for="item in allAssetsLists"
 										:key="item.value"
@@ -52,7 +55,24 @@
 							
 							<el-col :lg="12">
 								<span>排序方式</span>
-								<el-select v-model="params.order_by" placeholder="请选择">
+								
+								<el-select 
+									v-if="operIndex==1"
+									v-model="signOrder_by" 
+									placeholder="请选择"
+									@change="toggleNav">
+									<el-option
+										v-for="item in signOptions"
+										:key="item.value"
+										:label="item.label"
+										:value="item.value">
+									</el-option>
+								</el-select>
+								<el-select 
+									v-else
+									v-model="params.order_by" 
+									placeholder="请选择"
+									@change="toggleNav">
 									<el-option
 										v-for="item in orderOptions"
 										:key="item.value"
@@ -99,7 +119,8 @@
 							<el-row 
 								:gutter="20"
 								class="consoleList_list"
-								v-for="(list,i) in item.to.address_account">
+								v-for="(list,i) in item.to.address_account"
+								:key="i">
 								<el-col :lg="4">
 									<span>收入</span>
 								</el-col>
@@ -269,8 +290,8 @@
 									<span>From</span>
 									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
 								</el-col>
-								<el-col :lg="6">- {{item.to.amount}}</el-col>
-								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
+								<el-col :lg="6">- {{item.from.amount}}</el-col>
+								<el-col :lg="4">{{item.from.asset_name||'--'}}</el-col>
 							</el-row>
 							
 						</div>
@@ -338,6 +359,7 @@
 					{text:'发行',route:'/main/issue'},
 					{text:'销毁',route:'/main/destroy'},
 				],
+			
 				operIndex:0,
 				
 				allAssetsLists:[],
@@ -353,6 +375,8 @@
 					order_by:'time_asc',
 				},
 				
+				signOrder_by:'time_asc',
+				
 				orderOptions: [{
 					value: 'time_asc',
 					label: '按时间排序（新到旧）'
@@ -367,11 +391,22 @@
 					label: '按金额排序（小到大）'
 				}],
 				
+				signOptions: [{
+					value: 'time_asc',
+					label: '按时间排序（新到旧）'
+				}, {
+					value: 'time_desc',
+					label: '按时间排序（旧到新）'
+				}],
+				
 			}
 		},
 		methods:{
 			toggleNav(index){
-				this.operIndex = index||0;
+				if(index&&index>-1){
+					this.operIndex = index||0;
+				}
+				
 				var list = this.allAssetsLists.filter((item,index)=>{
 					return item.asset_id ==this.params.asset_id
 				})
@@ -381,11 +416,11 @@
 					this.params.asset_name = '';
 				}
 				
-				if(index===0){
+				if(this.operIndex===0){
 					this.getTransfer();
-				}else if(index===1){
+				}else if(this.operIndex===1){
 					this.getSsign();
-				}else if(index===2){
+				}else if(this.operIndex===2){
 					this.getIssue();
 				}else{
 					this.getRetire()
@@ -406,7 +441,8 @@
 					})
 			},
 			getSsign(){
-				signRecord.bind(this)(this.params)
+				let para = Object.assign({}, this.params, {order_by:this.signOrder_by})
+				signRecord.bind(this)(para)
 					.then(({data})=>{
 						console.log(data,222)
 						var lists = [];

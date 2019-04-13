@@ -1,50 +1,55 @@
 <template>
 	<div class="outerWrap createAccountWrap">
-		<div class="commonTitle_one">
-			钱包管理
-			<span>
-				<i class="el-icon-arrow-right"></i>
-				<span>创建单签钱包</span>
-			</span>
-		</div>
-			
-		<div class="commonTitle_two">
-			创建单签钱包
-			<span>返回</span>
-		</div>
-		
-		<div class="transferInpWrap">
-			<el-row>
-				<el-col :lg="16" :md="12">
-					<el-row class="transferInpListsWrap">
-						<el-col :md="24">
-							<div class="transferInpListLeft">钱包名称</div>
-							<el-input v-model="params.alias" placeholder=""></el-input>
-						</el-col>
-						<el-col :md="24">
-							<div class="transferInpListLeft">钱包秘钥</div>
-							<el-select v-model="params.xpub" placeholder="请选择钱包所使用的密钥">
-								<el-option
-									v-for="item in lists"
-									:key="item.xpub"
-									:label="item.alias"
-									:value="item.xpub">
-								</el-option>
-							</el-select>
-						</el-col>
+		<el-row>
+			<el-col :lg="20" :md="22">
+				<div class="commonTitle_one">
+					钱包管理
+					<span>
+						<i class="el-icon-arrow-right"></i>
+						<span>创建单签钱包</span>
+					</span>
+				</div>
 					
-						
-						
-						
-						<el-col :md="24">
-							<div 
-								@click="create"
-								class="createAccountBtn">创建账户</div>
+				<div class="commonTitle_two">
+					创建单签钱包
+					<span>返回</span>
+				</div>
+				
+				<div class="transferInpWrap">
+					<el-row>
+						<el-col>
+							<el-row class="transferInpListsWrap">
+								<el-col :md="24">
+									<div class="transferInpListLeft">钱包名称</div>
+									<el-input v-model="params.alias" placeholder=""></el-input>
+								</el-col>
+								<el-col :md="24">
+									<div class="transferInpListLeft">钱包秘钥</div>
+									<el-select v-model="params.xpub" placeholder="请选择钱包所使用的密钥">
+										<el-option
+											v-for="item in lists"
+											:key="item.xpub"
+											:label="item.alias"
+											:value="item.xpub">
+										</el-option>
+									</el-select>
+								</el-col>
+							
+								
+								
+								
+								<el-col :md="24">
+									<div 
+										@click="create"
+										class="createAccountBtn">创建账户</div>
+								</el-col>
+							</el-row>
 						</el-col>
 					</el-row>
-				</el-col>
-			</el-row>
-		</div>
+				</div>
+			
+			</el-col>
+		</el-row>
 		
 		
 		
@@ -67,10 +72,8 @@
 	
 	export default {
 		created(){
-			let user_name = localStorage.USERTOKEN;
-			this.params.user_name = user_name;
-			let para  = {user_name: 'user1'}
-			getPrivateKeyLists.bind(this)(para)
+
+			getPrivateKeyLists.bind(this)()
 				.then(({data})=>{
 					console.log(data,8887)
 					this.lists = data.data;
@@ -82,7 +85,6 @@
 				lists:[],
 				params:{
 					alias: "",
-					user_name: "",
 					xpub: ""
 				}
 			}
@@ -101,14 +103,22 @@
 								type:'success',
 								message:'创建成功'
 							})
+							setTimeout(()=>{
+								this.$router.go(-1);
+								this.submitFlag = true;
+							},1500)
+							
 						}else{
 							var msg = data.detail;
 							this.$message({
 								type:'warning',
 								message:msg
 							})
+							setTimeout(()=>{
+								this.submitFlag = true;
+							},200)
 						}
-						this.submitFlag = true;
+						
 						console.log(data)
 					})
 			}

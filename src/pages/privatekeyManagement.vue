@@ -122,16 +122,7 @@
 	
 	export default {
 		created(){
-			let user_name = localStorage.USERTOKEN;
-			let para  = {user_name: user_name}
-			
-			getPrivateKeyLists.bind(this)(para)
-				.then(({data})=>{
-					if(data.status =='success'){
-						this.lists = data.data;
-					}
-					
-				})
+			this.getlist();
 		},
 		data(){
 			return {
@@ -147,6 +138,21 @@
 			}
 		},
 		methods:{
+			getlist(){
+				let user_name = localStorage.USERTOKEN;
+				let para  = {user_name: user_name}
+				
+				getPrivateKeyLists.bind(this)(para)
+					.then(({data})=>{
+						if(data.status =='success'){
+							if(data.data){
+								this.lists.splice(0,999,...data.data);
+							}
+							
+						}
+						
+					})
+			},
 			copy() {
 		        var clipboard = new Clipboard('.tag-read')
 		        clipboard.on('success', e => {
@@ -178,6 +184,7 @@
 								type:'success',
 								message:'创建成功'
 							})
+							this.getlist();
 							setTimeout(()=>{
 								this.submitFlag = true;
 								this.dialogFormVisible = false;

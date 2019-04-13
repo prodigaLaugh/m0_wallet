@@ -145,6 +145,7 @@
 			var accountInfo = this.getLocalAccountInfo()
 			var account_id = accountInfo.account_id;
 			var account_type = accountInfo.account_type;
+			var account_alias = accountInfo.account_alias
 			
 			this.params.account_id = account_id;
 			this.params.account_type = account_type;
@@ -178,7 +179,7 @@
 					
 				})
 				
-			var params = {account_alias:account_id}
+			var params = {account_alias:account_alias}
 			getAddressLists.bind(this)(params)
 				.then(({data})=>{
 					this.address = data.data;
@@ -246,9 +247,7 @@
 				
 				para.receive_info.map((item,index)=>{
 					var to_amount = item.to_amount - 0;
-					para.receive_info[index].to_amount = to_amount;
-					para.receive_info[index].to_address = 'm01qcl7zl75nmhr0vnkup8jzkptdettxynd03rwkqs8jf2tel7uax7fqfw3h3y'
-				})
+					para.receive_info[index].to_amount = to_amount;})
 				para.amount = para.receive_info.reduce((pre,cur)=>{
 					return (pre-0) + (cur.to_amount-0)
 				},0)
@@ -273,6 +272,9 @@
 								type:'success',
 								message:'提交成功'
 							})
+							setTimeout(()=>{
+								this.$router.go(-1);
+							},1500)
 						}else{
 							this.$message({
 								type:'warning',

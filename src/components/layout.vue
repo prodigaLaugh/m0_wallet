@@ -69,7 +69,6 @@
 		display:flex;
 		justify-content: space-between;
 		align-items: center;
-		padding-right:30px;
 		>span,
 		>div>span{
 			line-height:32px;

@@ -5,7 +5,7 @@
 				
 				<!-- <div class="right hidden-xs-only"> -->
 				<div class="right">
-					<div class="title">Account1</div>
+					<div class="title">{{accountname}}</div>
 					<div class="rightContainer">
 						<div @click="$router.push('/main/privatekeyManagement')">
 							<img src="../assets/praviteKeyIcon.png" style="width:40px;" alt="">
@@ -119,20 +119,25 @@ Vue.use(Dialog);
 export default {
 	created(){
 		this.username = localStorage.USERTOKEN;
-		
+		var accountInfo = this.getLocalAccountInfo()
 		
 		getAccountLists.bind(this)()
 			.then(({data})=>{
 			
 				localStorage.accountInfo = JSON.stringify({})
 				if(data.status=='success'){
+					
 					var lists = data.data;
-					lists.map((item, index)=>{
-						if(item.status==1){
-							localStorage.accountInfo  = JSON.stringify(item);
-						}
-						
-					})
+					if(lists&&lists.length){
+						lists.map((item, index)=>{
+							if(item.status==1){
+								localStorage.accountInfo  = JSON.stringify(item);
+								this.accountname = accountInfo.account_alias;
+							}
+							
+						})
+					}
+					
 				}
 				
 				
@@ -141,6 +146,8 @@ export default {
 	},
 	data(){
 		return {
+			accountname:'',
+			
 			username:'',
 			submitFlag:true,
 			visitcodeFlag:false,

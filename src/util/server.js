@@ -2,12 +2,12 @@ import Vue from 'vue'
 import http from '@/util/http.js'
 Vue.use(http);
 
-const localHeaders = localStorage.Headers ? JSON.parse(localStorage.Headers) : {};
+const USERTOKEN = localStorage.USERTOKEN ? localStorage.USERTOKEN : '';
 
 const baseParams = {
-	user_name:"root",
+	user_name:USERTOKEN,
 	token:'',
-	username:'root',
+	username:USERTOKEN,
 }
 
 //资产接口
@@ -161,7 +161,7 @@ export async function  transferMultsign(para){//转账多签
 	return result;
 }
 export async function  transferSinglesign(para){//转账单签
-	let url = `/v1/asset_opt/issue_singlesign`;
+	let url = `/v1/asset_opt/transfer_singlesign`;
 	let result = await this.$http.post(url, Object.assign({}, baseParams, para) )
 	return result;
 }

@@ -36,9 +36,7 @@
 				<span>邀请码</span>
 				<el-input 
 					v-model="loginParams.invite_code" 
-					placeholder="请输入邀请码(必填)"
-					type="password"
-					autocomplete="new-password"></el-input>
+					placeholder="请输入邀请码(必填)"></el-input>
 			</div>
 
 	
@@ -102,7 +100,7 @@ export default {
   methods: {
 		login(){
 			let url = `${BASEURL1}/v1/user/register_user`
-			let params = Object.assign({},this.loginParams,{invite_code:'MMMMM6'}) ;
+			let params = Object.assign({},this.loginParams) ;
 			
 
 			if(!this.loginParams.user_name ||
@@ -147,7 +145,7 @@ export default {
 								type: 'success'
 							});
 							setTimeout(()=>{
-								this.$router.go(-1);
+								this.$router.push('/login');
 								this.loginFlag = true;
 							},1500)
 						}else{

@@ -43,7 +43,7 @@
 								class="blue"
 								@click.stop="$router.push({path:'/main/editAsset',query:{id:item.id}})">编辑</span>
 							<span 
-								@click="$router.push('/main/issue')"
+								@click="$router.push({path:'/main/issue',query:{asset_id:item.asset_id,asset_name:item.asset_name}})"
 								class="blue">发行</span>
 							<span 
 								@click="delAsset(item.id)"

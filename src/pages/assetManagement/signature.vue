@@ -161,6 +161,9 @@
 									type:'success',
 									message:'提交交易成功'
 								})
+								setTimeout(()=>{
+									this.$router.go(-1);
+								},1500)
 							}else{
 								var blob = new Blob([JSON.stringify(data)])
 								var a = document.createElement('a');
