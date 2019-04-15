@@ -124,6 +124,7 @@
 							</el-row>
 							
 						</div>
+						<div class="noresult" v-if="!lists.length">暂无数据</div>
 					</div>
 					
 				</div>
@@ -175,7 +176,7 @@
 					account_id:'',
 					asset_name:'',
 					asset_id:'',
-					order_by:'time_asc',
+					order_by:'time_desc',
 					
 // 					user_name:"123",
 // 					"account_id":"0R031M6800A02",
@@ -186,10 +187,10 @@
 				},
 				
 				orderOptions: [{
-					value: 'time_asc',
+					value: 'time_desc',
 					label: '按时间排序（新到旧）'
 				}, {
-					value: 'time_desc',
+					value: 'time_asc',
 					label: '按时间排序（旧到新）'
 				}, {
 					value: 'amount_asc',

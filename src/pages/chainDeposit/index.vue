@@ -49,6 +49,10 @@
 					   
 						
 					</div>
+					
+					<div class="noresult" v-if="!lists.length">暂无数据</div>
+
+
 				</div>
 	
 			</el-col>
@@ -76,7 +80,10 @@
 			getEvidenceLists.bind(this)(account_id)
 				.then(({data})=>{
 					console.log(data,333)
-					this.lists = data.data
+					if(data.status =='success'){
+						this.lists = data.data
+					}
+					
 				})
 		},
 		data(){

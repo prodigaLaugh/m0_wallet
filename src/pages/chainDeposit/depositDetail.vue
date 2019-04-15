@@ -118,11 +118,14 @@
 				evidenceDownload.bind(this)(formdata)
 					.then(({data})=>{
 						console.log(data,4444)
-						var blob = new Blob([data])
+						var blob = new Blob([data],{type: 'application/octet-stream'})
 						var a = document.createElement('a');
 						a.download = file_name;
 						a.href=window.URL.createObjectURL(blob)
 						a.click()
+						
+						
+						
 					})
 			}
 			

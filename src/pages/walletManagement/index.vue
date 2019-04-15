@@ -63,6 +63,8 @@
 							<div @click="del(item,index)">删除</div>
 						</el-col>
 					</el-row>
+					
+					<div class="noresult" v-if="!lists.length">暂无数据</div>
 				
 					
 					
@@ -172,6 +174,7 @@
 								message:'删除成功'
 							})
 							this.lists.splice(index,1);
+							this.getLists();
 						}else{
 							this.$message({
 								type:"warning",
@@ -203,6 +206,7 @@
 								type:'success',
 								message:'载入成功'
 							})
+							
 							this.getLists();
 							
 							setTimeout(()=>{
@@ -237,11 +241,14 @@
 						
 						localStorage.accountInfo = JSON.stringify({})
 						if(data.status=='success'){
+							this.$store.commit('changeAccountAlias','');
 							if(data.data){
 								var lists = data.data;
+								
 								lists.map((item, index)=>{
 									if(item.status==1){
 										localStorage.accountInfo  = JSON.stringify(item);
+										this.$store.commit('changeAccountAlias',item.account_alias);
 									}
 									
 								})

@@ -141,10 +141,10 @@
 									<span class="out">支出</span>
 								</el-col>
 								<el-col :lg="10">
-									<span>To</span>
+									<span>From</span>
 									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
 								</el-col>
-								<el-col :lg="6">+ {{item.to.amount}}</el-col>
+								<el-col :lg="6">- {{item.to.amount}}</el-col>
 								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
 							</el-row>
 							
@@ -372,16 +372,16 @@
 				params:{
 					asset_name:'',
 					asset_id:'',
-					order_by:'time_asc',
+					order_by:'time_desc',
 				},
 				
-				signOrder_by:'time_asc',
+				signOrder_by:'time_desc',
 				
 				orderOptions: [{
-					value: 'time_asc',
+					value: 'time_desc',
 					label: '按时间排序（新到旧）'
 				}, {
-					value: 'time_desc',
+					value: 'time_asc',
 					label: '按时间排序（旧到新）'
 				}, {
 					value: 'amount_asc',
@@ -392,10 +392,10 @@
 				}],
 				
 				signOptions: [{
-					value: 'time_asc',
+					value: 'time_desc',
 					label: '按时间排序（新到旧）'
 				}, {
-					value: 'time_desc',
+					value: 'time_asc',
 					label: '按时间排序（旧到新）'
 				}],
 				
@@ -403,7 +403,7 @@
 		},
 		methods:{
 			toggleNav(index){
-				if(index&&index>-1){
+				if(index>-1){
 					this.operIndex = index||0;
 				}
 				
@@ -415,7 +415,7 @@
 				if(!this.params.asset_id){
 					this.params.asset_name = '';
 				}
-				
+				console.log(this.operIndex,888)
 				if(this.operIndex===0){
 					this.getTransfer();
 				}else if(this.operIndex===1){

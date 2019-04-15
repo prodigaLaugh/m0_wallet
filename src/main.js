@@ -20,6 +20,7 @@ Object.keys(commonFilters).forEach(key => {
 
 
 import router from './router'
+import store from './util/store.js';//引入store
 
 
 
@@ -42,6 +43,7 @@ new Vue({
   el: '#app',
   template: '<Layout/>',
   router,
+  store,
   components: { Layout },
   
 })

@@ -31,7 +31,7 @@
 						<div>交易类型：{{uploadFileDetail.tx_type|transactionTextByType}}</div>
 						<div>资产类型：{{uploadFileDetail.asset_name}}</div>
 						<div>资产ID：{{uploadFileDetail.asset_id}}</div>
-						<div>交易金额：{{uploadFileDetail.amount | filterMoney}}</div>
+						<div>交易金额：{{uploadFileDetail.amount }}</div>
 						<div>
 								从：
 								<div 
@@ -49,6 +49,7 @@
 							</div>
 						</div>
 						<div>需要签名：{{uploadFileDetail.need_signnum}}</div>
+						<div>已完成签名：{{uploadFileDetail.complete_signnum}}</div>
 		
 					</div>
 					

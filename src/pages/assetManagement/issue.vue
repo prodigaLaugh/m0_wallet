@@ -96,17 +96,19 @@
 				this.params.asset_id = asset_id;
 			}
 			
-			var formdata = new FormData();
+		
 			var account_id = this.getLocalAccountInfo().account_id;
 			
-			formdata.append('account_id',account_id)
+			var fromdata = new FormData();
+			fromdata.append('account_id',account_id)
 			
-			getAssetLists.bind(this)(formdata)
+			getAssetLists.bind(this)(fromdata)
 				.then(({data})=>{
+					console.log(data,9998)
 					var data = data.data;
-					var asset_unissue = data.asset_unissue || [];
-					var asset_issue = data.asset_issue || [];
-					this.allAssetsLists = [...asset_unissue,...asset_issue]
+					var asset_issue = data.asset_issue ||[];
+					var asset_unissue = data.asset_unissue||[];
+					this.allAssetsLists = [...asset_issue,...asset_unissue]
 					console.log(data,111)
 				})
 				.catch(()=>{
@@ -191,17 +193,21 @@
 				issueMultsign.bind(this)(para)
 					.then(({data})=>{
 						console.log(data,89888)
-						if(data.status=='success'){
+						if(data.status=='error'){
+							console.log(1)
+
+							this.$message({
+								type:'warning',
+								message:data.detail
+							})
+						}else{
+							console.log(2)
 							var blob = new Blob([JSON.stringify(data)])
 							var a = document.createElement('a');
 							a.download = 'data.hex';
 							a.href=window.URL.createObjectURL(blob)
 							a.click()
-						}else{
-							this.$message({
-								type:'warning',
-								message:data.detail 
-							})
+
 						}
 					})
 			}

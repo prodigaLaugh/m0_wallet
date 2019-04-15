@@ -31,7 +31,8 @@ let transactionTextByType = str =>{
 	var json = {
 		1:'转账',
 		2:'发行',
-		3:'销毁'
+		3:'销毁',
+		4:'存证'
 	} 
 	return json[str]||'--';
 }
@@ -68,5 +69,6 @@ export {
 	interceptStr,  
 	timestampToTime, 
 	filterMoney,
-	recordTextByType
+	recordTextByType,
+	transactionTextByType
 }

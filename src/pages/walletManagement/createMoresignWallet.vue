@@ -204,7 +204,7 @@
 					
 			},
 			create(){
-				if(this.xpubs.length >= (this.params.quorum-1)){
+				if(this.xpubs.length < (this.params.quorum-1)){
 					this.$message({
 						type:'warning',
 						message:'秘钥总数不能大于所需签名数'

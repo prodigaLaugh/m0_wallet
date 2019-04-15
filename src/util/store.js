@@ -4,30 +4,22 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 let state = {
-	loginWrapFlag:false,
-    isLogin:window.localStorage.isLogin
-    			?true
-    			:false,
-    userInfo:window.localStorage.userInfo
-    			?JSON.parse(window.localStorage.userInfo)
-                :{},
-    commonTipsFlag:false,
-    commonTipsText:'',
-    userCitys:window.localStorage.USERPROVINCE
-                ?JSON.parse(window.localStorage.USERPROVINCE)
-                :{},
+	accountAlias:localStorage.accountInfo
+					? JSON.parse(localStorage.accountInfo).account_alias
+					: '',
+	systemStatus:{},
+			
+   
 };
 
 const mutations = {
-	changeLoginFlag(state,flag){
-		state.loginWrapFlag=flag;
+	changeAccountAlias(state,account){
+		state.accountAlias = account;
 	},
-    login(state,flag){
-        state.isLogin=flag;
-    },
-    getUserInfo(state,data){
-    	state.userInfo=data;
-    }
+	changeSystemStatus(state,content){
+		state.systemStatus = content;
+	},
+    
 };
 
 // 事件触发后的逻辑操作

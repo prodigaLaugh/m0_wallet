@@ -72,7 +72,7 @@
 </template>
 
 <script>
-	import { getAddressLists, getAssetLists, retireMultsign, retireSinglesign } from '@/util/server.js'
+	import { getAddressLists, getAssetWalletLists, retireMultsign, retireSinglesign } from '@/util/server.js'
 	import Vue from 'vue';
 	import { Row, Col, Input, Select, Option } from 'element-ui';
 		
@@ -96,15 +96,12 @@
 			this.params.account_id = account_id;
 			this.params.account_type = account_type;
 			
-			var formdata = new FormData();
-			formdata.append('account_id',account_id)
-			
-			getAssetLists.bind(this)(formdata)
+			let para ={account_id:account_id}
+			getAssetWalletLists.bind(this)(para)
 				.then(({data})=>{
 					var data = data.data;
-					var asset_unissue = data.asset_unissue || [];
-					var asset_issue = data.asset_issue || [];
-					this.allAssetsLists = [...asset_unissue,...asset_issue]
+					
+					this.allAssetsLists = [...data]
 					console.log(data,111)
 				})
 				.catch(()=>{
@@ -180,18 +177,19 @@
 			retireMutil(para){
 				retireMultsign.bind(this)(para)
 					.then(({data})=>{
-						if(data.status=='success'){
+						if(data.status=='error'){
+							this.$message({
+								type:'warning',
+								message:data.detail
+							})
+						}else{
 							var blob = new Blob([JSON.stringify(data)])
 							var a = document.createElement('a');
 							a.download = 'data.hex';
 							a.href=window.URL.createObjectURL(blob)
 							a.click()
-						}else{
-							this.$message({
-								type:'warning',
-								message:data.detail 
-							})
 						}
+						
 					})
 			}
 		},

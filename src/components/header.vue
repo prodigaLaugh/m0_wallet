@@ -1,11 +1,11 @@
 <template>
   <div  class="commonHeaderWrap">
       <div class="commonHeader">
-				<div class="left">logo</div>
+				<div class="left">M0钱包</div>
 				
 				<!-- <div class="right hidden-xs-only"> -->
 				<div class="right">
-					<div class="title">{{accountname}}</div>
+					<div class="title">{{accountAlias}}</div>
 					<div class="rightContainer">
 						<div @click="$router.push('/main/privatekeyManagement')">
 							<img src="../assets/praviteKeyIcon.png" style="width:40px;" alt="">
@@ -133,6 +133,7 @@ export default {
 							if(item.status==1){
 								localStorage.accountInfo  = JSON.stringify(item);
 								this.accountname = accountInfo.account_alias;
+								this.$store.commit('changeAccountAlias', accountInfo.account_alias)
 							}
 							
 						})
@@ -146,7 +147,6 @@ export default {
 	},
 	data(){
 		return {
-			accountname:'',
 			
 			username:'',
 			submitFlag:true,
@@ -229,6 +229,12 @@ export default {
 				})
 		}
 
+	},
+	computed: {
+		accountAlias () {
+		  return this.$store.state.accountAlias 
+		  // 或者 return this.$store.getter.count2
+		}
 	}
 }
 </script>

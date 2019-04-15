@@ -122,7 +122,7 @@
 <script>
 	import { 
 		getAddressLists, 
-		getAssetLists, 
+		getAssetWalletLists, 
 		transferMultsign, 
 		transferSinglesign, 
 		queryAssetAmount 
@@ -163,16 +163,11 @@
 			
 			
 			
-			var formdata = new FormData();
 			
-			formdata.append('account_id',account_id)
-			
-			getAssetLists.bind(this)(formdata)
+			let para ={account_id:account_id}
+			getAssetWalletLists.bind(this)(para)
 				.then(({data})=>{
-					var data = data.data;
-					var asset_unissue = data.asset_unissue || [];
-					var asset_issue = data.asset_issue || [];
-					this.allAssetsLists = [...asset_unissue,...asset_issue]
+					this.allAssetsLists = [...data.data]
 					console.log(data,111)
 				})
 				.catch(()=>{
@@ -287,18 +282,19 @@
 				transferMultsign.bind(this)(para)
 					.then(({data})=>{
 						console.log(data,222)
-						if(data.status=='success'){
+						if(data.status=='error'){
+							this.$message({
+								type:'warning',
+								message:data.detail
+							})
+						}else{
 							var blob = new Blob([JSON.stringify(data)])
 							var a = document.createElement('a');
 							a.download = 'data.hex';
 							a.href=window.URL.createObjectURL(blob)
 							a.click()
-						}else{
-							this.$message({
-								type:'warning',
-								message:data.detail
-							})
 						}
+						
 						
 					})
 			}

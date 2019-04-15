@@ -72,10 +72,10 @@
 										<span class="out">支出</span>
 									</el-col>
 									<el-col :lg="10">
-										<span>To</span>
+										<span>From</span>
 										<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
 									</el-col>
-									<el-col :lg="6">+ {{item.asset_amount}}</el-col>
+									<el-col :lg="6">- {{item.asset_amount}}</el-col>
 									<el-col :lg="4">{{asset_name||'--'}}</el-col>
 								</el-row>
 							</div>

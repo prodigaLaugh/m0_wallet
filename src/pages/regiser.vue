@@ -141,7 +141,7 @@ export default {
 					.then(({data})=>{
 						if(data.status =='success'){
 							this.$message ({
-								message: message,
+								message: '注册成功',
 								type: 'success'
 							});
 							setTimeout(()=>{
