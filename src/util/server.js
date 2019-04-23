@@ -59,7 +59,7 @@ export async function  getEvidenceDetail(id){//存证详情
 }
 export async function  evidenceDownload(para){//文件下载
 	let url = `/v1/evidence/downlod_evidence`;
-	let result = await this.$http.post(url, para)
+	let result = await this.$http.post(url, para,{responseType: 'blob'})
 	return result;
 }
 

@@ -178,7 +178,7 @@
 						}else{
 							this.$message({
 								type:"warning",
-								message:data.detail||'载入失败'
+								message:data.error||'载入失败'
 							})
 						}
 						setTimeout(()=>{
@@ -216,7 +216,7 @@
 						}else{
 							this.$message({
 								type:"warning",
-								message:data.detail||'载入失败'
+								message:data.error||'载入失败'
 							})
 						}
 						

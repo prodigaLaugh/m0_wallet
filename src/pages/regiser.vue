@@ -98,75 +98,75 @@ export default {
     this.makeCode(this.identifyCodes, 4);
   },
   methods: {
-		login(){
-			let url = `${BASEURL1}/v1/user/register_user`
-			let params = Object.assign({},this.loginParams) ;
-			
+	login(){
+		let url = `${BASEURL1}/v1/user/register_user`
+		let params = Object.assign({},this.loginParams) ;
+		
 
-			if(!this.loginParams.user_name ||
-				!this.loginParams.password ||
-				!this.loginParams.againPassword ||
-				!this.loginParams.invite_code
-				||!this.verifycode){
-					this.$message ({
-							message: '请完善信息',
-							type: 'warning'
-					});
-					return false;
-			}
-			if(this.verifycode.password!=this.verifycode.againPassword){
+		if(!this.loginParams.user_name ||
+			!this.loginParams.password ||
+			!this.loginParams.againPassword ||
+			!this.loginParams.invite_code
+			||!this.verifycode){
 				this.$message ({
-					message: '两次密码不一致',
+					message: '请完善信息',
 					type: 'warning'
 				});
 				return false;
-			}
+		}
+		if(this.verifycode.password!=this.verifycode.againPassword){
+			this.$message ({
+				message: '两次密码不一致',
+				type: 'warning'
+			});
+			return false;
+		}
 
-			if(this.verifycode.toLocaleLowerCase() !== this.identifyCode.toLocaleLowerCase()){
+		if(this.verifycode.toLocaleLowerCase() !== this.identifyCode.toLocaleLowerCase()){
+			this.$message ({
+				message: '验证码不正确',
+				type: 'warning'
+			});
+			return false;
+		}
+	
+
+
+		if(!this.loginFlag){
+				return false;
+		}
+		this.loginFlag = false;
+
+		axios.post(url,params)
+			.then(({data})=>{
+				if(data.status =='success'){
 					this.$message ({
-							message: '验证码不正确',
-							type: 'warning'
+						message: '注册成功',
+						type: 'success'
 					});
-					return false;
-			}
-		
-
-
-			if(!this.loginFlag){
-					return false;
-			}
-			this.loginFlag = false;
-
-			axios.post(url,params)
-					.then(({data})=>{
-						if(data.status =='success'){
-							this.$message ({
-								message: '注册成功',
-								type: 'success'
-							});
-							setTimeout(()=>{
-								this.$router.push('/login');
-								this.loginFlag = true;
-							},1500)
-						}else{
-							var msg = data.detail;
-							this.$message ({
-								message: msg,
-								type: 'warning'
-							});
-						}
-						
+					setTimeout(()=>{
+						this.$router.push('/login');
 						this.loginFlag = true;
-						
+					},1500)
+				}else{
+					var msg = data.error;
+					this.$message ({
+						message: msg,
+						type: 'warning'
+					});
+				}
+				
+				this.loginFlag = true;
+				
 
 
-					})
-					.catch(({data})=>{
-						console.log(data)
-						this.loginFlag = true;
-					})
-			// USERTOKEN
-		},
+			})
+			.catch(({data})=>{
+				console.log(data)
+				this.loginFlag = true;
+			})
+		// USERTOKEN
+	},
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
     },
@@ -175,11 +175,11 @@ export default {
       this.makeCode(this.identifyCodes, 4);
     },
     makeCode(o, l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[
-          this.randomNum(0, this.identifyCodes.length)
-        ];
-	  	}
+		for (let i = 0; i < l; i++) {
+			this.identifyCode += this.identifyCodes[
+			  this.randomNum(0, this.identifyCodes.length)
+			];
+		}
     }
   }
 };

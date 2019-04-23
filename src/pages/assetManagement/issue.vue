@@ -184,7 +184,7 @@
 						}else{
 							this.$message({
 								type:'warning',
-								message:data.detail
+								message:data.error
 							})
 						}
 					})
@@ -198,15 +198,17 @@
 
 							this.$message({
 								type:'warning',
-								message:data.detail
+								message:data.error
 							})
 						}else{
 							console.log(2)
-							var blob = new Blob([JSON.stringify(data)])
-							var a = document.createElement('a');
-							a.download = 'data.hex';
-							a.href=window.URL.createObjectURL(blob)
-							a.click()
+							let element = document.createElement('a')
+							element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data ))
+							element.setAttribute('download', 'data.hex')
+							element.style.display = 'none'
+							document.body.appendChild(element)
+							element.click()
+							document.body.removeChild(element)
 
 						}
 					})

@@ -112,7 +112,7 @@
 								v-for="(list,i) in item.address_balance"
 								:key="i">
 								<el-col :lg="9" :md="9" class="left">
-									{{list.address_id}}
+									{{list.address_id | interceptPubStr}}
 								</el-col>
 								<el-col :lg="8" :md="8" class="center">
 									{{list.balance}}

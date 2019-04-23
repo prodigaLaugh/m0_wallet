@@ -93,23 +93,23 @@
 		},
 		methods:{
 			copy() {
-			        var clipboard = new Clipboard('.tag-read')
-			        clipboard.on('success', e => {
-						console.log('复制成功')
-						this.$message({
-							type:'success',
-							message:'复制成功'
-						})
-				        // 释放内存
-				        clipboard.destroy()
-			        })
-			        clipboard.on('error', e => {
-			          // 不支持复制
-			          console.log('该浏览器不支持自动复制')
-			          // 释放内存
-			          clipboard.destroy()
-			        })
-			    },
+		        var clipboard = new Clipboard('.tag-read')
+		        clipboard.on('success', e => {
+					console.log('复制成功')
+					this.$message({
+						type:'success',
+						message:'复制成功'
+					})
+			        // 释放内存
+			        clipboard.destroy()
+		        })
+		        clipboard.on('error', e => {
+		          // 不支持复制
+		          console.log('该浏览器不支持自动复制')
+		          // 释放内存
+		          clipboard.destroy()
+		        })
+		    },
 		},
 	}
 </script>

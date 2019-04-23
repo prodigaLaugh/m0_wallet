@@ -66,11 +66,11 @@ Vue.use(Input)
 Vue.use(Checkbox)
 
 export default {
-  components:{
-	  SIdentify
-  },
-  data() {
-    return {
+	components:{
+		SIdentify
+	},
+	data() {
+		return {
 			identifyCodes: "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ",
 			identifyCode: "",
 			verifycode:"",
@@ -82,13 +82,13 @@ export default {
 				user_name:'',
 				password:'',
 			}
-    };
-  },
-  mounted() {
-    this.identifyCode = "";
-    this.makeCode(this.identifyCodes, 4);
-  },
-  methods: {
+		}
+	},
+	mounted() {
+		this.identifyCode = "";
+		this.makeCode(this.identifyCodes, 4);
+	},
+	methods: {
 		login(){
 			let params = this.loginParams;
 
@@ -103,11 +103,11 @@ export default {
 			}
 
 			if(this.verifycode.toLocaleLowerCase() !== this.identifyCode.toLocaleLowerCase()){
-					this.$message ({
-						message: '验证码不正确',
-						type: 'warning'
-					});
-					return false;
+				this.$message ({
+					message: '验证码不正确',
+					type: 'warning'
+				});
+				return false;
 			}
 		
 			
@@ -140,7 +140,7 @@ export default {
 							});
 							
 					}else{
-						var msg = data.detail;
+						var msg = data.error;
 						this.$message ({
 							message: msg,
 							type: 'warning'
@@ -158,19 +158,19 @@ export default {
 					console.log(data)
 					this.loginFlag = true;
 				})
-		},
+	},
     randomNum(min, max) {
-      return Math.floor(Math.random() * (max - min) + min);
+		return Math.floor(Math.random() * (max - min) + min);
     },
     refreshCode() {
-      this.identifyCode = "";
-      this.makeCode(this.identifyCodes, 4);
+		this.identifyCode = "";
+		this.makeCode(this.identifyCodes, 4);
     },
     makeCode(o, l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[
-          this.randomNum(0, this.identifyCodes.length)
-        ];
+		for (let i = 0; i < l; i++) {
+			this.identifyCode += this.identifyCodes[
+			  this.randomNum(0, this.identifyCodes.length)
+			];
 	  	}
     }
   }

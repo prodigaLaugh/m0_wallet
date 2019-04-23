@@ -132,7 +132,7 @@
 							})
 							this.getLists()
 						}else{
-							var msg  = data.detail
+							var msg  = data.error
 							this.$message({
 								type:'warning',
 								message:msg

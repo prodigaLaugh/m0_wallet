@@ -7,7 +7,8 @@ import {setCookie, getCookie, delCookie } from '@/util/cookie'
 let token = getCookie('USERTOKEN');
 
 const myAxios = axios.create({
-    baseURL:'/api' ,
+    // baseURL:'/api' ,
+		baseURL:'http://47.104.221.216:8090',
     timeout:60*1000000000,
     // headers: {'token':token},
     validateStatus: function (status) {

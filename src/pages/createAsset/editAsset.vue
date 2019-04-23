@@ -173,7 +173,7 @@
 								this.$router.go(-1);
 							},1500)
 						}else{
-							var msg = data.detail || '编辑失败'
+							var msg = data.error || '编辑失败'
 							this.$message ({
 								message: msg,
 								type: 'warning'

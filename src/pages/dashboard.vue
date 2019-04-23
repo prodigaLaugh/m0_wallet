@@ -115,49 +115,49 @@
 import myHeader from '@/components/header';
 
 export default{
-		created(){
-			this.getAddressLists()
-			this.getTransationLists()
-		},
-		components: {  
-			myHeader
+	created(){
+		this.getAddressLists()
+		this.getTransationLists()
+	},
+	components: {  
+		myHeader
     },
     data(){
         return {
-						addressLists:[],
-						transactionLists:[]
+			addressLists:[],
+			transactionLists:[]
         }
     },
     methods:{
-			aa(){
-				console.log(111)
-			},
-			getAddressLists(){
-				let url = `/list_addresses`;
-				let params = {
-					account_id:'0N5TFQLUG0A02'
-				}
-				this.$http.post(url,params)
-					.then(({data})=>{
-						this.addressLists = data.data.slice(0,6);
-						
-					})
-					.catch(()=>{
-						
-					})
-			},
-			getTransationLists(){
-					let url = `/list_transactions`;
-					
-					this.$http.post(url,{})
-						.then(({data})=>{
-							this.transactionLists = data.data;
-						})
-						.catch((data)=>{
-							
-						})
-					
+		aa(){
+			console.log(111)
+		},
+		getAddressLists(){
+			let url = `/list_addresses`;
+			let params = {
+				account_id:'0N5TFQLUG0A02'
 			}
+			this.$http.post(url,params)
+				.then(({data})=>{
+					this.addressLists = data.data.slice(0,6);
+					
+				})
+				.catch(()=>{
+					
+				})
+		},
+		getTransationLists(){
+				let url = `/list_transactions`;
+				
+				this.$http.post(url,{})
+					.then(({data})=>{
+						this.transactionLists = data.data;
+					})
+					.catch((data)=>{
+						
+					})
+				
+		}
     }
 }
 

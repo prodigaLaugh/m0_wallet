@@ -119,33 +119,54 @@
 							<el-row 
 								:gutter="20"
 								class="consoleList_list"
-								v-for="(list,i) in item.to.address_account"
-								:key="i">
-								<el-col :lg="4">
+								v-if="item.to.address_account.length">
+								<el-col 
+									:style="{lineHeight:45*item.to.address_account.length +'px'}"
+									:lg="4" >
 									<span>收入</span>
 								</el-col>
 								<el-col :lg="10">
 									<span>To</span>
-									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
+									<span>
+										<div 
+											v-for="(list,i) in item.to.address_account"
+											:key="i">{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</div>
+										
+									</span>
 								</el-col>
-								<el-col :lg="6">+ {{item.to.amount}}</el-col>
-								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
+								<el-col 
+									:style="{lineHeight:45*item.to.address_account.length +'px'}"
+									:lg="6">+ {{item.to.amount}}</el-col>
+								<el-col 
+									:style="{lineHeight:45*item.to.address_account.length +'px'}"
+									:lg="4">{{item.to.asset_name||'--'}}</el-col>
 							</el-row>
 							
 							<el-row 
 								:gutter="20"
 								class="consoleList_list"
-								v-for="(list,i) in item.from.address_account"
-								:key="i">
-								<el-col :lg="4">
+								v-if="item.from.address_account.length">
+								<el-col 
+									:style="{lineHeight:45*item.from.address_account.length +'px'}"
+									:lg="4">
 									<span class="out">支出</span>
 								</el-col>
 								<el-col :lg="10">
 									<span>From</span>
-									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
+									<span>
+										<div 
+											v-for="(list,i) in item.from.address_account"
+											:key="i">
+											{{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+										</div>
+									</span>
 								</el-col>
-								<el-col :lg="6">- {{item.to.amount}}</el-col>
-								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
+								<el-col 
+									:style="{lineHeight:45*item.from.address_account.length +'px'}"
+									:lg="6">- {{item.from.amount}}</el-col>
+								<el-col 
+									:style="{lineHeight:45*item.from.address_account.length +'px'}"
+									:lg="4">{{item.to.asset_name||'--'}}</el-col>
 							</el-row>
 							
 						</div>
@@ -232,17 +253,26 @@
 							<el-row 
 								:gutter="20"
 								class="consoleList_list"
-								v-for="(list,i) in item.to.address_account"
-								:key="i">
-								<el-col :lg="4">
+								v-if="item.to.address_account.length">
+								<el-col 
+									:style="{lineHeight:45*item.to.address_account.length +'px'}"
+									:lg="4">
 									<span class="issue">发行</span>
 								</el-col>
 								<el-col :lg="10">
 									<span>To</span>
-									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
+									<span>
+										<div
+											v-for="(list,i) in item.to.address_account"
+											:key="i">{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</div>
+									</span>
 								</el-col>
-								<el-col :lg="6">+ {{item.to.amount}}</el-col>
-								<el-col :lg="4">{{item.to.asset_name||'--'}}</el-col>
+								<el-col 
+									:style="{lineHeight:45*item.to.address_account.length +'px'}"
+									:lg="6">+ {{item.to.amount}}</el-col>
+								<el-col 
+									:style="{lineHeight:45*item.to.address_account.length +'px'}"
+									:lg="4">{{item.to.asset_name||'--'}}</el-col>
 							</el-row>
 						</div>
 						
@@ -281,17 +311,29 @@
 							<el-row 
 								:gutter="20"
 								class="consoleList_list"
-								v-for="(list,i) in item.from.address_account"
-								:key="i">
-								<el-col :lg="4">
+								v-if="item.from.address_account.length">
+								<el-col 
+									:style="{lineHeight:45*item.from.address_account.length +'px'}"
+
+									:lg="4">
 									<span class="retire">销毁</span>
 								</el-col>
 								<el-col :lg="10">
 									<span>From</span>
-									<span>{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</span>
+									<span>
+										<div 
+											v-for="(list,i) in item.from.address_account"
+											:key="i">
+											{{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+										</div>
+									</span>
 								</el-col>
-								<el-col :lg="6">- {{item.from.amount}}</el-col>
-								<el-col :lg="4">{{item.from.asset_name||'--'}}</el-col>
+								<el-col 
+									:style="{lineHeight:45*item.from.address_account.length +'px'}"
+									:lg="6">- {{item.from.amount}}</el-col>
+								<el-col 
+									:style="{lineHeight:45*item.from.address_account.length +'px'}"
+									:lg="4">{{item.from.asset_name||'--'}}</el-col>
 							</el-row>
 							
 						</div>

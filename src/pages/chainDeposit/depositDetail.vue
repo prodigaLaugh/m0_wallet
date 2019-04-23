@@ -118,11 +118,19 @@
 				evidenceDownload.bind(this)(formdata)
 					.then(({data})=>{
 						console.log(data,4444)
-						var blob = new Blob([data],{type: 'application/octet-stream'})
-						var a = document.createElement('a');
-						a.download = file_name;
-						a.href=window.URL.createObjectURL(blob)
-						a.click()
+						var blob = data;
+						var reader = new FileReader();
+						reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
+						reader.onload = function (e) {
+						// 转换完成，创建一个a标签用于下载
+							var a = document.createElement('a');
+							a.download = file_name;
+							a.href = e.target.result;
+							document.body.appendChild(a)
+							a.click()
+							
+							document.body.removeChild(a)
+						}
 						
 						
 						
