@@ -207,11 +207,11 @@
 								message:'载入成功'
 							})
 							
-							this.getLists();
 							
 							setTimeout(()=>{
+								this.$router.push('/main/assetWalletIndex')
 								this.submitFlag = true;
-							},200)
+							},1000)
 							
 						}else{
 							this.$message({

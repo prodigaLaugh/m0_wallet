@@ -38,7 +38,7 @@
 						</el-col>
 						<el-col :lg="10">{{item.asset_id}}</el-col>
 						<el-col :lg="3">{{navIndex===0?'未发行':'已发行'}}</el-col>
-						<el-col :lg="4">
+						<el-col :lg="4" v-if="navIndex===0">
 							<span 
 								class="blue"
 								@click.stop="$router.push({path:'/main/editAsset',query:{id:item.id}})">编辑</span>
@@ -48,6 +48,15 @@
 							<span 
 								@click="delAsset(item.id)"
 								style="color:red">删除</span>
+						</el-col>
+						<el-col :lg="4" v-else>
+							<span 
+								@click="$router.push({path:'/main/assetDetail',query:{id:item.id}})"
+								class="blue">详情</span>
+							<span 
+								@click="$router.push({path:'/main/issue',query:{asset_id:item.asset_id,asset_name:item.asset_name}})"
+								class="blue">增发</span>
+							<span style="display:none;">删除</span>
 						</el-col>
 					</el-row>
 					<el-row v-if="!assetLists.length">
