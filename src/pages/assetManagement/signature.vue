@@ -167,7 +167,7 @@
 								},1500)
 							}else{
 								let element = document.createElement('a')
-								element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data ))
+								element.setAttribute('href', 'data:text/json;charset=utf-8,' + JSON.stringify(data) )
 								element.setAttribute('download', 'data.hex')
 								element.style.display = 'none'
 								document.body.appendChild(element)

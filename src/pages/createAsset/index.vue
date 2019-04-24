@@ -77,22 +77,10 @@
 	
 	export default {
 		created(){
-			var accountInfo = this.getLocalAccountInfo()
-			var account_id = accountInfo.account_id;
 			
-			var formdata = new FormData();
-			formdata.append('account_id', account_id)
-			
+			this.getlists();
 		
-			getAssetLists.bind(this)(formdata)
-				.then(({data})=>{
-					this.allLists = data.data;
-					this.assetLists = this.allLists.asset_unissue ||[]
-					console.log(data,111)
-				})
-				.catch(()=>{
-					
-				})
+			
 		},
 		data(){
 			return {
@@ -104,6 +92,24 @@
 			}
 		},
 		methods:{
+			getlists(){
+				var accountInfo = this.getLocalAccountInfo()
+				var account_id = accountInfo.account_id;
+				
+				var formdata = new FormData();
+				formdata.append('account_id', account_id)
+				
+				getAssetLists.bind(this)(formdata)
+					.then(({data})=>{
+						this.allLists = data.data;
+						this.assetLists = this.allLists.asset_unissue ||[]
+						console.log(data,111)
+					})
+					.catch(()=>{
+						
+					})
+			},
+			
 			changeNav(index){
 				this.navIndex = index;
 				this.assetLists = this.navIndex === 0
@@ -113,11 +119,12 @@
 			delAsset(id){
 				deleteAsset.bind(this)(id)
 					.then(({data})=>{
-						if(data=='ok'){
+						if(data=='OK'){
 							this.$message ({
 								message: '删除成功',
 								type: 'success'
 							});
+							this.getlists();
 						}else{
 							this.$message ({
 								message: data,
