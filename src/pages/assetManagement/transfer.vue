@@ -30,7 +30,7 @@
 								<el-option
 								  v-for="item in address"
 								  :key="item.address_id"
-								  :label="item.address_id"
+								  :label="item.address_id?item.address_id:'全部'"
 								  :value="item.address_id">
 								</el-option>
 							  </el-select>
@@ -177,7 +177,7 @@
 			var params = {account_alias:account_alias}
 			getAddressLists.bind(this)(params)
 				.then(({data})=>{
-					this.address = data.data;
+					this.address = [{address_id:''},...data.data];
 				})
 		},
 		data(){

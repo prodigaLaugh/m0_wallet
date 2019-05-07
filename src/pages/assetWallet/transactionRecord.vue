@@ -33,157 +33,14 @@
 							v-for="(item,index) in lists"
 							:key="index">
 							
-							<div class="inner" v-if="item.tx_type==1">
-								<el-row 
-									class="consoleListIDWrap" 
-									:gutter="20">
-									<el-col :lg="12">
-										<span>交易ID</span>
-										<span>{{item.tx_id}}</span>
-										
-										<span>已确认</span>
-									</el-col>
-									<el-col :lg="12">
-										{{item.to_time}}
-									</el-col>
-								</el-row>
-								<el-row 
-									:gutter="20"
-									class="consoleList_list"
-									v-if="item.to.length">
-									<el-col 
-										:style="{lineHeight:45*item.to.length +'px'}"
-										:lg="4" >
-										<span>收入</span>
-									</el-col>
-									<el-col :lg="10">
-										<span>To</span>
-										<span>
-											<div 
-												v-for="(list,i) in item.to"
-												:key="i">{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</div>
-											
-										</span>
-									</el-col>
-									<el-col 
-										:style="{lineHeight:45*item.to.length +'px'}"
-										:lg="6">+ {{item.asset_amount}}</el-col>
-									<el-col 
-										:style="{lineHeight:45*item.to.length +'px'}"
-										:lg="4">{{asset_name||'--'}}</el-col>
-								</el-row>
-								
-								<el-row 
-									:gutter="20"
-									class="consoleList_list"
-									v-if="item.from.length">
-									<el-col 
-										:style="{lineHeight:45*item.from.length +'px'}"
-										:lg="4">
-										<span class="out">支出</span>
-									</el-col>
-									<el-col :lg="10">
-										<span>From</span>
-										<span>
-											<div 
-												v-for="(list,i) in item.from"
-												:key="i">
-												{{list.Address | interceptStr}}（{{list.account | interceptStr}}）
-											</div>
-										</span>
-									</el-col>
-									<el-col 
-										:style="{lineHeight:45*item.from.length +'px'}"
-										:lg="6">- {{item.asset_amount}}</el-col>
-									<el-col 
-										:style="{lineHeight:45*item.from.length +'px'}"
-										:lg="4">{{asset_name||'--'}}</el-col>
-								</el-row>
+							<div v-if="item.tx_type==1">
+								<transfer :item="item" :asset_name="asset_name"/>
 							</div>
-							
-							<div class="inner" v-if="item.tx_type==2">
-								<el-row 
-									class="consoleListIDWrap" 
-									:gutter="20">
-									<el-col :lg="12">
-										<span>交易ID</span>
-										<span>{{item.tx_id}}</span>
-										
-										<span>已确认</span>
-									</el-col>
-									<el-col :lg="12">
-										{{item.to_time}}
-									</el-col>
-								</el-row>
-								
-								<el-row 
-									:gutter="20"
-									class="consoleList_list"
-									v-if="item.to.length">
-									<el-col 
-										:style="{lineHeight:45*item.to.length +'px'}"
-										:lg="4">
-										<span class="issue">发行</span>
-									</el-col>
-									<el-col :lg="10">
-										<span>To</span>
-										<span>
-											<div
-												v-for="(list,i) in item.to"
-												:key="i">{{list.Address | interceptStr}}（{{list.account | interceptStr}}）</div>
-										</span>
-									</el-col>
-									<el-col 
-										:style="{lineHeight:45*item.to.length +'px'}"
-										:lg="6">+ {{item.asset_amount}}</el-col>
-									<el-col 
-										:style="{lineHeight:45*item.to.length +'px'}"
-										:lg="4">{{asset_name||'--'}}</el-col>
-								</el-row>
+							<div v-if="item.tx_type==2">
+								<issue :item="item" :asset_name="asset_name"/>
 							</div>
-							
-							<div class="inner" v-if="item.tx_type==3">
-								<el-row 
-									class="consoleListIDWrap" 
-									:gutter="20">
-									<el-col :lg="12">
-										<span>交易ID</span>
-										<span>{{item.tx_id}}</span>
-										
-										<span>已确认</span>
-									</el-col>
-									<el-col :lg="12">
-										{{item.to_time}}
-									</el-col>
-								</el-row>
-								
-								<el-row 
-									:gutter="20"
-									class="consoleList_list"
-									v-if="item.from.length">
-									<el-col 
-										:style="{lineHeight:45*item.from.length +'px'}"
-								
-										:lg="4">
-										<span class="retire">销毁</span>
-									</el-col>
-									<el-col :lg="10">
-										<span>From</span>
-										<span>
-											<div 
-												v-for="(list,i) in item.from"
-												:key="i">
-												{{list.Address | interceptStr}}（{{list.account | interceptStr}}）
-											</div>
-										</span>
-									</el-col>
-									<el-col 
-										:style="{lineHeight:45*item.from.length +'px'}"
-										:lg="6">- {{item.asset_amount}}</el-col>
-									<el-col 
-										:style="{lineHeight:45*item.from.length +'px'}"
-										:lg="4">{{asset_name||'--'}}</el-col>
-								</el-row>
+							<div v-if="item.tx_type==3">
+								<retire :item="item" :asset_name="asset_name"/>
 							</div>
 							
 						</div>
@@ -204,11 +61,19 @@
 	import { getAssetRecords, getAssetRecordsByAddress } from '@/util/server.js'
 	import Vue from 'vue';
 	import { Row, Col } from 'element-ui';
+	import Transfer from '@/components/transactionRecords/transfer.vue'
+	import Issue from '@/components/transactionRecords/issue.vue'
+	import Retire from '@/components/transactionRecords/retire.vue'
 		
 	Vue.use(Row);
 	Vue.use(Col);
 	
 	export default {
+		components:{
+			Transfer,
+			Issue,
+			Retire
+		},
 		created(){
 			var accountInfo = this.getLocalAccountInfo()
 			var account_id = accountInfo.account_id;

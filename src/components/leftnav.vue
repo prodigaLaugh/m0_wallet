@@ -40,17 +40,17 @@
 			}
 		},
 		created(){
-			setInterval(()=>{
-				getSystemStatus.bind(this)()
-					.then(({data})=>{
-						console.log(data,222)
-						if(data.status=='success'){
-							var data = data.data;
-							this.$store.commit('changeSystemStatus',data)
-							this.listeningLength = parseInt(data.NetInfo.current_block/data.NetInfo.highest_block)*100;
-						}
-					})
-			},1000)
+// 			setInterval(()=>{
+// 				getSystemStatus.bind(this)()
+// 					.then(({data})=>{
+// 						console.log(data,222)
+// 						if(data.status=='success'){
+// 							var data = data.data;
+// 							this.$store.commit('changeSystemStatus',data)
+// 							this.listeningLength = parseInt(data.NetInfo.current_block/data.NetInfo.highest_block)*100;
+// 						}
+// 					})
+// 			},1000)
 		},
 		computed: {
 			systemStatus () {

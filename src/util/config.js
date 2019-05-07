@@ -1,5 +1,5 @@
-global.BASEURL1 = 'http://47.104.221.216:8090' ;
-// global.BASEURL1 = '/api'
+// global.BASEURL1 = 'http://47.104.221.216:8090' ;
+global.BASEURL1 = '/api'
 // global.BASEURL1 = 'http://'+location.hostname+':8000/api' ;
 
 global.BASEURL2 = 'http://192.168.6.225:8080/v1/query' ;

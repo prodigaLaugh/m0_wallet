@@ -44,7 +44,7 @@
 									<div 
 										:class="{disable:item.is_single_used==1}"
 										v-if="item.is_single_used==1">创建单签钱包</div>
-									<div v-else @click="$router.push('/main/createWalletS')">创建单签钱包</div>
+									<div v-else @click="createWallet(item,'/main/createWalletS')">创建单签钱包</div>
 									
 								</el-col>
 							</el-row>
@@ -61,7 +61,7 @@
 								</el-col>
 
 								<el-col :lg="4" :md="4" class="right">
-									<div @click="$router.push('/main/createWalletM')">创建多签钱包</div>
+									<div @click="createWallet(item,'/main/createWalletM')">创建多签钱包</div>
 								</el-col>
 							</el-row>
 
@@ -138,6 +138,10 @@
 			}
 		},
 		methods:{
+			createWallet(item,url){
+				localStorage.privateItem = JSON.stringify(item);
+				this.$router.push({path:url,query:{from:'privatekey'}})
+			},
 			getlist(){
 				let user_name = localStorage.USERTOKEN;
 				let para  = {user_name: user_name}

@@ -62,6 +62,12 @@ export async function  evidenceDownload(para){//文件下载
 	let result = await this.$http.post(url, para,{responseType: 'blob'})
 	return result;
 }
+export async function  evidenceVerifyFile(para){//校验文件
+	let url = `/v1/evidence/verify_evidence`;
+	let result = await this.$http.post(url, para)
+	return result;
+}
+
 
 //生成邀请码接口
 export async function  generateInviteCode(para){

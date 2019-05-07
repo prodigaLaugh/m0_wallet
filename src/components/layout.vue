@@ -186,7 +186,7 @@
 	.consoleListsWrap{
 		.consoleListWrap{
 			margin-bottom:30px;
-			>div,>.inner>div{
+			.inner>div{
 				border:1px solid #ddd;
 				margin-top:-1px;
 				padding:0 10px;

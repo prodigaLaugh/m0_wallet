@@ -120,9 +120,12 @@
 			var accountInfo = this.getLocalAccountInfo()
 			var account_id = accountInfo.account_id;
 			var account_type = accountInfo.account_type;
+			var user_name = localStorage.USERTOKEN;
 			
 			this.params.account_id = account_id;
 			this.params.account_type = account_type;
+			this.params.user_name = user_name;
+			
 		},
 		data(){
 			return {
@@ -131,6 +134,7 @@
 					myfile:'',
 					password:'',
 					evidence_name:'',
+					user_name:'',
 					associate_evidence:'',
 					evidence_data:'',
 					tx_info:'',
@@ -151,12 +155,14 @@
 				
 				formdata.append('account_id', para.account_id);
 				formdata.append('account_type',para.account_id);
+				formdata.append('user_name',para.user_name);
 				
 				formdata.append('password',para.password);
 				formdata.append('evidence_name',para.evidence_name);
 				formdata.append('associate_evidence',para.associate_evidence);
 				formdata.append('tx_info',para.tx_info);
 				formdata.append('evidence_data',para.evidence_data);
+				
 				
 				if(!this.submitFlag){
 					return false;

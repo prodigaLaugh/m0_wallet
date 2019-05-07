@@ -56,7 +56,8 @@
 							<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
 						</el-col>
 						<el-col :lg="6" class="right">
-							<div @click="zairu(item)">载入</div>
+							<div @click="zairu(item)" v-if="item.status==0">载入</div>
+							<div v-else>载入</div>
 							<div 
 								@click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
 							<div @click="$router.push('/main/backupType')">备份</div>
@@ -207,7 +208,7 @@
 								message:'载入成功'
 							})
 							
-							
+							this.getLists();
 							setTimeout(()=>{
 								this.$router.push('/main/assetWalletIndex')
 								this.submitFlag = true;

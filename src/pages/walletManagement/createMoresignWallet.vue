@@ -132,7 +132,13 @@
 					
 					var data = data.data;
 					this.lists = data;
-					this.privatekey = data[0].xpub
+					if(this.$route.query.from){
+						var list = JSON.parse(localStorage.privateItem);
+						this.privatekey = list.xpub
+					}else{
+						this.privatekey = data[0].xpub
+					}
+					
 					
 				})
 		

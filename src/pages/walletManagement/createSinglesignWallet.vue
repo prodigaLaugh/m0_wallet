@@ -12,7 +12,7 @@
 					
 				<div class="commonTitle_two">
 					创建单签钱包
-					<span>返回</span>
+					<span @click="$router.go(-1)">返回</span>
 				</div>
 				
 				<div class="transferInpWrap">
@@ -77,6 +77,12 @@
 				.then(({data})=>{
 					console.log(data,8887)
 					this.lists = data.data;
+					if(this.$route.query.from){
+						var list = JSON.parse(localStorage.privateItem);
+						this.params.xpub= list.xpub
+					}else{
+						this.params.xpub = data.data[0].xpub
+					}
 				})
 		},
 		data(){
