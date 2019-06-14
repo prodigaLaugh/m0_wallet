@@ -4,7 +4,7 @@
 		<div class="loginContainer">
 
 		
-			<div class="loginTitle">M0资产存证管理平台</div>
+			<div class="loginTitle">M0中心化钱包</div>
 			<div class="loginDescription">注册/sign up</div>
 
 			<div class="loginInpWrap">

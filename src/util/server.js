@@ -173,7 +173,7 @@ export async function  transferSinglesign(para){//转账单签
 }
 
 export async function  queryAssetAmount(para){//查询资产余额
-	let url = `/v1/asset/get_balance_address`;
+	let url = `/v1/asset/get_assetbalance_address`;
 	let result = await this.$http.post(url, Object.assign({}, baseParams, para) )
 	return result;
 }
