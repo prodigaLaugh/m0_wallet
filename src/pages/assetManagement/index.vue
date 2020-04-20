@@ -715,6 +715,9 @@ Vue.use(InfiniteScroll);
 
 <style lang="scss">
 	.consoleIndexWrap{
+    .consoleListsWrap{
+      padding:2px 10px;
+    }
 		.consoleIndexOperWrap>div:nth-of-type(2){
 			display:flex;
 			justify-content: space-between;
