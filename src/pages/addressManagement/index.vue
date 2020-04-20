@@ -3,17 +3,17 @@
 		<el-row>
 			<el-col :lg="20" :md="22">
 				<div class="commonTitle_one">地址管理</div>
-					
+
 				<div class="commonTitle_two">
 					账户地址
 					<!-- <span @click="dialogVisible=true">创建地址</span> -->
 					<span @click="create">创建地址</span>
-					
+
 				</div>
-				
+
 				<div class="addressManagementIndexListsWrap">
-					
-					<el-row 
+
+					<el-row
 						v-for="(item, index) in lists"
 						:key="index"
 						class="addressManagementIndexListWrap">
@@ -22,7 +22,7 @@
 							<div>
 								<span>包含资产：</span>
 								<div>
-									<span  
+									<span
 										v-for="(list,i) in item.asset_names"
 										:key="i">{{list}}</span>
 								</div>
@@ -30,26 +30,37 @@
 						</el-col>
 						<el-col :lg="12" class="addressManagementIndexListRight">
 							<div>
-								<span 
-									class="tag-read blue" 
-									:data-clipboard-text="item.address_id" 
+								<span
+									class="tag-read blue"
+									:data-clipboard-text="item.address_id"
 									@click="copy">拷贝地址</span>
 								<span @click="$router.push('/main/transfer')">发起转账</span>
 								<span @click="$router.push('/main/issue')">发行资产</span>
 							</div>
 						</el-col>
 					</el-row>
-					
+
+          <div class="paginationWrap" v-if="lists.length">
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :total="params.total"
+              :page-size="params.page_size"
+              @current-change="pageChange"
+             >
+            </el-pagination>
+          </div>
+
 					<div class="noresult" v-if="!lists.length">暂无数据</div>
-					
-					
-					
+
+
+
 				</div>
-		
+
 			</el-col>
 		</el-row>
-		
-		
+
+
 		<el-dialog
 		  title="请输入账户密码"
 		  :center="true"
@@ -66,7 +77,7 @@
 		</el-dialog>
 
 
-		
+
 	</div>
 </template>
 
@@ -75,18 +86,21 @@
 
 	import Vue from 'vue';
 	import { Row, Col, Button } from 'element-ui';
-	
+
 	import Clipboard from 'clipboard'
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Button);
-	
-	
-	
+
+
+
 	export default {
 		created(){
 			this.accountInfo = this.getLocalAccountInfo();
+      var account_alias = this.accountInfo.account_alias;
+      this.params.account_alias = account_alias;
+
 			this.getLists();
 		},
 		data(){
@@ -94,34 +108,46 @@
 				accountInfo:'',
 				lists:[],
 				dialogVisible:false,
-				value:''
+				value:'',
+
+        params:{
+          page: 1,
+          page_size: 10,
+          total: 0,
+          account_alias:''
+        }
 			}
 		},
 		methods:{
+      pageChange(currentPage){
+        this.params.page = currentPage;
+        this.getLists()
+      },
 			getLists(){
-				var account_alias = this.accountInfo.account_alias
-				
-				var params = {account_alias:account_alias}
-				getAddressLists.bind(this)(params)
+
+
+
+				getAddressLists.bind(this)(this.params)
 					.then(({data})=>{
-						if(data.status=='success'){
-							this.lists = data.data;
+						const { list_address: lists, total_item: total } = data.data
+						if(lists){
+						  this.lists.splice(0,999, ...lists)
+						  this.params.total = total
 						}else{
-							this.lists.splice(0,999);
-						}
-						
-						console.log(data,111)
+						  this.lists.splice(0,999);
+             }
+
 					})
 			},
 			create(){
-				
+
 				var account_alias = this.accountInfo.account_alias;
 				var account_id = this.accountInfo.account_id;
 				let para = {
 					account_alias:account_alias,
 					account_id:account_id
 				};
-				
+
 				createAddress.bind(this)(para)
 					.then(({data})=>{
 						console.log(data,666)
@@ -164,8 +190,8 @@
 
 <style lang="scss">
 	.addressManagementIndexWrap{
-		
-		
+
+
 	}
-	
+
 </style>

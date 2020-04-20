@@ -4,7 +4,7 @@
 		<div class="loginContainer">
 
 		
-			<div class="loginTitle">M0中心化钱包</div>
+			<div class="loginTitle">TK中心化钱包</div>
 			<div class="loginDescription">登录/Login</div>
 
 			<div class="loginInpWrap">

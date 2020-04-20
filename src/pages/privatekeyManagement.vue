@@ -2,18 +2,18 @@
 	<div class="outerWrap privatekeyWrap">
 		<el-row>
 			<el-col :lg="20" :md="22">
-				
+
 				<div class="commonTitle_one">秘钥管理</div>
 				<div class="privatekeyInnerWrap">
 					<div class="commonTitle_two">
 						我的秘钥
 						<span @click="dialogFormVisible=true">新建秘钥</span>
 					</div>
-					
-					
+
+
 					<div class="privatekeyListsWrap">
-						<div 
-							v-for="(item,index) in lists"  
+						<div
+							v-for="(item,index) in lists"
 							class="privatekeyListWrap"
 							:key="index">
 							<el-row class="privatekeyListTitleWrap">
@@ -22,9 +22,9 @@
 									<div>
 										公钥：{{item.xpub | interceptPubStr}}
 										<span></span>
-										<span 
-											class="tag-read blue" 
-											:data-clipboard-text="item.xpub" 
+										<span
+											class="tag-read blue"
+											:data-clipboard-text="item.xpub"
 											@click="copy">拷贝公钥</span>
 									</div>
 								</el-col>
@@ -33,7 +33,7 @@
 								<el-col :lg="20" :md="20" class="left">
 									<div>关联单签钱包：</div>
 									<div>
-										<span 
+										<span
 											v-if="list.sign_key_num == 1"
 											v-for="(list,i) in item.associate_account"
 											:key="i">{{list.account_alias}}</span>
@@ -41,11 +41,11 @@
 								</el-col>
 
 								<el-col :lg="4" :md="4" class="right">
-									<div 
+									<div
 										:class="{disable:item.is_single_used==1}"
 										v-if="item.is_single_used==1">创建单签钱包</div>
 									<div v-else @click="createWallet(item,'/main/createWalletS')">创建单签钱包</div>
-									
+
 								</el-col>
 							</el-row>
 
@@ -53,7 +53,7 @@
 								<el-col :lg="20" :md="20" class="left">
 									<div>关联多签钱包：</div>
 									<div>
-										<span 
+										<span
 											v-if="list.sign_key_num != 1"
 											v-for="(list,i) in item.associate_account"
 											:key="i">{{list.account_alias}}</span>
@@ -72,23 +72,23 @@
 
 
 					<el-dialog title="新建秘钥" :visible.sync="dialogFormVisible" :center="true">
-					   
+
 					   <div class="dialogContentWrap">
 						   <div class="title">请设置密钥别称</div>
 						   <div class="tips">密钥别称是用来区分密钥的标签，该信息不会在区块链上保存</div>
-						   <el-input 
-								v-model="params.alias" 
+						   <el-input
+								v-model="params.alias"
 								placeholder="输入别称"></el-input>
 
 						   <div class="title">请设置密钥密码</div>
 						   <div class="tips">⚠️请设置至少10位字母数字混合的密码，密钥是根据你输入的密码生成的管理资产的加密凭证。请妥善保管、备份密码，忘记密码将导致钱包资产的损失。</div>
-						   <el-input 
-								v-model="params.password" 
+						   <el-input
+								v-model="params.password"
 								placeholder="输入密码"
 								type="password"
 								autocomplete="new-password"></el-input>
-						   <el-input 
-								v-model="params.againPassword" 
+						   <el-input
+								v-model="params.againPassword"
 								placeholder="请再次输入密码"
 								type="password"
 								autocomplete="new-password"></el-input>
@@ -98,12 +98,12 @@
 							<el-button type="primary" @click="create">确 定</el-button>
 						</div>
 					</el-dialog>
-					
+
 				</div>
-		
+
 			</el-col>
 		</el-row>
-		
+
 	</div>
 </template>
 
@@ -111,15 +111,15 @@
 	import Clipboard from 'clipboard'
 	import Vue from 'vue';
 	import { Row, Col, Dialog, Input, Button } from 'element-ui';
-	
+
 	import { getPrivateKeyLists, createPrivateKey } from '@/util/server.js'
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
     Vue.use(Input);
     Vue.use(Button);
 	Vue.use(Dialog);
-	
+
 	export default {
 		created(){
 			this.getlist();
@@ -128,7 +128,7 @@
 			return {
 				lists:[],
                 dialogFormVisible:false,
-				
+
 				submitFlag:true,
 				params:{
 					alias: "",
@@ -145,16 +145,17 @@
 			getlist(){
 				let user_name = localStorage.USERTOKEN;
 				let para  = {user_name: user_name}
-				
+
 				getPrivateKeyLists.bind(this)(para)
 					.then(({data})=>{
+            console.log(data,111)
 						if(data.status =='success'){
 							if(data.data){
-								this.lists.splice(0,999,...data.data);
+								this.lists.splice(0,999,...data.data.list_keys);
 							}
-							
+
 						}
-						
+
 					})
 			},
 			copy() {
@@ -176,11 +177,37 @@
 		    },
 			create(){
 				let para  = Object.assign({},this.params)
+        const { alias, password, againPassword } = this.params;
+          
+        if(!alias){
+          this.$message({
+          	type:'warning',
+          	message:'请输入密钥别称'
+          })
+          return;
+        }else if(
+          !/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z\d]{10,}$/.test(password) ||
+          !/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z\d]{10,}$/.test(againPassword)
+        ){
+          this.$message({
+          	type:'warning',
+          	message:'请输入正确格式的密码'
+          })
+          return;
+        }else if(password !== againPassword ){
+          this.$message({
+          	type:'warning',
+          	message:'两次密码不一致'
+          })
+          return;
+        }
+
+
 				if(!this.submitFlag){
 					return false;
 				}
 				this.submitFlag = false;
-				
+
 				createPrivateKey.bind(this)(para)
 					.then(({data})=>{
 						if(data.status == 'success'){
@@ -195,7 +222,7 @@
 								this.params.alias  = '';
 								this.params.password  = '';
 								this.params.againPassword  = '';
-									
+
 							},1500)
 						}else{
 							var msg = data.error
@@ -207,14 +234,14 @@
 						}
 						console.log(data,111)
 					})
-				
+
 			}
 		},
 	}
 </script>
 
 <style lang="scss">
-	
+
 	.privatekeyWrap{
         .privatekeyListWrap{
             background:#eee;
@@ -294,7 +321,7 @@
 						&.disable{
 							background:#999;
 							color:#555;
-							
+
 						}
                     }
                 }
@@ -302,7 +329,7 @@
 
 
         }
-        
+
 
     }
 </style>

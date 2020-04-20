@@ -77,14 +77,17 @@
 			getLists(){
 				var accountInfo = this.getLocalAccountInfo();
 				var account_alias = accountInfo.account_alias
-				var params = {account_alias:account_alias}
+				var params = {account_alias:account_alias, page: 1,
+				    page_size: 999999}
 				getAddressLists.bind(this)(params)
 					.then(({data})=>{
-						if(data.status=='success'){
-							this.lists = data.data;
-						}else{
-							this.lists.splice(0,999);
-						}
+						const lists = data.data.list_address;
+            if(lists){
+              this.address.splice(0,99999, {address_id:''},...lists) ;
+            }else{
+              this.address.splice(0,99999, {address_id:''}) ;
+            }
+            
 						
 						console.log(data,111)
 					})

@@ -1,4 +1,7 @@
-global.BASEURL1 = 'http://47.104.221.216:8090' ;
+global.BASEURL1 = 'http://127.0.0.1:8077' ;
+
+global.DEVURL = 'http://192.168.3.107:8082'; //本地开发接口地址
+global.PRODUCTURL = 'http://192.168.3.96:8082'; //线上接口地址
 // global.BASEURL1 = '/api'
 // global.BASEURL1 = 'http://'+location.hostname+':8000/api' ;
 

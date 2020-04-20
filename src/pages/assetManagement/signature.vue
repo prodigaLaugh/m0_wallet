@@ -12,19 +12,19 @@
 				</div>
 			</el-col>
 		</el-row>
-		
-			
+
+
 		<div class="commonTitle_two">签名交易</div>
-		
+
 		<el-row>
 			<el-col :lg="20" :md="22">
-				
+
 				<div class="signatureInpWrap">
 					<input type="file" @change="selectFile">
 					<div v-if="!uploadFlag">+上传签名文件</div>
 					<div v-else>{{uploadParams.filename}}</div>
 				</div>
-				
+
 				<div class="signatureDetailWrap" v-if="uploadFlag">
 					<div class="title">交易信息</div>
 					<div class="content">
@@ -34,7 +34,7 @@
 						<div>交易金额：{{uploadFileDetail.amount }}</div>
 						<div>
 								从：
-								<div 
+								<div
 									v-for="(item,index) in uploadFileDetail.from"
 									:key="index">
 									{{item.Address||'--'}}（{{item.account||'--'}})
@@ -42,7 +42,7 @@
 						</div>
 						<div>
 							到：
-							<div 
+							<div
 								v-for="(item,index) in uploadFileDetail.to"
 								:key="index">
 								{{item.Address||'--'}}（{{item.account||'--'}})
@@ -50,24 +50,24 @@
 						</div>
 						<div>需要签名：{{uploadFileDetail.need_signnum}}</div>
 						<div>已完成签名：{{uploadFileDetail.complete_signnum}}</div>
-		
+
 					</div>
-					
-					
+
+
 					<div class="title">请输入密码</div>
-					<el-input 
-						v-model="uploadParams.password" 
+					<el-input
+						v-model="uploadParams.password"
 						placeholder="请输入密码"
 						autocomplete="new-password"
 						type="password"></el-input>
-						
+
 					<div class="subBtn" @click="signFn">{{isTxFlag?'提交交易':'生成签名文件'}}</div>
-					
+
 				</div>
-						
+
 			</el-col>
 		</el-row>
-		
+
 	</div>
 </template>
 
@@ -81,62 +81,62 @@
 	Vue.use(Col);
 	Vue.use(Input);
 
-	
+
 	export default {
 		created(){
 			var accountInfo = this.getLocalAccountInfo()
 			var account_id = accountInfo.account_id;
 			var account_type = accountInfo.account_type;
 			var user_name = localStorage.USERTOKEN;
-			
+
 			this.uploadParams.account_id = account_id;
 			this.uploadParams.account_type = account_type;
 			this.uploadParams.user_name = user_name;
-			
+
 		},
 		data(){
 			return {
 				uploadFlag:false,
 				uploadFileDetail:{},
-				
+
 				isTxFlag:false,
 				uploadParams:{
 					filename:'',
 					signfile:'',
 					password:''
 				},
-				
+
 
 			}
 		},
 		methods:{
 			selectFile(e){
-				
-				
+
+
 				var  target= e.target
 				var file = target.files[0];
 				this.uploadParams.filename = file.name;
 				this.uploadParams.signfile = file;
-				
+
 				var formdata = new FormData();
 				formdata.append('signfile',this.uploadParams.signfile)
 				formdata.append('user_name',this.uploadParams.user_name)
 				formdata.append('account_id',this.uploadParams.account_id)
 				formdata.append('account_type',this.uploadParams.account_type)
-				
-		
-					
+
+
+
 				signUpload.bind(this)(formdata)
 					.then(({data})=>{
-						console.log(data,111)
+					
 						if(data.status=='success'){
 							this.uploadFlag = true;
 							this.uploadFileDetail = data.data;
-							
+
 							var nums = this.uploadFileDetail.complete_signnum ? this.uploadFileDetail.complete_signnum.split('/') :[];
 							var leftNum = parseInt(nums[0]);
 							var rightNum = parseInt(nums[1]) ;
-							this.isTxFlag = (rightNum - leftNum)==1 
+							this.isTxFlag = (rightNum - leftNum)==1
 						}else{
 							this.$message({
 								type:'warning',
@@ -153,7 +153,7 @@
 				formdata.append('account_type',this.uploadParams.account_type)
 				formdata.append('password',this.uploadParams.password)
 
-				
+
 				sign.bind(this)(formdata)
 					.then(({data})=>{
 						if(data.status == 'success'){
@@ -189,7 +189,7 @@
 
 <style lang="scss">
 	.signatureWrap{
-		
+
 		.signatureInpWrap{
 			position:relative;
 			>div{
@@ -210,7 +210,7 @@
 				cursor:pointer;
 			}
 		}
-		
+
 		.signatureDetailWrap{
 			.title{
 				padding:30px 0 4px;
@@ -236,5 +236,5 @@
 			}
 		}
 	}
-	
+
 </style>

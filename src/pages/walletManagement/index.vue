@@ -2,11 +2,11 @@
 	<div class="outerWrap accountIndexWrap">
 		<el-row>
 			<el-col :lg="20" :md="22">
-			
+
 				<div class="commonTitle_one">钱包管理</div>
 				<!-- <div class="addAccountWrap">
 					<div class="commonTitle_two">添加账户</div>
-					
+
 					<el-row  class="row-bg" :gutter="30" justify="center" style="margin-right:0;">
 					  <el-col :lg="8" >
 								<div class="addAccountItem" @click="$router.push('/main/createAccout')">新建账户</div>
@@ -19,7 +19,7 @@
 						</el-col>
 					</el-row>
 				</div> -->
-				
+
 				<div class="selectAccountWrap">
 					<div class="commonTitle_two">
 						我的钱包
@@ -28,13 +28,13 @@
 							<span @click="createFlag=true">创建钱包</span>
 						</div>
 					</div>
-					
-					
-					<el-row  
+
+
+					<el-row
 						v-for="(item,index) in lists"
 						:key="index"
-						:class="['selectAccountItem',{use:item.status!=0}]" 
-						type="flex" 
+						:class="['selectAccountItem',{use:item.status!=0}]"
+						type="flex"
 						justify="center">
 						<div class="leftTag">
 							<span v-if="item.status==0">未&#10;使{{'\n'}}用</span>
@@ -48,7 +48,7 @@
 							<div class="blue leftText">
 								<span>关联密钥:</span>
 								<div>
-									<div  
+									<div
 										v-for="(list,i) in item.xpubs"
 										:key="i">{{list}}</div>
 								</div>
@@ -58,23 +58,23 @@
 						<el-col :lg="6" class="right">
 							<div @click="zairu(item)" v-if="item.status==0">载入</div>
 							<div v-else>载入</div>
-							<div 
+							<div
 								@click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
 							<div @click="$router.push('/main/backupType')">备份</div>
 							<div @click="del(item,index)">删除</div>
 						</el-col>
 					</el-row>
-					
+
 					<div class="noresult" v-if="!lists.length">暂无数据</div>
-				
-					
-					
+
+
+
 				</div>
-		
+
 			</el-col>
 		</el-row>
-		
-		
+
+
 		<!-- 点击秘钥管理输入密码弹窗 -->
 		<el-dialog
 		  title="请输入账户密码"
@@ -90,7 +90,7 @@
 			<el-button type="primary" @click="openDialogFlag = false">确 定</el-button>
 		  </span>
 		</el-dialog>
-		
+
 		<!-- 点击秘钥管理输入密码弹窗 -->
 		<el-dialog
 		  title="请输选择创建钱包的类型"
@@ -100,7 +100,7 @@
 		  <div class="selectWalletWrap">
 			  <el-row>
 				  <el-col :md="10">
-					  <div 
+					  <div
 						@click="changeWalletType(0)"
 						:class="['contentWrap',{active:walletIndex===0}]">
 						  <div class="title">单签钱包</div>
@@ -123,37 +123,37 @@
 			<el-button type="primary" @click="createWallet">确 定</el-button>
 		  </span>
 		</el-dialog>
-		
+
 	</div>
 </template>
 
 <script>
-	
+
 	import Vue from 'vue';
 	import { Row, Col, Input, Button, Dialog } from 'element-ui';
-	
+
 	import { getAccountLists, loadWallet, deleteWallet } from '@/util/server.js'
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Button);
 	Vue.use(Input);
 	Vue.use(Dialog);
-	
+
 	export default {
 		created(){
 			this.getLists()
-		
+
 		},
 		data(){
 			return {
 				submitFlag:true,
 				createFlag:false,
 				walletIndex:0,
-				
+
 				openDialogFlag:false,
 				value:'',
-				
+
 				lists:[],
 			}
 		},
@@ -189,7 +189,7 @@
 					})
 			},
 			zairu(item){
-				var account_alias = item.account_alias; 
+				var account_alias = item.account_alias;
 				var pre_account_alias = this.getLocalAccountInfo().account_alias||'';
 				let para = {
 					account_alias: account_alias,
@@ -207,21 +207,21 @@
 								type:'success',
 								message:'载入成功'
 							})
-							
+
 							this.getLists();
 							setTimeout(()=>{
 								this.$router.push('/main/assetWalletIndex')
 								this.submitFlag = true;
 							},1000)
-							
+
 						}else{
 							this.$message({
 								type:"warning",
 								message:data.error||'载入失败'
 							})
 						}
-						
-						
+
+
 					})
 			},
 			changeWalletType(num){
@@ -238,29 +238,28 @@
 // 				let params = {user_name:'user1'||user_name}
 				getAccountLists.bind(this)()
 					.then(({data})=>{
-						console.log(data,11)
+
 						
-						localStorage.accountInfo = JSON.stringify({})
 						if(data.status=='success'){
 							this.$store.commit('changeAccountAlias','');
 							if(data.data){
-								var lists = data.data;
-								
+
+								var lists = data.data.list_accounts;
 								lists.map((item, index)=>{
 									if(item.status==1){
 										localStorage.accountInfo  = JSON.stringify(item);
 										this.$store.commit('changeAccountAlias',item.account_alias);
 									}
-									
+
 								})
 								this.lists.splice(0,999,...lists);
 							}
-							
-							
+
+
 						}else{
 							this.lists.splice(0,999);
 						}
-						
+
 					})
 			}
 		},
@@ -274,7 +273,7 @@
 			justify-content: space-between;
 			align-items: center;
 			padding-bottom:10px;
-			
+
 			.addAccountItem{
 				background:$blue;
 				cursor:pointer;
@@ -286,7 +285,7 @@
 				text-align:center;
 			}
 		}
-		
+
 		.selectAccountWrap{
 			.selectAccountItem{
 				border:4px solid transparent;
@@ -300,9 +299,9 @@
 					>.leftTag{
 						background:rgba(0, 0, 0, 1);
 					}
-					
+
 				}
-				
+
 				>.leftTag{
 					position:absolute;
 					left:-4px;
@@ -352,7 +351,7 @@
 								text-overflow: ellipsis;
 								overflow:hidden;
 							}
-							
+
 						}
 						&.blue{
 							font-weight:bold;
@@ -408,5 +407,5 @@
 			}
 		}
 	}
-	
+
 </style>

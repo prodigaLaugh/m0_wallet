@@ -2,7 +2,7 @@
 	<div class="outerWrap createAccountWrap">
 		<el-row>
 			<el-col :lg="20" :md="22">
-				
+
 				<div class="commonTitle_one">
 					钱包管理
 					<span>
@@ -10,12 +10,12 @@
 						<span>创建多签钱包</span>
 					</span>
 				</div>
-					
+
 				<div class="commonTitle_two">
 					创建多签钱包
 					<span @click="$router.go(-1)">返回</span>
 				</div>
-				
+
 				<div class="transferInpWrap">
 					<el-row>
 						<el-col >
@@ -26,8 +26,8 @@
 								</el-col>
 								<el-col :md="24">
 									<div class="transferInpListLeft">钱包秘钥</div>
-									<el-select 
-										v-model="privatekey" 
+									<el-select
+										v-model="privatekey"
 										@change="selectChange"
 										placeholder="请选择钱包所使用的密钥">
 										<el-option
@@ -38,13 +38,13 @@
 										</el-option>
 									</el-select>
 								</el-col>
-							
+
 								<el-col :md="24">
 									<div class="transferInpListLeft">可签名秘钥</div>
 									<div class="signaturedAccountWrap">
 										<div class="signaturedAccountListsWrap">
-											<div 
-												class="signaturedAccountListWrap" 
+											<div
+												class="signaturedAccountListWrap"
 												v-for="(item,index) in xpubs"
 												:key="index">
 												<div>{{item}}</div>
@@ -53,9 +53,9 @@
 													<span @click="del(index)">删除</span>
 												</div>
 											</div>
-											
+
 										</div>
-										<div 
+										<div
 											class="signaturedAccountAdd"
 											@click="addAccount">+添加可签名账户</div>
 									</div>
@@ -71,8 +71,8 @@
 										</el-option>
 									</el-select>
 								</el-col>
-								
-								
+
+
 								<el-col :lg="24">
 									<div
 										@click="create"
@@ -82,11 +82,11 @@
 						</el-col>
 					</el-row>
 				</div>
-				
+
 			</el-col>
 		</el-row>
-		
-		
+
+
 		<el-dialog
 		  title="请输入账户密码"
 		  :center="true"
@@ -94,19 +94,19 @@
 		  width="40%">
 		  <div class="1">
 			  <div style="padding:20px 0 10px;text-align:left;">⚠️请在下方通过输入公钥添加可签名的钱包，钱包所有者可在密钥管理中查看自己密钥的公钥。</div>
-			  	<el-input 
-					v-model="addPrivateKey" 
+			  	<el-input
+					v-model="addPrivateKey"
 					placeholder="请输入可签名公钥"
 					@change="queryPerson"></el-input>
 			  	<div style="text-align:left;padding-top:10px;">秘钥创建人：{{createPerson}}</div>
-			  
+
 		  </div>
 		  <span slot="footer" class="dialog-footer">
 			<el-button @click="addPrivatekeyFlag = false">取 消</el-button>
 			<el-button type="primary" @click="add">确 定</el-button>
 		  </span>
 		</el-dialog>
-		
+
 	</div>
 </template>
 
@@ -115,21 +115,20 @@
 
 	import Vue from 'vue';
 	import { Row, Col, Input, Select, Option, Dialog, MessageBox } from 'element-ui';
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Input);
 	Vue.use(Option);
 	Vue.use(Select);
 	Vue.use(Dialog);
-	
-	
-	
+
+
+
 	export default {
 		created(){
 			getPrivateKeyLists.bind(this)()
 				.then(({data})=>{
-					
 					var data = data.data;
 					this.lists = data;
 					if(this.$route.query.from){
@@ -138,17 +137,17 @@
 					}else{
 						this.privatekey = data[0].xpub
 					}
-					
-					
+
+
 				})
-		
+
 		},
 		data(){
 			return {
 				createPerson:'',
 				addPrivateKey:'',//要添加的公钥
 				addPrivatekeyFlag:false,//添加公钥弹窗
-				
+
 				submitFlag:true,
 				editIndex:-1,
 				params:{
@@ -164,7 +163,7 @@
 		},
 		methods:{
 			queryPerson(){
-				
+
 				let para = {
 					xpub:this.addPrivateKey
 				}
@@ -197,17 +196,17 @@
 					type:'success',
 					message:msg
 				})
-				this.editIndex > -1 
-				var index = this.editIndex > -1 
+				this.editIndex > -1
+				var index = this.editIndex > -1
 						?this.editIndex
 						: this.xpubs.length ? this.xpubs.length : 0;
 				var num = this.editIndex > -1 ? 1 : 0;
-				
+
 				this.xpubs.splice(index,num,this.addPrivateKey);
-				
+
 				this.addPrivatekeyFlag = false;
 				this.addPrivateKey = '';
-					
+
 			},
 			create(){
 				if(this.xpubs.length < (this.params.quorum-1)){
@@ -217,7 +216,7 @@
 					})
 					return;
 				}
-				
+
 				let para = Object.assign({},this.params);
 				let xpubs = [this.privatekey,...this.xpubs];
 				para.xpubs = xpubs
@@ -251,8 +250,8 @@
 					})
 			},
 			addAccount(){
-				
-				
+
+
 				this.addPrivatekeyFlag = true;
 				this.addPrivateKey = '';
 				this.editIndex = -1;
@@ -273,5 +272,5 @@
 			font-size:13px;
 		}
 	}
-	
+
 </style>

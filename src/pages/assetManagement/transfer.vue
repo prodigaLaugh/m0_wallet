@@ -10,20 +10,20 @@
 					</span>
 					<div>返回</div>
 				</div>
-				
+
 			</el-col>
 		</el-row>
-		
-			
+
+
 		<div class="commonTitle_two">转账</div>
-		
+
 		<div class="transferInpWrap">
 			<el-row>
 				<el-col :lg="20" :md="22">
 					<el-row class="transferInpListsWrap">
 						<el-col :lg="24">
 							<div class="transferInpListLeft">转出地址</div>
-							<el-select 
+							<el-select
 								v-model="params.from_address"
 								 @change="adressChangeQueryAmount"
 								placeholder="请选择">
@@ -35,11 +35,11 @@
 								</el-option>
 							  </el-select>
 						</el-col>
-						
+
 						<el-col :lg="24">
 							<div class="transferInpListLeft">转出资产</div>
-							<el-select 
-								v-model="params.asset_id" 
+							<el-select
+								v-model="params.asset_id"
 								@change="adressChangeQueryAmount"
 								placeholder="请选择">
 								<el-option
@@ -50,16 +50,16 @@
 								</el-option>
 							</el-select>
 						</el-col>
-						
-						<el-col 
-							:md="24" 
+
+						<el-col
+							:md="24"
 							v-if="amount"
 							style="margin-top:-10px">当前资产余额：{{amount}}</el-col>
-						
+
 						<el-col :lg="24">
 							<div class="transferInpListLeft">转账详情</div>
 						</el-col>
-						
+
 						<div class="paraWrap" style="clear:both;margin-bottom:40px;">
 							<el-row class="top">
 								<el-col :lg="11">
@@ -69,7 +69,7 @@
 									转出数量
 								</el-col>
 							</el-row>
-							<el-row 
+							<el-row
 								v-for="(item, index) in params.receive_info"
 								:key="index"
 								style="margin-bottom:20px;">
@@ -93,18 +93,18 @@
 									<span class="addBtnWrap" @click="addPara">+添加转账地址</span>
 								</el-col>
 							</el-row>
-							
+
 						</div>
 						<el-col :lg="24">
 							<div class="transferInpListLeft">请输入密码</div>
-							<el-input 
-								v-model="params.password" 
+							<el-input
+								v-model="params.password"
 								placeholder="请输入密码"
 								autocomplete="new-password"
 								type="password"></el-input>
 						</el-col>
 						<el-col :lg="24">
-							
+
 							<div
 								@click="transfer"
 								class="transferAccoutItemBtn">{{isSingleSign?'提交交易':'生成签名文件'}}</div>
@@ -113,84 +113,100 @@
 				</el-col>
 			</el-row>
 		</div>
-		
-		
-		
+
+
+
 	</div>
 </template>
 
 <script>
-	import { 
-		getAddressLists, 
-		getAssetWalletLists, 
-		transferMultsign, 
-		transferSinglesign, 
-		queryAssetAmount 
+	import {
+		getAddressLists,
+		getAssetWalletLists,
+		transferMultsign,
+		transferSinglesign,
+		queryAssetAmount
 	} from '@/util/server.js'
-	
+
 	import Vue from 'vue';
 	import { Row, Col, Input, Select, Option } from 'element-ui';
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Input);
 	Vue.use(Option);
 	Vue.use(Select);
-	
-	
+
+
 	export default {
 		created(){
 			this.isSingleSign = this.judgeIsSingleSign();
-			
+
 			var accountInfo = this.getLocalAccountInfo()
 			var account_id = accountInfo.account_id;
 			var account_type = accountInfo.account_type;
 			var account_alias = accountInfo.account_alias
-			
+
 			this.params.account_id = account_id;
 			this.params.account_type = account_type;
-			
+
 			var query = this.$route.query;
 			var address_id = query.address_id;
 			if(address_id){
 				var asset_id = query.asset_id;
 				var asset_name = query.asset_name;
-				
+
 				this.params.from_address = address_id;
 				this.params.asset_name = asset_name;
 				this.params.asset_id = asset_id;
 			}
-			
-			
-			
-			
-			let para ={account_id:account_id}
+
+
+
+
+			let para ={account_id:account_id, page: 1, page_size: 9999}
 			getAssetWalletLists.bind(this)(para)
 				.then(({data})=>{
-					this.allAssetsLists = [...data.data]
-					console.log(data,111)
+					const { list_asset: lists, total_item: total } = data.data
+
+					if(data.status=='success'){
+					  if(lists){
+					    this.allAssetsLists.splice(0,999, ...lists);
+
+					  }else{
+					    this.allAssetsLists.splice(0,999);
+
+					  }
+
+					}
 				})
 				.catch(()=>{
-					
+
 				})
-				
-			var params = {account_alias:account_alias}
+
+			var params = {account_alias:account_alias, page: 1,
+          page_size: 999999}
 			getAddressLists.bind(this)(params)
 				.then(({data})=>{
-					this.address = [{address_id:''},...data.data];
+         const lists = data.data.list_address;
+         if(lists){
+           this.address.splice(0,99999, {address_id:''},...lists) ;
+         }else{
+           this.address.splice(0,99999, {address_id:''}) ;
+         }
 				})
 		},
 		data(){
 			return {
 				isSingleSign:false,//是否是单签
-				
+
 				allAssetsLists:[],
 				address:[],
-				
+
 				to_address:'',
 				amount:'',
-			
-			
+
+
 				params:{
 					password:"",
 					amount:'',
@@ -199,8 +215,8 @@
 					from_address:'',
 					receive_info:[{to_address:'',to_amount:''}]
 				},
-				
-				
+
+
 			}
 		},
 		methods:{
@@ -222,7 +238,7 @@
 				}
 				var asset_name = list[0].asset_name||'test';
 				this.params.asset_name = asset_name;
-				
+
 				var para = Object.assign({},this.params)
 				para.address_id = this.params.from_address;
 				queryAssetAmount.bind(this)(para)
@@ -232,34 +248,34 @@
 					})
 			},
 			transfer(){
-				
+
 				let para = Object.assign({},this.params);
 				var receive_info = [{
 						to_address:this.to_address,
 						to_amount:this.to_amount-0||0
 					}]
-				
-				
+
+
 				para.receive_info.map((item,index)=>{
 					var to_amount = item.to_amount - 0;
 					para.receive_info[index].to_amount = to_amount;})
 				para.amount = para.receive_info.reduce((pre,cur)=>{
 					return (pre-0) + (cur.to_amount-0)
 				},0)
-				
+
 				if(this.isSingleSign){
 					this.signleSignFn(para)
 				}else{
 					this.mutiSignFn(para);
 				}
-				
-				
-				
-				
-				
+
+
+
+
+
 			},
 			signleSignFn(para){
-				transferSinglesign.bind(this)(para) 
+				transferSinglesign.bind(this)(para)
 					.then(({data})=>{
 						console.log(data,111)
 						if(data.status=='success'){
@@ -288,7 +304,7 @@
 								message:data.error
 							})
 						}else{
-							
+
 							let element = document.createElement('a')
 							element.setAttribute('href', 'data:text/json;charset=utf-8,' + JSON.stringify(data) )
 							element.setAttribute('download', 'data.hex')
@@ -297,8 +313,8 @@
 							element.click()
 							document.body.removeChild(element)
 						}
-						
-						
+
+
 					})
 			}
 		},
@@ -307,7 +323,7 @@
 
 <style lang="scss">
 	.transferWrap{
-		
+
 	}
-	
+
 </style>

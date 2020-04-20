@@ -2,7 +2,7 @@
   <div  class="commonHeaderWrap">
       <div class="commonHeader">
 				<div class="left">M0钱包</div>
-				
+
 				<!-- <div class="right hidden-xs-only"> -->
 				<div class="right">
 					<div class="title">{{accountAlias}}</div>
@@ -24,16 +24,16 @@
 							</div>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 
 
 			<!-- 生成邀请码弹窗 -->
 			<el-dialog title="生成邀请码" :visible.sync="visitcodeFlag" :center="true">
-               
+
 					<div class="dialogContentWrap">
-						
+
 						<div class="tips">⚠️邀请码用来邀请平台的新用户，使用邀请码注册的用户，被邀请者的权限将从属于邀请者，邀请码有效时间持续6小时。</div>
 						<div class="visitSelectWrap">
 							<el-row>
@@ -49,36 +49,36 @@
 									 </el-select>
 								</el-col>
 								<el-col :md="6">
-									<div 
+									<div
 										class="visitBtn"
 										@click="generate">生成邀请码</div>
 								</el-col>
 							</el-row>
-							
+
 						</div>
 						<div class="visitcodeWrap" v-if="visitcodeLists.length">
 							<el-row>
-								<el-col 
-									:md="12" 
+								<el-col
+									:md="12"
 									v-for="(item,index) in visitcodeLists"
 									:key="index">
 									<span>{{item}}</span>
-									<span 
-										class="tag-read blue" 
-										:data-clipboard-text="item" 
+									<span
+										class="tag-read blue"
+										:data-clipboard-text="item"
 										@click="copy">复制邀请码</span>
 								</el-col>
-								
+
 							</el-row>
 						</div>
-						
+
 					</div>
 					<div slot="footer" class="dialog-footer">
 						<!-- <el-button @click="visitcodeFlag = false">复制到剪切板</el-button> -->
 						<el-button type="primary" :size="'medium'" style="width:100%;" @click="visitcodeFlag = false">完成</el-button>
 					</div>
 			</el-dialog>
-			
+
 			<!-- 点击秘钥管理输入密码弹窗 -->
 			<el-dialog
 			  title="请输入账户密码"
@@ -94,7 +94,7 @@
 				<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
 			  </span>
 			</el-dialog>
-		
+
   </div>
 </template>
 <script>
@@ -120,14 +120,13 @@ export default {
 	created(){
 		this.username = localStorage.USERTOKEN;
 		var accountInfo = this.getLocalAccountInfo()
-		
+
 		getAccountLists.bind(this)()
 			.then(({data})=>{
-			
-				localStorage.accountInfo = JSON.stringify({})
+
 				if(data.status=='success'){
-					
-					var lists = data.data;
+
+					var lists = data.data.list_accounts;
 					if(lists&&lists.length){
 						lists.map((item, index)=>{
 							if(item.status==1){
@@ -135,19 +134,19 @@ export default {
 								this.accountname = accountInfo.account_alias;
 								this.$store.commit('changeAccountAlias', accountInfo.account_alias)
 							}
-							
+
 						})
 					}
-					
+
 				}
-				
-				
-				
+
+
+
 			})
 	},
 	data(){
 		return {
-			
+
 			username:'',
 			submitFlag:true,
 			visitcodeFlag:false,
@@ -172,7 +171,7 @@ export default {
 				  label: 6
 			}],
 			value:'',
-			
+
 			amount:'',
 			visitcodeLists:[],
 		}
@@ -202,7 +201,7 @@ export default {
 	        })
 	    },
 		generate(){
-			
+
 			let params = {
 				amount: this.amount,
 			}
@@ -224,15 +223,15 @@ export default {
 					setTimeout(()=>{
 						this.submitFlag = true;
 					},100)
-					
-					
+
+
 				})
 		}
 
 	},
 	computed: {
 		accountAlias () {
-		  return this.$store.state.accountAlias 
+		  return this.$store.state.accountAlias
 		  // 或者 return this.$store.getter.count2
 		}
 	}
@@ -250,7 +249,7 @@ export default {
 			background:$blue;
 			display:flex;
 			z-index:10;
-			
+
 			.left{
 				width:200px;
 				line-height:66px;
@@ -258,7 +257,7 @@ export default {
 				font-size:24px;
 				padding-left:20px;
 			}
-			
+
 			.right{
 				flex:1;
 				display:flex;
@@ -280,7 +279,7 @@ export default {
 						padding-right:30px;
 						height:66px;
 						cursor:pointer;
-						
+
 						span{
 							font-size:30px;
 							padding-right:10px;
@@ -299,7 +298,7 @@ export default {
 								height:0;
 								overflow:hidden;
 								transition:height .5s;
-								
+
 								>span{
 									line-height:40px;
 									font-size:14px;
@@ -313,10 +312,9 @@ export default {
 						}
 					}
 				}
-				
+
 			}
 		}
-    
+
   }
 </style>
-

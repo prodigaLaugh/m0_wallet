@@ -2,20 +2,26 @@
 	<div class="outerWrap assetWalletIndexWrap">
 		<el-row>
 			<el-col :lg="20" :md="22">
-				
-			
+
+
 				<div class="commonTitle_one">资产钱包</div>
 				<div class="addAccountWrap">
 					<div class="commonTitle_two">
-						我的资产
+            <div>
+              <div>
+                <span :class=" navIndex===0 ? 'active' : '' " @click="toggleNav(0)">我的资产</span>
+                <span :class=" navIndex===1 ? 'active' : '' " @click="toggleNav(1)">历史资产</span>
+              </div>
+            </div>
+
 						<span @click="$router.push('/main/receiveTransfer')">接受转账</span>
 					</div>
 					<el-row  class="row-bg" :gutter="30" justify="center">
-						<el-col :lg="12" >
+						<el-col :lg="12" v-if="navIndex===0">
 							<div class="assetSelectItemWrap">
 								<span>排序方式</span>
-								<el-select 
-									v-model="params.order_by" 
+								<el-select
+									v-model="params.order_by"
 									placeholder="请选择"
 									@change="getLists">
 									<el-option
@@ -27,7 +33,7 @@
 								</el-select>
 							</div>
 						</el-col>
-						
+
 						<!-- <el-col :lg="8">
 							<div class="assetSelectItemWrap">
 								<span>所在地址</span>
@@ -41,12 +47,12 @@
 								</el-select>
 							</div>
 						</el-col> -->
-						
+
 						<el-col :lg="12">
 							<div class="assetSelectItemWrap">
 								<span>资产类型</span>
-								<el-select 
-									v-model="params.asset_id" 
+								<el-select
+									v-model="params.asset_id"
 									placeholder="请选择"
 									@change="getLists">
 									<el-option
@@ -59,10 +65,10 @@
 							</div>
 						</el-col>
 					</el-row>
-					
-					
+
+
 					<div class="assetListsWrap">
-						<div 
+						<div
 							class="selectAccountItem"
 							v-for="(item,index) in lists"
 							:key="index">
@@ -78,12 +84,12 @@
 									<div>{{item.amount}}</div>
 								</el-col>
 								<el-col :lg="4" :md="4" >
-									<div 
+									<div
 										@click="$router.push({path:'/main/transactionRecord',query:getParams(item,'','tx')})"
 										class="transactionRecordIcon">交易记录</div>
 								</el-col>
 							</el-row>
-							
+
 							<!-- <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
 								<el-col :lg="16" class="left">
 									<div>所在地址：jlkj23234jkh2j4n21mk</div>
@@ -106,8 +112,8 @@
 									操作
 								</el-col>
 							</el-row>
-							<el-row  
-								:gutter="20" 
+							<el-row
+								:gutter="20"
 								class="selectAccountItemTransactionWrap"
 								v-for="(list,i) in item.address_balance"
 								:key="i">
@@ -122,62 +128,71 @@
 									<span @click="getTransferParams(item,list.address_id)">转出资产</span>
 								</el-col>
 							</el-row>
-							
+
 						</div>
+
+
+            <div class="paginationWrap" v-if="lists.length">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="params.total"
+                :page-size="params.page_size"
+                @current-change="pageChange"
+               >
+              </el-pagination>
+            </div>
+
 						<div class="noresult" v-if="!lists.length">暂无数据</div>
 					</div>
-					
+
 				</div>
-		
+
 			</el-col>
 		</el-row>
-		
-		
+
+
 	</div>
 </template>
 
 <script>
-	
-	import { getAssetWalletLists, getAssetLists } from '@/util/server.js'
+
+	import { getAssetWalletLists, getAssetLists, getAssetHistoryWalletLists } from '@/util/server.js'
 	import Vue from 'vue';
-	import { Row, Col, Select, Option } from 'element-ui';
-		
+	import { Row, Col, Select, Option, Pagination } from 'element-ui';
+
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Option);
 	Vue.use(Select);
-	
+  Vue.use(Pagination);
+
 	export default {
 		created(){
 			var accountInfo = this.getLocalAccountInfo()
 			var account_id = accountInfo.account_id;
 			var account_type = accountInfo.account_type;
-			
+
 			this.params.account_id = account_id;
-					
-			var formdata = new FormData();
-			formdata.append('account_id',account_id)
-			getAssetLists.bind(this)(formdata)
-				.then(({data})=>{
-					var data = data.data;
-					var asset_unissue = data.asset_unissue || [];
-					var asset_issue = data.asset_issue || [];
-					this.allAssetsLists = [{asset_id: "",asset_name: "全部"},...asset_unissue,...asset_issue]
-					
-					
-				})
+
 			this.getLists();
+      this.getAlllists()
 		},
 		data(){
 			return {
 				allAssetsLists:[],
-				
+        navIndex:0,
+
 				params:{
+          page: 1,
+          page_size: 10,
+          total: 0,
+
 					account_id:'',
 					asset_name:'',
 					asset_id:'',
 					order_by:'time_desc',
-					
+
 // 					user_name:"123",
 // 					"account_id":"0R031M6800A02",
 // 					"asset_name":"zcj1",
@@ -185,7 +200,7 @@
 // 					"order_by":"amount_asc"
 
 				},
-				
+
 				orderOptions: [{
 					value: 'time_desc',
 					label: '按时间排序（新到旧）'
@@ -193,16 +208,26 @@
 					value: 'time_asc',
 					label: '按时间排序（旧到新）'
 				}, {
-					value: 'amount_asc',
+					value: 'amount_desc',
 					label: '按金额排序（大到小）'
 				}, {
-					value: 'amount_desc',
+					value: 'amount_asc',
 					label: '按金额排序（小到大）'
 				}],
 				lists:[]
 			}
 		},
 		methods:{
+      toggleNav(index){
+        this.navIndex = index;
+        this.params.page = 1;
+        this.getLists()
+        this.getAlllists()
+      },
+      pageChange(currentPage){
+        this.params.page = currentPage;
+        this.getLists()
+      },
 			getTransferParams(item,id){
 				var obj = {
 					address_id:id,
@@ -220,12 +245,42 @@
 					address_id:id
 				}
 			},
+      getAlllists(){
+        const fn = this.navIndex === 0 ? getAssetWalletLists : getAssetHistoryWalletLists;
+        const parmas = { ...this.params, page: 1, page_size: 9999 }
+        fn.bind(this)(parmas)
+        	.then(({data})=>{
+            const { list_asset: lists, total_item: total } = data.data
+
+        		if(data.status=='success'){
+              if(lists){
+                this.allAssetsLists.splice(0,999,{asset_id: "",asset_name: "全部"}, ...lists);
+
+              }else{
+                this.allAssetsLists.splice(0,999, {asset_id: "",asset_name: "全部"});
+
+              }
+
+        		}
+        	})
+      },
 			getLists(){
-				getAssetWalletLists.bind(this)(this.params)
+
+        const fn = this.navIndex === 0 ? getAssetWalletLists : getAssetHistoryWalletLists;
+				fn.bind(this)(this.params)
 					.then(({data})=>{
-						console.log(data,8887)
+
+            const { list_asset: lists, total_item: total } = data.data
 						if(data.status=='success'){
-							this.lists = data.data;
+
+              if(lists){
+                this.lists.splice(0,999,...lists);
+                this.params.total = total
+              }else{
+                this.lists.splice(0,999);
+                 this.params.total = 0
+              }
+
 						}
 					})
 			}
@@ -235,6 +290,23 @@
 
 <style lang="scss">
 	.assetWalletIndexWrap{
+    .commonTitle_two{
+      border-bottom:1px solid #ddd;
+      margin-bottom:30px;
+      >div>div{
+        span{
+          color:#666;
+          cursor:pointer;
+          &:nth-of-type(2){
+            margin-left:20px;
+          }
+          &.active{
+            color:#5c6ac4;
+          }
+        }
+      }
+    }
+
 		.assetSelectItemWrap{
 			padding-bottom:20px;
 			>span{
@@ -242,7 +314,7 @@
 				font-size:13px;
 			}
 		}
-		
+
 		.selectAccountItem{
 			background:#eee;
 			padding:20px 30px 40px;
@@ -265,7 +337,7 @@
 					>div:nth-of-type(2){
 						font-size:14px;
 					}
-					
+
 				}
 				>.right{
 					>div:nth-of-type(1){
@@ -288,11 +360,11 @@
 					border-radius:5px;
 					padding-top:44px;
 					@include pointer;
-					
+
 				}
 			}
-			
-			
+
+
 			.selectAccountItemTransactionWrap{
 				background:#fff;
 				line-height:40px;
@@ -304,7 +376,7 @@
 					}
 				}
 				// >.left,>.right{
-					
+
 				// 	height:54px;
 				// }
 				// >.left{
@@ -338,8 +410,8 @@
 				// 	}
 				// }
 			}
-			
+
 		}
 	}
-	
+
 </style>

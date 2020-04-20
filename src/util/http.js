@@ -6,13 +6,21 @@ import * as auth from './auth.js'
 import {setCookie, getCookie, delCookie } from '@/util/cookie'
 let token = getCookie('USERTOKEN');
 
+
+let baseurl = '' ;
+if(process.env.NODE_ENV === 'development'){
+  baseurl = DEVURL;
+}else{
+  baseurl = PRODUCTURL;
+}
+
 const myAxios = axios.create({
     // baseURL:'/api' ,
-		baseURL:'http://47.104.221.216:8090',
+		baseURL:baseurl,
     timeout:60*1000000000,
     // headers: {'token':token},
     validateStatus: function (status) {
-        return status < 500; 
+        return status < 500;
     }
 });
 
@@ -58,11 +66,11 @@ function endLoading() {
 //     // 对请求错误做些什么
 //     return Promise.reject(error);
 // });
-// 
+//
 // // 添加响应拦截器
 // myAxios.interceptors.response.use(function (response) {
 //     // 对响应数据做点什么
-// 
+//
 // //    if(response.status === 401 || response.status === 403){
 // //         MessageBox.confirm('登录认证超时过期，重新登录吗？', '提示', {
 // //             confirmButtonText: '确定',
@@ -74,15 +82,15 @@ function endLoading() {
 // //             localStorage.removeItem('USERNAME');
 // //             location.reload();
 // //         }).catch(() => {
-// //                     
+// //
 // //         });
 // //         localStorage.removeItem('USERTOKEN');
 // //         localStorage.removeItem("permissions");
 // //         localStorage.removeItem('USERNAME');
 // //         return;
 // //    }
-// //         
-// 
+// //
+//
 //     return response;
 // }, function (error) {
 //     // 对响应错误做点什么

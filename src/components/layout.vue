@@ -7,6 +7,9 @@
 <style lang="scss">
 	@import url("../css/reset.css");
 	@import url("../css/common.css");
+  .paginationWrap{
+    text-align:right;
+  }
 	.noresult{
 		padding-left:15px;
 		line-height:50px;

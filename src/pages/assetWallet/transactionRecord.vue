@@ -2,7 +2,7 @@
 	<div class="outerWrap transactionRecordWrap">
 		<el-row>
 			<el-col >
-				
+
 				<div class="commonTitle_one">
 					资产钱包
 					<span>
@@ -10,11 +10,11 @@
 						<span>交易记录</span>
 					</span>
 				</div>
-				
-				
+
+
 				<div class="consoleRecordsWrap">
 					<div class="commonTitle_two">交易记录</div>
-					
+
 					<el-row class="transactionRecordContentWrap">
 						<el-col :lg="24">
 							<span>资产类型</span>
@@ -24,50 +24,78 @@
 							<span>所在地址</span>
 							<span>{{address_id}}</span>
 						</el-col>
-						
+
 					</el-row>
-					
-					<div class="consoleListsWrap">
-						<div 
-							class="consoleListWrap" 
-							v-for="(item,index) in lists"
-							:key="index">
-							
-							<div v-if="item.tx_type==1">
-								<transfer :item="item" :asset_name="asset_name"/>
-							</div>
-							<div v-if="item.tx_type==2">
-								<issue :item="item" :asset_name="asset_name"/>
-							</div>
-							<div v-if="item.tx_type==3">
-								<retire :item="item" :asset_name="asset_name"/>
-							</div>
-							
-						</div>
-						
+
+					<div
+            style="overflow-y:auto;"
+            v-infinite-scroll="getMoreLists"
+            infinite-scroll-disabled="disabled"
+            infinite-scroll-distance="500"
+          >
+            <div
+              class="consoleListsWrap"
+              style="padding:2px 10px"
+            >
+
+              <div
+                class="consoleListWrap"
+                v-for="(item,index) in lists"
+                :key="index">
+
+                <div v-if="item.tx_type==1">
+                  <transfer :item="item" :asset_name="asset_name"/>
+                </div>
+                <div v-if="item.tx_type==2">
+                  <issue :item="item" :asset_name="asset_name"/>
+                </div>
+                <div v-if="item.tx_type==3">
+                  <retire :item="item" :asset_name="asset_name"/>
+                </div>
+
+              </div>
+
+            <!-- <div class="paginationWrap" v-if="lists.length">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="params.total"
+                :page-size="params.page_size"
+                @current-change="pageChange"
+               >
+              </el-pagination>
+            </div> -->
+
+
+              <p v-if="loading" class="noresult">加载中...</p>
+              <div class="noresult" v-else-if="!lists.length">暂无数据</div>
+              <p v-else="noMore" class="noresult">没有更多了</p>
+            </div>
+
 					</div>
-					
-					
+
+
 				</div>
-		
+
 			</el-col>
 		</el-row>
-		
+
 	</div>
 </template>
 
 <script>
-	
+
 	import { getAssetRecords, getAssetRecordsByAddress } from '@/util/server.js'
 	import Vue from 'vue';
-	import { Row, Col } from 'element-ui';
+	import { Row, Col, InfiniteScroll } from 'element-ui';
 	import Transfer from '@/components/transactionRecords/transfer.vue'
 	import Issue from '@/components/transactionRecords/issue.vue'
 	import Retire from '@/components/transactionRecords/retire.vue'
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
-	
+  Vue.use(InfiniteScroll);
+
 	export default {
 		components:{
 			Transfer,
@@ -80,48 +108,95 @@
 			var query =  this.$route.query;
 			this.asset_name = query.asset_name;
 			this.address_id = query.address_id;
-			
-			
-			var para = Object.assign({},accountInfo,query)
-			if(query.type==='address'){
-				this.getLists2(para)
-			}else{
-				this.getLists1(para)
-			}
+			this.type = query.type;
+
+      this.params = { ...this.params, ...accountInfo, ...query }
+
 		},
+
 		data(){
 			return {
 				asset_name:'',
 				address_id:"",
-				lists:[]
+				lists:[],
+        type:'',
+
+        loading: false,
+        noMore: false,
+
+        params:{
+          page: 1,
+          page_size: 1,
+          total: 0,
+        }
 			}
 		},
+    computed:{
+
+      disabled() {
+        return this.loading || this.noMore;
+      },
+    },
 		methods:{
-			getLists1(para){
-				getAssetRecords.bind(this)(para)
-					.then(({data})=>{
-						console.log(data,111)
-						this.lists = data.data.tx_list
-					})
-			},
-			getLists2(para){
-				getAssetRecordsByAddress.bind(this)(para)
-					.then(({data})=>{
-						console.log(data,222)
-						this.lists = data.data.tx_list
-					})
-			}
+      pageChange(currentPage){
+        this.params.page = currentPage;
+        this.getLists()
+      },
+      getMoreLists(){
+
+        this.loading = true
+        this.getLists();
+        this.params.page ++;
+
+      },
+      getLists(){
+        var fn = getAssetRecords;
+        if(this.type==='address'){
+          fn = getAssetRecordsByAddress
+        }
+        fn.bind(this)(this.params)
+        	.then(({data})=>{
+
+            const { tx_list: lists, total_item: total } = data.data
+
+            if(data.status=='success'){
+              if(lists){
+                if(this.params.page === 1){
+                  this.lists.splice(0,999,...lists);
+                }else{
+                  this.lists.push(...lists);
+                }
+
+                this.params.total = total
+
+              }else{
+                this.noMore = true;
+              }
+
+
+            }else{
+               this.noMore = true;
+            }
+
+            this.loading = false;
+
+            console.log(this.noMore,this.loading,1112)
+
+        	})
+
+      },
+
 		},
 	}
 </script>
 
 <style lang="scss">
 	.transactionRecordWrap{
-		
+
 		.consoleRecordsWrap{
 			padding-right:30px;
 		}
-		
+
 		.transactionRecordContentWrap{
 			padding-bottom:20px;
 			>div{
@@ -137,5 +212,5 @@
 			border:0!important;
 		}
 	}
-	
+
 </style>

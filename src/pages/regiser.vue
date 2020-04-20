@@ -4,7 +4,7 @@
 		<div class="loginContainer">
 
 		
-			<div class="loginTitle">M0中心化钱包</div>
+			<div class="loginTitle">TK中心化钱包</div>
 			<div class="loginDescription">注册/sign up</div>
 
 			<div class="loginInpWrap">
@@ -99,7 +99,7 @@ export default {
   },
   methods: {
 	login(){
-		let url = `${BASEURL1}/v1/user/register_user`
+		let url = `${BASEURL1}/v1/user/register`
 		let params = Object.assign({},this.loginParams) ;
 		
 
