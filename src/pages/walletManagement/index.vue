@@ -65,6 +65,17 @@
 						</el-col>
 					</el-row>
 
+          <div class="paginationWrap" v-if="lists.length">
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :total="params.total"
+              :page-size="params.page_size"
+              @current-change="pageChange"
+             >
+            </el-pagination>
+          </div>
+
 					<div class="noresult" v-if="!lists.length">暂无数据</div>
 
 
@@ -130,7 +141,7 @@
 <script>
 
 	import Vue from 'vue';
-	import { Row, Col, Input, Button, Dialog } from 'element-ui';
+	import { Row, Col, Input, Button, Dialog, Pagination } from 'element-ui';
 
 	import { getAccountLists, loadWallet, deleteWallet } from '@/util/server.js'
 
@@ -139,6 +150,7 @@
 	Vue.use(Button);
 	Vue.use(Input);
 	Vue.use(Dialog);
+  Vue.use(Pagination);
 
 	export default {
 		created(){
@@ -153,6 +165,11 @@
 
 				openDialogFlag:false,
 				value:'',
+        params:{
+          page: 1,
+          page_size: 10,
+          total: 0,
+        },
 
 				lists:[],
 			}
@@ -233,13 +250,17 @@
 						:'/main/createWalletM';
 				this.$router.push(url)
 			},
+      pageChange(currentPage){
+        this.params.page = currentPage;
+        this.getLists()
+      },
 			getLists(){
 // 				let user_name = localStorage.USERTOKEN
 // 				let params = {user_name:'user1'||user_name}
-				getAccountLists.bind(this)()
+				getAccountLists.bind(this)(this.params)
 					.then(({data})=>{
 
-						
+
 						if(data.status=='success'){
 							this.$store.commit('changeAccountAlias','');
 							if(data.data){

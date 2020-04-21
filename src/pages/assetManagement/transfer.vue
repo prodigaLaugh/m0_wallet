@@ -53,7 +53,7 @@
 
 						<el-col
 							:md="24"
-							v-if="amount"
+              v-if="amount || amount ===0"
 							style="margin-top:-10px">当前资产余额：{{amount}}</el-col>
 
 						<el-col :lg="24">

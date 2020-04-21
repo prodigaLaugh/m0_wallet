@@ -115,7 +115,7 @@
           account_id:'',
           is_issue:0,
           page: 1,
-          page_size: 10,
+          page_size: 2,
           total: 0,
         }
 
@@ -133,7 +133,10 @@
 				getAssetLists.bind(this)(this.params)
 					.then(({data})=>{
 
-            const { asset_issue: lists, total_item: total } = data.data
+            const { total_item: total } = data.data
+
+            const lists  = this.navIndex === 0 ? data.data.asset_unissue :data.data.asset_issue
+
             if(lists){
               this.lists.splice(0,999, ...lists)
               this.params.total = total
@@ -163,7 +166,7 @@
 								message: '删除成功',
 								type: 'success'
 							});
-							this.getlists();
+							this.getLists();
 						}else{
 							this.$message ({
 								message: data,

@@ -67,84 +67,97 @@
 					</el-row>
 
 
-					<div class="assetListsWrap">
-						<div
-							class="selectAccountItem"
-							v-for="(item,index) in lists"
-							:key="index">
-							<el-row :gutter="30" class="selectAccountItemTitleWrap">
-								<el-col :lg="14" :md="14" class="left">
-									<div>{{item.asset_name}}</div>
-									<div>
-										资产ID:&nbsp;&nbsp;{{item.asset_id | interceptStr}}
-									</div>
-								</el-col>
-								<el-col :lg="6" :md="6" class="right">
-									<div>当前余额:</div>
-									<div>{{item.amount}}</div>
-								</el-col>
-								<el-col :lg="4" :md="4" >
-									<div
-										@click="$router.push({path:'/main/transactionRecord',query:getParams(item,'','tx')})"
-										class="transactionRecordIcon">交易记录</div>
-								</el-col>
-							</el-row>
 
-							<!-- <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
-								<el-col :lg="16" class="left">
-									<div>所在地址：jlkj23234jkh2j4n21mk</div>
-								</el-col>
-								<el-col :lg="8" class="right">
-									<span @click="$router.push('/main/transactionRecord')">交易记录</span>
-									<span>转账</span>
-									<span>销毁</span>
-								</el-col>
-							</el-row> -->
-							<div style="margin-top:20px;"></div>
-							<el-row  :gutter="20" class="selectAccountItemTransactionWrap">
-								<el-col :lg="9" :md="9" class="left">
-									所在地址
-								</el-col>
-								<el-col :lg="8" :md="8" class="center">
-									地址余额
-								</el-col>
-								<el-col :lg="7" :md="7" class="right">
-									操作
-								</el-col>
-							</el-row>
-							<el-row
-								:gutter="20"
-								class="selectAccountItemTransactionWrap"
-								v-for="(list,i) in item.address_balance"
-								:key="i">
-								<el-col :lg="9" :md="9" class="left">
-									{{list.address_id | interceptPubStr}}
-								</el-col>
-								<el-col :lg="8" :md="8" class="center">
-									{{list.balance}}
-								</el-col>
-								<el-col :lg="7" :md="7" class="right">
-									<span @click="$router.push({path:'/main/transactionRecord',query:getParams(item,list.address_id,'address')})">交易记录</span>
-									<span @click="getTransferParams(item,list.address_id)">转出资产</span>
-								</el-col>
-							</el-row>
+          <div
+            style="overflow-y:auto;height:500px;"
+          >
 
-						</div>
+            <div
+              class="assetListsWrap"
+              v-infinite-scroll="getMoreLists"
+              infinite-scroll-disabled="disabled"
+            >
+              <div
+                class="selectAccountItem"
+                v-for="(item,index) in lists"
+                :key="index">
+                <el-row :gutter="30" class="selectAccountItemTitleWrap">
+                  <el-col :lg="14" :md="14" class="left">
+                    <div>{{item.asset_name}}</div>
+                    <div>
+                      资产ID:&nbsp;&nbsp;{{item.asset_id | interceptStr}}
+                    </div>
+                  </el-col>
+                  <el-col :lg="6" :md="6" class="right">
+                    <div>当前余额:</div>
+                    <div>{{item.amount}}</div>
+                  </el-col>
+                  <el-col :lg="4" :md="4" >
+                    <div
+                      @click="$router.push({path:'/main/transactionRecord',query:getParams(item,'','tx')})"
+                      class="transactionRecordIcon">交易记录</div>
+                  </el-col>
+                </el-row>
+
+                <!-- <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
+                  <el-col :lg="16" class="left">
+                    <div>所在地址：jlkj23234jkh2j4n21mk</div>
+                  </el-col>
+                  <el-col :lg="8" class="right">
+                    <span @click="$router.push('/main/transactionRecord')">交易记录</span>
+                    <span>转账</span>
+                    <span>销毁</span>
+                  </el-col>
+                </el-row> -->
+                <div style="margin-top:20px;"></div>
+                <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
+                  <el-col :lg="9" :md="9" class="left">
+                    所在地址
+                  </el-col>
+                  <el-col :lg="8" :md="8" class="center">
+                    地址余额
+                  </el-col>
+                  <el-col :lg="7" :md="7" class="right">
+                    操作
+                  </el-col>
+                </el-row>
+                <el-row
+                  :gutter="20"
+                  class="selectAccountItemTransactionWrap"
+                  v-for="(list,i) in item.address_balance"
+                  :key="i">
+                  <el-col :lg="9" :md="9" class="left">
+                    {{list.address_id | interceptPubStr}}
+                  </el-col>
+                  <el-col :lg="8" :md="8" class="center">
+                    {{list.balance}}
+                  </el-col>
+                  <el-col :lg="7" :md="7" class="right">
+                    <span @click="$router.push({path:'/main/transactionRecord',query:getParams(item,list.address_id,'address')})">交易记录</span>
+                    <span @click="getTransferParams(item,list.address_id)">转出资产</span>
+                  </el-col>
+                </el-row>
+
+              </div>
 
 
-            <div class="paginationWrap" v-if="lists.length">
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="params.total"
-                :page-size="params.page_size"
-                @current-change="pageChange"
-               >
-              </el-pagination>
+             <!-- <div class="paginationWrap" v-if="lists.length">
+                <el-pagination
+                  background
+                  layout="prev, pager, next"
+                  :total="params.total"
+                  :page-size="params.page_size"
+                  @current-change="pageChange"
+                 >
+                </el-pagination>
+              </div> -->
+
             </div>
 
-						<div class="noresult" v-if="!lists.length">暂无数据</div>
-					</div>
+            <p v-if="loading" class="noresult">加载中...</p>
+            <div class="noresult" v-else-if="!lists.length">暂无数据</div>
+            <p v-else="noMore" class="noresult">没有更多了</p>
+          </div>
 
 				</div>
 
@@ -159,13 +172,14 @@
 
 	import { getAssetWalletLists, getAssetLists, getAssetHistoryWalletLists } from '@/util/server.js'
 	import Vue from 'vue';
-	import { Row, Col, Select, Option, Pagination } from 'element-ui';
+	import { Row, Col, Select, Option, Pagination, InfiniteScroll } from 'element-ui';
 
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Option);
 	Vue.use(Select);
   Vue.use(Pagination);
+  Vue.use(InfiniteScroll);
 
 	export default {
 		created(){
@@ -175,7 +189,6 @@
 
 			this.params.account_id = account_id;
 
-			this.getLists();
       this.getAlllists()
 		},
 		data(){
@@ -185,8 +198,8 @@
 
 				params:{
           page: 1,
-          page_size: 10,
-          total: 0,
+          page_size: 5,
+          total: 1,
 
 					account_id:'',
 					asset_name:'',
@@ -214,9 +227,20 @@
 					value: 'amount_asc',
 					label: '按金额排序（小到大）'
 				}],
-				lists:[]
+				lists:[],
+
+        loading: false,
 			}
 		},
+    computed:{
+      noMore(){
+        return this.lists.length >= this.params.total;
+      },
+
+      disabled() {
+        return this.loading || this.noMore;
+      },
+    },
 		methods:{
       toggleNav(index){
         this.navIndex = index;
@@ -224,9 +248,13 @@
         this.getLists()
         this.getAlllists()
       },
-      pageChange(currentPage){
-        this.params.page = currentPage;
-        this.getLists()
+
+      getMoreLists(){
+
+        this.loading = true
+        this.getLists();
+        this.params.page ++;
+
       },
 			getTransferParams(item,id){
 				var obj = {
@@ -262,6 +290,7 @@
               }
 
         		}
+
         	})
       },
 			getLists(){
@@ -271,17 +300,24 @@
 					.then(({data})=>{
 
             const { list_asset: lists, total_item: total } = data.data
-						if(data.status=='success'){
 
+            if(data.status=='success'){
               if(lists){
-                this.lists.splice(0,999,...lists);
-                this.params.total = total
+                if(this.params.page === 1){
+                  this.lists.splice(0,999,...lists);
+                }else{
+                  this.lists.push(...lists);
+                }
               }else{
-                this.lists.splice(0,999);
-                 this.params.total = 0
+                if(this.params.page === 1){
+                  this.lists.splice(0,999);
+                }
               }
+            }
+             this.params.total = total
 
-						}
+            this.loading = false;
+
 					})
 			}
 		},

@@ -28,14 +28,12 @@
 					</el-row>
 
 					<div
-            style="overflow-y:auto;"
-            v-infinite-scroll="getMoreLists"
-            infinite-scroll-disabled="disabled"
-            infinite-scroll-distance="500"
+            style="overflow-y:auto;height:500px;padding:2px 10px"
           >
             <div
               class="consoleListsWrap"
-              style="padding:2px 10px"
+              v-infinite-scroll="getMoreLists"
+              infinite-scroll-disabled="disabled"
             >
 
               <div
@@ -122,16 +120,18 @@
         type:'',
 
         loading: false,
-        noMore: false,
 
         params:{
           page: 1,
-          page_size: 1,
-          total: 0,
+          page_size: 10,
+          total: 1,
         }
 			}
 		},
     computed:{
+      noMore(){
+        return this.lists.length >= this.params.total;
+      },
 
       disabled() {
         return this.loading || this.noMore;
@@ -166,21 +166,12 @@
                 }else{
                   this.lists.push(...lists);
                 }
-
-                this.params.total = total
-
-              }else{
-                this.noMore = true;
               }
-
-
-            }else{
-               this.noMore = true;
+              this.params.total = total
             }
-
+            
             this.loading = false;
 
-            console.log(this.noMore,this.loading,1112)
 
         	})
 

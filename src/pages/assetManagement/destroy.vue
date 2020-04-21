@@ -48,7 +48,7 @@
 						</el-col>
             <el-col
             	:md="24"
-            	v-if="amount"
+            	v-if="amount || amount ===0"
             	style="margin-top:-10px">当前资产余额：{{amount}}</el-col>
 
 						<el-col :lg="24">
@@ -131,9 +131,9 @@
 				.then(({data})=>{
 					 const lists = data.data.list_address;
 					 if(lists){
-					   this.address.splice(0,99999, {address_id:''},...lists) ;
+					   this.address.splice(0,99999, ...lists) ;
 					 }else{
-					   this.address.splice(0,99999, {address_id:''}) ;
+					   this.address.splice(0,99999) ;
 					 }
 				})
 		},

@@ -29,12 +29,12 @@
 							<span>{{detail.asset_id}}</span>
 						</el-col>
 					</el-row>
-					<el-row class="assetDetaiContentItem">
+					<!-- <el-row class="assetDetaiContentItem">
 						<el-col :lg="6">资产发行账户</el-col>
 						<el-col :lg="18">
 							<span>{{detail.account_id}}</span>
 						</el-col>
-					</el-row>
+					</el-row> -->
 					<el-row class="assetDetaiContentItem">
 						<el-col :lg="6">首次发行地址</el-col>
 						<el-col :lg="18">
