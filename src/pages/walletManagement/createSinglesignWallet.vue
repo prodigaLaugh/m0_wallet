@@ -9,12 +9,12 @@
 						<span>创建单签钱包</span>
 					</span>
 				</div>
-					
+
 				<div class="commonTitle_two">
 					创建单签钱包
 					<span @click="$router.go(-1)">返回</span>
 				</div>
-				
+
 				<div class="transferInpWrap">
 					<el-row>
 						<el-col>
@@ -34,12 +34,12 @@
 										</el-option>
 									</el-select>
 								</el-col>
-							
-								
-								
-								
+
+
+
+
 								<el-col :md="24">
-									<div 
+									<div
 										@click="create"
 										class="createAccountBtn">创建账户</div>
 								</el-col>
@@ -47,12 +47,12 @@
 						</el-col>
 					</el-row>
 				</div>
-			
+
 			</el-col>
 		</el-row>
-		
-		
-		
+
+
+
 	</div>
 </template>
 
@@ -61,22 +61,23 @@
 
 	import Vue from 'vue';
 	import { Row, Col, Radio, Input, Select, Option, MessageBox } from 'element-ui';
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Radio);
 	Vue.use(Input);
 	Vue.use(Option);
 	Vue.use(Select);
-	
-	
+
+
 	export default {
 		created(){
 
-			getPrivateKeyLists.bind(this)()
+			getPrivateKeyLists.bind(this)({page:1, page_size:99999})
 				.then(({data})=>{
-					console.log(data,8887)
-					this.lists = data.data;
+          const { list_keys: lists } = data.data
+   
+					this.lists.splice(0,999, ...lists ? lists : []);
 					if(this.$route.query.from){
 						var list = JSON.parse(localStorage.privateItem);
 						this.params.xpub= list.xpub
@@ -113,7 +114,7 @@
 								this.$router.go(-1);
 								this.submitFlag = true;
 							},1500)
-							
+
 						}else{
 							var msg = data.error;
 							this.$message({
@@ -124,7 +125,7 @@
 								this.submitFlag = true;
 							},200)
 						}
-						
+
 						console.log(data)
 					})
 			}
@@ -144,5 +145,5 @@
 			font-size:13px;
 		}
 	}
-	
+
 </style>

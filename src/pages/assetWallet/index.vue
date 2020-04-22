@@ -69,13 +69,10 @@
 
 
           <div
-            style="overflow-y:auto;height:500px;"
           >
 
             <div
               class="assetListsWrap"
-              v-infinite-scroll="getMoreLists"
-              infinite-scroll-disabled="disabled"
             >
               <div
                 class="selectAccountItem"
@@ -172,14 +169,13 @@
 
 	import { getAssetWalletLists, getAssetLists, getAssetHistoryWalletLists } from '@/util/server.js'
 	import Vue from 'vue';
-	import { Row, Col, Select, Option, Pagination, InfiniteScroll } from 'element-ui';
+	import { Row, Col, Select, Option, Pagination } from 'element-ui';
 
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Option);
 	Vue.use(Select);
   Vue.use(Pagination);
-  Vue.use(InfiniteScroll);
 
 	export default {
 		created(){
@@ -188,7 +184,7 @@
 			var account_type = accountInfo.account_type;
 
 			this.params.account_id = account_id;
-
+      this.getLists()
       this.getAlllists()
 		},
 		data(){
@@ -198,7 +194,7 @@
 
 				params:{
           page: 1,
-          page_size: 5,
+          page_size: 10,
           total: 1,
 
 					account_id:'',
@@ -230,21 +226,37 @@
 				lists:[],
 
         loading: false,
+        noMoreData:false
 			}
 		},
-    computed:{
-      noMore(){
-        return this.lists.length >= this.params.total;
-      },
+    mounted(){
 
-      disabled() {
-        return this.loading || this.noMore;
-      },
+      var _this = this;
+      window.onscroll = function(){
+          // scrollTop 滚动条滚动时，距离顶部的距离
+          var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+          // windowHeight 可视区的高度
+          var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+          // scrollHeight 滚动条的总高度
+          var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+          // 滚动条到底部的条件
+
+          if(scrollTop + windowHeight == scrollHeight){
+            // 加载数据
+            if(!_this.noMoreData){
+               _this.getMoreLists()
+            }
+
+
+          }
+        }
     },
 		methods:{
       toggleNav(index){
         this.navIndex = index;
         this.params.page = 1;
+        this.noMoreData = false;
+
         this.getLists()
         this.getAlllists()
       },
@@ -253,7 +265,7 @@
 
         this.loading = true
         this.getLists();
-        this.params.page ++;
+
 
       },
 			getTransferParams(item,id){
@@ -312,11 +324,14 @@
                 if(this.params.page === 1){
                   this.lists.splice(0,999);
                 }
+                this.noMoreData = true;
               }
-            }
-             this.params.total = total
+              this.params.page ++;
 
-            this.loading = false;
+              this.params.total = total
+              this.loading = false;
+
+            }
 
 					})
 			}

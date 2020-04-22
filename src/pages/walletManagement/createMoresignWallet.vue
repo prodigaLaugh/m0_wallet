@@ -129,8 +129,10 @@
 		created(){
 			getPrivateKeyLists.bind(this)()
 				.then(({data})=>{
-					var data = data.data;
-					this.lists = data;
+          const { list_keys: lists } = data.data
+          
+          this.lists.splice(0,999, ...lists ? lists : []);
+          
 					if(this.$route.query.from){
 						var list = JSON.parse(localStorage.privateItem);
 						this.privatekey = list.xpub

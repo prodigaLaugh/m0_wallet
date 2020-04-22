@@ -195,12 +195,12 @@ export async function  queryAssetAmount(para){//查询资产余额
 }
 
 export async function  signUpload(para){//签名文件上传
-	let url = `/v1/mulsign/sign`;
+	let url = `/v1/mulsign/sign_detail`;
 	let result = await this.$http.post(url, para )
 	return result;
 }
 export async function  sign(para){//签名
-	let url = `/v1/mulsign/sign_detail`;
+	let url = `/v1/mulsign/sign`;
 	let result = await this.$http.post(url, para )
 	return result;
 }

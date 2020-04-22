@@ -422,6 +422,14 @@
       this.toggleNav(0)
 
       var _this = this;
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      // windowHeight 可视区的高度
+      var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+      // scrollHeight 滚动条的总高度
+      var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      // 滚动条到底部的条件
+      this.getMoreLists()
+
       window.onscroll = function(){
           // scrollTop 滚动条滚动时，距离顶部的距离
           var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -463,7 +471,7 @@
 				params:{
           page:1,
           total: 1,
-          page_size:1,
+          page_size:5,
 					asset_name:'',
 					asset_id:'',
 					order_by:'time_desc',
@@ -513,6 +521,9 @@
       },
     },
 		methods:{
+      loadLists(){
+
+      },
 			toggleNav(index){
 				if(index>-1){
 					this.operIndex = index||0;
