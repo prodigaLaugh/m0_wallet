@@ -150,7 +150,7 @@
 					console.log(data,111)
 					var data = data.data;
 					this.detail = data;
-					this.params.file_hash = data.file_hash;
+					this.params.file_hash = data.tx_id;
 						
 				})
 		},
@@ -212,7 +212,7 @@
 				
 				var formdata = new FormData();
 				formdata.append('myfile',this.params.myfile);
-				formdata.append('file_hash',this.params.file_hash);
+				formdata.append('tx_id',this.params.file_hash);
 				this.uploadfileDialFlag = false;
 				evidenceVerifyFile.bind(this)(formdata)
 					.then(({data})=>{

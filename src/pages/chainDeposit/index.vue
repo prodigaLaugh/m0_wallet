@@ -30,7 +30,7 @@
 						<el-row>
 							<el-col>
 								<div class="hashWrap">
-									存证hash：{{item.tx_hash | interceptPubStr}}
+									交易hash：{{item.tx_hash | interceptPubStr}}
 									<span 
 										class="tag-read blue el-icon-document " 
 										:data-clipboard-text="item.tx_hash" 

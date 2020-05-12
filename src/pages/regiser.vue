@@ -3,61 +3,82 @@
 	<div class="loginWrap">
 		<div class="loginContainer">
 
-		
-			<div class="loginTitle">TK中心化钱包</div>
-			<div class="loginDescription">注册/sign up</div>
+      <div class="logoWrap">
+        <img src="../assets/login/logo.png" alt="">
+        <div class="logoTitle">TK中心化钱包</div>
+      </div>
 
-			<div class="loginInpWrap">
-				<span>用户名</span>
-				<el-input 
-					v-model="loginParams.user_name" 
-					placeholder="请输入用户名"
-					autocomplete="off"></el-input>
 
-			</div>
+      <div class="content">
+        <div class="loginTitle">注册</div>
 
-			<div class="loginInpWrap">
-				<span>密码</span>
-				<el-input 
-					v-model="loginParams.password" 
-					placeholder="请输入密码"
-					type="password"
-					autocomplete="new-password"></el-input>
-			</div>
-			<div class="loginInpWrap">
-				<span>确认密码</span>
-				<el-input 
-					v-model="loginParams.againPassword" 
-					placeholder="请再次输入密码"
-					type="password"
-					autocomplete="new-password"></el-input>
-			</div>
-			<div class="loginInpWrap">
-				<span>邀请码</span>
-				<el-input 
-					v-model="loginParams.invite_code" 
-					placeholder="请输入邀请码(必填)"></el-input>
-			</div>
+        <div class="loginInpWrap">
+          <span>用户名</span>
+          <el-input
+            v-model="loginParams.user_name"
+            placeholder="请输入用户名"
+            autocomplete="off"></el-input>
 
-	
-			<div class="loginInpWrap">
-				<span>校验码</span>
-				<div>
-					<el-input 
-						v-model="verifycode" 
-						placeholder="请输入右侧的验证码"
-						type="text"></el-input>
-					<div @click="refreshCode">
-						<s-identify :identifyCode="identifyCode" ></s-identify>
-					</div>
-					 
-				</div>
-			</div>
+        </div>
 
-			<div class="loginBtnWrap">
-				<div @click="$router.push('/login')">去登录</div>
-				<div @click="login">注册</div>
-			</div>
+        <div class="loginInpWrap">
+          <span>密码</span>
+          <el-input
+            v-model="loginParams.password"
+            placeholder="请输入密码"
+            type="password"
+            autocomplete="new-password"></el-input>
+        </div>
+        <div class="loginInpWrap">
+          <span>确认密码</span>
+          <el-input
+            v-model="loginParams.againPassword"
+            placeholder="请再次输入密码"
+            type="password"
+            autocomplete="new-password"></el-input>
+        </div>
+        <div class="loginInpWrap">
+          <span>邀请码</span>
+          <el-input
+            v-model="loginParams.invite_code"
+            placeholder="请输入邀请码(必填)"></el-input>
+        </div>
+
+
+        <div class="loginInpWrap yzm">
+          <span>验证码</span>
+          <div>
+            <el-input
+              v-model="verifycode"
+              placeholder="请输入右侧的验证码"
+              type="text"></el-input>
+            <div @click="refreshCode">
+              <s-identify :identifyCode="identifyCode" ></s-identify>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="loginInpWrap loginBtnWrap">
+          <span></span>
+          <div @click="login"  class="btn">注册</div>
+        </div>
+
+        <div class="loginInpWrap registerWrap">
+        	<span></span>
+          <div >
+            <label>
+
+            	<!-- <span>3天内自动登录</span> -->
+            </label>
+             <div @click="$router.push('/login')" class="regBtn" >去登录</div>
+          </div>
+        </div>
+
+
+      </div>
 
 		</div>
 	</div>
@@ -101,7 +122,7 @@ export default {
 	login(){
 		let url = `${BASEURL1}/v1/user/register`
 		let params = Object.assign({},this.loginParams) ;
-		
+
 
 		if(!this.loginParams.user_name ||
 			!this.loginParams.password ||
@@ -129,7 +150,7 @@ export default {
 			});
 			return false;
 		}
-	
+
 
 
 		if(!this.loginFlag){
@@ -155,9 +176,9 @@ export default {
 						type: 'warning'
 					});
 				}
-				
+
 				this.loginFlag = true;
-				
+
 
 
 			})

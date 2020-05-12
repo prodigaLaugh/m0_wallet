@@ -60,7 +60,8 @@
 							<div v-else>载入</div>
 							<div
 								@click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
-							<div @click="$router.push('/main/backupType')">备份</div>
+							<div style="color:#999;">备份</div>
+              <!-- @click="$router.push('/main/backupType')" -->
 							<div @click="del(item,index)">删除</div>
 						</el-col>
 					</el-row>

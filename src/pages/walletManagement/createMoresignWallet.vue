@@ -97,7 +97,9 @@
 			  	<el-input
 					v-model="addPrivateKey"
 					placeholder="请输入可签名公钥"
-					@change="queryPerson"></el-input>
+					@change="queryPerson"
+          @input="queryPerson"
+          ></el-input>
 			  	<div style="text-align:left;padding-top:10px;">秘钥创建人：{{createPerson}}</div>
 
 		  </div>

@@ -128,21 +128,23 @@
 
 				signUpload.bind(this)(formdata)
 					.then(({data})=>{
-					
+
 						if(data.status=='success'){
-							this.uploadFlag = true;
+
 							this.uploadFileDetail = data.data;
 
 							var nums = this.uploadFileDetail.complete_signnum ? this.uploadFileDetail.complete_signnum.split('/') :[];
 							var leftNum = parseInt(nums[0]);
 							var rightNum = parseInt(nums[1]) ;
 							this.isTxFlag = (rightNum - leftNum)==1
+              console.log(this.isTxFlag,rightNum , leftNum,1111)
 						}else{
 							this.$message({
 								type:'warning',
 								message:data.error
 							})
 						}
+            this.uploadFlag = true;
 					})
 			},
 			signFn(){
@@ -156,30 +158,35 @@
 
 				sign.bind(this)(formdata)
 					.then(({data})=>{
-						if(data.status == 'success'){
-							if(this.isTxFlag){
-								this.$message({
-									type:'success',
-									message:'提交交易成功'
-								})
-								setTimeout(()=>{
-									this.$router.go(-1);
-								},1500)
-							}else{
-								let element = document.createElement('a')
-								element.setAttribute('href', 'data:text/json;charset=utf-8,' + JSON.stringify(data) )
-								element.setAttribute('download', 'data.hex')
-								element.style.display = 'none'
-								document.body.appendChild(element)
-								element.click()
-								document.body.removeChild(element)
-							}
-						}else{
-							this.$message({
-								type:'warning',
-								message:data.error
-							})
-						}
+            
+            if(data.status === 'error'){
+              this.$message({
+              	type:'warning',
+              	message:data.error
+              })
+            }else{
+              if(this.isTxFlag){
+                
+              	this.$message({
+              		type:'success',
+              		message:'提交交易成功'
+              	})
+              	setTimeout(()=>{
+              		this.$router.go(-1);
+              	},1500)
+                
+              }else{
+                let element = document.createElement('a')
+                element.setAttribute('href', 'data:text/json;charset=utf-8,' + JSON.stringify(data) )
+                element.setAttribute('download', 'data.hex')
+                element.style.display = 'none'
+                document.body.appendChild(element)
+                element.click()
+                document.body.removeChild(element)
+              }
+              
+            }
+          
 						console.log(data,87797)
 					})
 			}

@@ -1,11 +1,14 @@
 <template>
   <div  class="commonHeaderWrap">
       <div class="commonHeader">
-				<div class="left">M0钱包</div>
+				<div class="left">
+          <img src="../assets/login/logo.png" alt="">
+          <span>TK WALLET</span>
+        </div>
 
 				<!-- <div class="right hidden-xs-only"> -->
 				<div class="right">
-					<div class="title">{{accountAlias}}</div>
+					
 					<div class="rightContainer">
 						<div @click="$router.push('/main/privatekeyManagement')">
 							<img src="../assets/praviteKeyIcon.png" style="width:40px;" alt="">
@@ -229,33 +232,36 @@ export default {
 		}
 
 	},
-	computed: {
-		accountAlias () {
-		  return this.$store.state.accountAlias
-		  // 或者 return this.$store.getter.count2
-		}
-	}
+	
 }
 </script>
 
 <style lang="scss" scoped>
   .commonHeaderWrap{
-    height:66px;
+    height:54px;
 		.commonHeader{
 			position:fixed;
 			left:0;
 			right:0;
 			top:0;
-			background:$blue;
+			background:$blackBg;
 			display:flex;
 			z-index:10;
 
 			.left{
 				width:200px;
-				line-height:66px;
+				line-height:54px;
 				color:#fff;
-				font-size:24px;
+				font-size:13px;
 				padding-left:20px;
+        display:flex;
+        align-items: center;
+        img{
+          height:44px;
+        }
+        >span{
+          margin-left:18px;
+        }
 			}
 
 			.right{
@@ -277,7 +283,7 @@ export default {
 						display:flex;
 						align-items:center;
 						padding-right:30px;
-						height:66px;
+						height:54px;
 						cursor:pointer;
 
 						span{

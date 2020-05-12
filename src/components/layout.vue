@@ -7,6 +7,9 @@
 <style lang="scss">
 	@import url("../css/reset.css");
 	@import url("../css/common.css");
+  .app-content{
+    padding-top:28px;
+  }
   .paginationWrap{
     text-align:right;
   }
@@ -95,7 +98,7 @@
 	.contentNavWrap{
 		border-bottom:1px solid #333;
 		padding-bottom:8px;
-		
+
 		>span{
 			font-size:16px;
 			font-weight:650;
@@ -121,8 +124,8 @@
 			}
 		}
 	}
-	
-	
+
+
 	// 地址管理列表
 	.addressManagementIndexListWrap{
 		background:#ddd;
@@ -157,7 +160,7 @@
 					}
 				}
 			}
-			
+
 			&.addressManagementIndexListRight{
 				align-items: center;
 				justify-content: flex-end;
@@ -180,11 +183,11 @@
 					}
 				}
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	// 交易记录样式
 	.consoleListsWrap{
 		.consoleListWrap{
@@ -194,7 +197,7 @@
 				margin-top:-1px;
 				padding:0 10px;
 				font-size:13px;
-				
+
 				&.consoleListIDWrap{
 					>div{
 						&:nth-of-type(1){
@@ -217,7 +220,8 @@
 									text-overflow: ellipsis;
 									padding:0 10px;
 								}
-								&:nth-of-type(3){
+								&:nth-of-type(3),
+                &.statusSpan{
 									&.error,
 									&.going{
 										background:none;
@@ -248,9 +252,9 @@
 							line-height:44px;
 						}
 					}
-					
+
 				}
-				
+
 				&.consoleList_list{
 					>div{
 						line-height:44px;
@@ -294,7 +298,7 @@
 			}
 		}
 	}
-	
+
 	// 转账 发行列表样式
 	.transferInpListsWrap{
 		>div{
@@ -322,7 +326,7 @@
 				border-radius:5px;
 				font-size:13px;
 			}
-			
+
 			.signaturedAccountWrap{
 				border:1px solid #ddd;
 				height:400px;
@@ -368,91 +372,129 @@
 				}
 			}
 		}
-		
+
 	}
 
 	// 登录注册样式
 	.loginWrap{
-		width:100%;
-		height:100%;
-		display:flex;
-		justify-content: center;
-		align-items: center;
+    background:url(../assets/login/loginBg.png) no-repeat center ;
+    background-size:cover;
+    width:100%;
+    height:100%;
+    min-height:660px;
+    overflow-y:auto;
+    position:relative;
+    .loginContainer{
+      width:560px;
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform: translate(-50%,-50%);
+      margin-top:-20px;
+      .logoWrap{
+        text-align:center;
+        img{
+          height:62px;
+          display:inline-block;
+        }
+        .logoTitle{
+          color:#fff;
+          font-size:13px;
+          line-height:13px;
+          padding-bottom:20px;
+          opacity:.8;
+        }
+      }
 
-		.loginContainer{
-			border:1px solid #666;
-			background:#fff;
-			display:flex;
-			flex-direction: column;
-			align-items: center;
-			width:500px;
+      .content{
+        background:#fff;
+        border-radius:8px;
+        .loginTitle{
+          padding:40px;
+          text-align:center;
+          font-size:20px;
+          line-height:20px;
+          color:$color-333;
+          font-weight:bold;
+        }
 
-			.loginTitle{
-				font-size:20px;
-				padding:20px 0 10px;
-			}
+        .loginInpWrap{
+          width:420px;
+          margin:0 auto 18px;
+          display:flex;
+          align-items: center;
+          &.loginBtnWrap{
+            padding-top:10px;
 
-			.loginDescription{
-				color:#333;
-				padding-bottom:20px;
-			}
+          }
+          &.registerWrap{
+            padding-bottom:28px;
+            >div{
+              justify-content: space-between;
+              align-items: center;
+              font-size:14px;
+              .el-checkbox{
+                font-weight:normal;
+              }
+              .el-checkbox__label{
+                 font-size:14px;
+                 color:$color-333;
+              }
+              .regBtn{
+                cursor:pointer;
+                color:$blue;
+              }
+            }
+          }
+          &.yzm{
+            >div>.el-input{
+              margin-right:6px;
+            }
+            .verifyCode{
+              cursor:pointer;
+            }
+          }
+          >span{
+            width:80px;
+            font-size:14px;
+            color:$color-333;
+          }
+          .el-input{
+             color:$color-333;
+             font-size:14px;
+          }
 
-			.loginInpWrap{
-				width:400px;
-				display:flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-bottom:10px;
-				>span{
-					width:80px;
-					font-size:14px;
-				}
-				input{
-					flex:1;
-					border:1px solid #ddd;
-					padding-left:8px;
-				}
-				label{
-					flex:1;
-					display:flex;
-					align-items: center;
-					
-				}
-				>div{
-					display:flex;
-					flex:1;
-					align-items: center;
-					>input{
-						margin-right:10px;
-					}
-					>div div{
-						width:114px;
-						@include pointer;
-					}
-				}
-			}
+          >div{
+            flex:1;
+            display:flex;
 
-		}
-		.loginBtnWrap{
-			display:flex;
-			justify-content: space-between;
-			width:400px;
-			>div{
-				width:140px;
-				height:40px;
-				background:rgba(22, 155, 213, 1);
-				text-align:center;
-				line-height:40px;
-				color:#fff;
-				margin-bottom:20px;
-				font-size:16px;
-				margin-top:20px;
-				border-radius:5px;
-				@include pointer;
-			}
-		}
-		
-	}
+
+            .verifyCode{
+              width:110px;
+              height:40px;
+
+            }
+          }
+
+          .btn{
+            flex:1;
+          }
+          .btn{
+            background:#3D5265;
+            line-height:40px;
+            text-align:center;
+            justify-content: center;
+            border-radius:5px;
+            color:#fff;
+            font-size:14px;
+            cursor:pointer;
+          }
+
+        }
+
+      }
+    }
+  }
 
 
 	//头部
@@ -481,7 +523,7 @@
 					margin-left:30px;
 				}
 			}
-			
+
 		}
 	}
 	// 创建 编辑资产样式
@@ -523,14 +565,11 @@
 						@include pointer;
 					}
 				}
-				
+
 			}
 		}
 	}
-	
 
-	
+
+
 </style>
-
-
-

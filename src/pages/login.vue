@@ -3,53 +3,70 @@
 	<div class="loginWrap">
 		<div class="loginContainer">
 
-		
-			<div class="loginTitle">TK中心化钱包</div>
-			<div class="loginDescription">登录/Login</div>
 
-			<div class="loginInpWrap">
-				<span>用户名</span>
-				<el-input 
-					v-model="loginParams.user_name" 
-					placeholder="请输入用户名"
-					autocomplete="off"></el-input>
+      <div class="logoWrap">
+        <img src="../assets/login/logo.png" alt="">
+        <div class="logoTitle">TK中心化钱包</div>
+      </div>
 
-			</div>
+      <div class="content">
+        <div class="loginTitle">登录</div>
+        <div class="loginInpWrap">
+        	<span>用户名</span>
+        	<el-input
+        		v-model="loginParams.user_name"
+        		placeholder="请输入用户名"
+        		autocomplete="off"></el-input>
 
-			<div class="loginInpWrap">
-				<span>密码</span>
-				<el-input 
-					v-model="loginParams.password" 
-					placeholder="请输入密码"
-					type="password"
-					autocomplete="new-password"></el-input>
-			</div>
+        </div>
 
-			<div class="loginInpWrap">
-				<span></span>
-				<label>
-					<el-checkbox v-model="autoLogin">3天内自动登录</el-checkbox>
-					<!-- <span>3天内自动登录</span> -->
-				</label>
-			</div>
-			<div class="loginInpWrap">
-				<span>校验码</span>
-				<div>
-					<el-input 
-						v-model="verifycode" 
-						placeholder="请输入右侧的验证码"
-						type="text"></el-input>
-					<div @click="refreshCode">
-						<s-identify :identifyCode="identifyCode" ></s-identify>
-					</div>
-					 
-				</div>
-			</div>
+        <div class="loginInpWrap">
+        	<span>密码</span>
+        	<el-input
+        		v-model="loginParams.password"
+        		placeholder="请输入密码"
+        		type="password"
+        		autocomplete="new-password"></el-input>
+        </div>
 
-			<div class="loginBtnWrap">
-				<div @click="$router.push('/regiser')">注册账号</div>
-				<div @click="login">登录</div>
-			</div>
+
+        <div class="loginInpWrap yzm">
+        	<span>验证码</span>
+        	<div>
+        		<el-input
+        			v-model="verifycode"
+        			placeholder="请输入右侧的验证码"
+        			type="text"></el-input>
+        		<div @click="refreshCode" class="verifyCode">
+        			<s-identify :identifyCode="identifyCode" ></s-identify>
+        		</div>
+
+        	</div>
+        </div>
+
+        <div class="loginInpWrap loginBtnWrap">
+          <span></span>
+        	<div @click="login" class="btn">登录</div>
+        </div>
+
+        <div class="loginInpWrap registerWrap">
+        	<span></span>
+          <div>
+            <label>
+            	<el-checkbox v-model="autoLogin">3天内自动登录</el-checkbox>
+            	<!-- <span>3天内自动登录</span> -->
+            </label>
+            <div @click="$router.push('/regiser')" class="regBtn">立即注册</div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+
+
 
 		</div>
 	</div>
@@ -109,8 +126,8 @@ export default {
 				});
 				return false;
 			}
-		
-			
+
+
 
 
 			if(!this.loginFlag){
@@ -120,7 +137,7 @@ export default {
 
 			login.bind(this)(params)
 				.then(({data})=>{
-					
+
 					let hour = 1,
 						autoLogin = 'false';
 					if(data.status === 'success'){
@@ -138,7 +155,7 @@ export default {
 								message: '登录成功',
 								type: 'success'
 							});
-							
+
 					}else{
 						var msg = data.error;
 						this.$message ({
@@ -146,8 +163,8 @@ export default {
 							type: 'warning'
 						});
 					}
-					
-					
+
+
 					setTimeout(()=>{
 						this.loginFlag = true;
 					},1500)

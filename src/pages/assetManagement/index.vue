@@ -1,5 +1,5 @@
 <template>
-	<div class="outerWrap consoleIndexWrap">
+	<div class="outerWrap consoleIndexWrap assetManagementWrap">
 		<div>
 			<div>
 
@@ -112,12 +112,22 @@
                   <el-row
                     class="consoleListIDWrap"
                     :gutter="20">
-                    <el-col :md="12">
-                      <span>交易ID</span>
-                      <span>{{item.tx_id}}</span>
+                    <el-col :md="18">
+
+                      <div class="listWrap">
+                        <span>操作ID</span>
+                        <span>{{item.transfer_id}}</span>
+                      </div>
+
+                      <div class="listWrap">
+                        <span>交易ID</span>
+                        <span>{{item.tx_id}}</span>
+                      </div>
+
+
 
                       <span
-                        :class="{error:item.status==2,going:item.status==3}">
+                        :class="{error:item.status==2,going:item.status==3,'statusSpan':true } ">
                         {{item.status | recordTextByType}}
                         <i
                           class="el-icon-warning"
@@ -127,7 +137,7 @@
                           v-if="item.status==3"></i>
                       </span>
                     </el-col>
-                    <el-col :md="12">
+                    <el-col :md="6">
                       {{item.create_time}}
                     </el-col>
                   </el-row>
@@ -189,11 +199,18 @@
                     class="consoleListIDWrap"
                     :gutter="20">
                     <el-col :md="12">
-                      <span>交易ID</span>
-                      <span>{{item.tx_id}}</span>
+                      <div class="listWrap">
+                        <span>操作ID</span>
+                        <span>{{item.transfer_id}}</span>
+                      </div>
+
+                      <div class="listWrap">
+                        <span>交易ID</span>
+                        <span>{{item.tx_id}}</span>
+                      </div>
 
                       <span
-                        :class="{error:item.status==2,going:item.status==3}">
+                        :class="{error:item.status==2,going:item.status==3, 'statusSpan':true}">
                         {{item.status | recordTextByType}}
                         <i
                           class="el-icon-warning"
@@ -239,11 +256,18 @@
                     class="consoleListIDWrap"
                     :gutter="20">
                     <el-col :md="12">
-                      <span>交易ID</span>
-                      <span>{{item.tx_id}}</span>
+                     <div class="listWrap">
+                       <span>操作ID</span>
+                       <span>{{item.transfer_id}}</span>
+                     </div>
+
+                     <div class="listWrap">
+                       <span>交易ID</span>
+                       <span>{{item.tx_id}}</span>
+                     </div>
 
                       <span
-                        :class="{error:item.status==2,going:item.status==3}">
+                        :class="{error:item.status==2,going:item.status==3, 'statusSpan':true}">
                         {{item.status | recordTextByType}}
                         <i
                           class="el-icon-warning"
@@ -291,11 +315,18 @@
                     class="consoleListIDWrap"
                     :gutter="20">
                     <el-col :md="12">
-                      <span>交易ID</span>
-                      <span>{{item.tx_id}}</span>
+                      <div class="listWrap">
+                        <span>操作ID</span>
+                        <span>{{item.transfer_id}}</span>
+                      </div>
+
+                      <div class="listWrap">
+                        <span>交易ID</span>
+                        <span>{{item.tx_id}}</span>
+                      </div>
 
                       <span
-                        :class="{error:item.status==2,going:item.status==3}">
+                        :class="{error:item.status==2,going:item.status==3, 'statusSpan':true}">
                         {{item.status | recordTextByType}}
                         <i
                           class="el-icon-warning"
@@ -575,8 +606,8 @@
 
         fnObj[this.operIndex].bind(this)(params)
           .then(({data})=>{
-
-            const { record_list: lists, total_item: total } = data.data
+            const listkey = this.operIndex ===1 ? 'signrecord_list': 'record_list';
+            const { [listkey]: lists, total_item: total } = data.data
 
             if(data.status=='success'){
 
@@ -661,8 +692,11 @@
           asset.asset_id = ''
         }else{
           if(list.length){
-            asset.asset_name = list[0].asset_name;
+            asset.asset_name = list[0].asset_name==='全部'?'':list[0].asset_name;
             asset.asset_id =  list[0].asset_id;
+          }else{
+            asset.asset_name = '';
+            asset.asset_id = ''
           }
 
         }
@@ -682,6 +716,26 @@
 </script>
 
 <style lang="scss">
+  .assetManagementWrap{
+    .consoleListsWrap .consoleListWrap .inner > div.consoleListIDWrap .listWrap{
+      width:230px;
+      display:flex;
+      align-items: center;
+      overflow:hidden;
+      span:nth-of-type(2){
+        margin-left: 4px;
+        margin-right: 30px;
+        border: 1px solid #ddd;
+        width: 150px;
+        line-height: 18px;
+        border-radius: 4px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 0 10px;
+      }
+    }
+  }
 	.consoleIndexWrap{
     .consoleListsWrap{
       padding:2px 10px;
