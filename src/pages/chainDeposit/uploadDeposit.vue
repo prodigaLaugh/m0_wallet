@@ -1,16 +1,88 @@
 <template>
 	<div class="outerWrap uploadDepositWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
 
-				<div class="commonTitle_one">
-					链上存证
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>上传存证</span>
-					</span>
-					<div @click="$router.go(-1)">返回</div>
-				</div>
+    <div class="commonTitle_one">
+      <span @click="$router.go(-1)">可信存证</span>/上传存证
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>转账</span>
+      </span> -->
+      <!-- <div>返回</div> -->
+    </div>
+
+
+    <div class="transferInpWrap">
+
+      <div class="inpItemWrap">
+        <div>
+          <span>存证名称</span>
+          <el-input
+          	v-model="params.evidence_name"
+          	autocomplete="off"
+          	placeholder="请输入上传存证的名称"></el-input>
+        </div>
+      </div>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>存证文件</span>
+          <input type="file" ref="file" @change="fileSelect" style="display:none">
+
+          <span v-if="!fileName" class="uploadFileBtn" @click="bindClick">+选择上传文件</span>
+          <span v-else class="uploadFileBtn" @click="bindClick">{{fileName}}</span>
+
+        </div>
+      </div>
+
+    <div class="inpItemWrap textarea">
+      <div>
+        <span>存证数据</span>
+        <el-input
+        	v-model="params.evidence_data"
+        	autocomplete="off"
+          :rows="5"
+          type="textarea"
+        	placeholder="请输入上传存证的名称"></el-input>
+      </div>
+    </div>
+
+    <div class="inpItemWrap textarea">
+      <div>
+        <span>备注信息</span>
+        <el-input
+        	v-model="params.evidence_describe"
+        	type="textarea"
+        	:rows="5" placeholder=""></el-input>
+      </div>
+    </div>
+
+
+    <div class="inpItemWrap">
+      <div>
+        <span>密码</span>
+        <el-input
+        	type="password"
+        	v-model="params.password"
+        	autocomplete="new-password"
+        	placeholder=""></el-input>
+      </div>
+    </div>
+
+    <div class="inpItemWrap">
+      <div>
+        <span></span>
+         <span class="submit" @click="save">提交上链</span>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+
+		<!-- <el-row>
+			<el-col :lg="20" :md="22">
 
 				<div class="commonTitle_two">上传存证</div>
 
@@ -24,13 +96,13 @@
 								autocomplete="off"
 								placeholder="请输入上传存证的名称"></el-input>
 						</el-col>
-						<!-- <el-col :lg="24">
+						<el-col :lg="24">注释
 							<div class="transferInpListLeft">关联存证</div>
 							<el-input
 								v-model="params.associate_evidence"
 								autocomplete="off"
 								placeholder="请输入关联的存证hash"></el-input>
-						</el-col> -->
+						</el-col>
 
 						<el-col :lg="24">
 							<div class="transferInpListLeft">存证文件</div>
@@ -75,7 +147,7 @@
 
 			</el-col>
 		</el-row>
-
+ -->
 		<el-dialog
 		  title="文件校验"
 		  :visible.sync="dialogVisible"
@@ -147,6 +219,9 @@
 			}
 		},
 		methods:{
+      bindClick(){
+        this.$refs.file.click()
+      },
 			save(){
 				var para = this.params;
 				var formdata = new FormData();
@@ -211,6 +286,25 @@
 
 <style lang="scss" scoped>
 	.uploadDepositWrap{
+    .uploadFileBtn{
+      flex:1;
+      text-align:center;
+      border:2px dashed #324558;
+      line-height: 40px;
+      cursor: pointer;
+      color: #324558;
+    }
+
+    .textarea.inpItemWrap{
+      >div{
+        align-items: flex-start;
+        >span{
+          line-height:40px;
+        }
+      }
+
+    }
+
 		.transferInpListsWrap{
             .uploadFile{
                 position:relative;

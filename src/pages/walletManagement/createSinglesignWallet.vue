@@ -118,7 +118,7 @@
 						}else{
 							var msg = data.error;
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:msg
 							})
 							setTimeout(()=>{

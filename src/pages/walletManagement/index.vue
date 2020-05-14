@@ -1,90 +1,124 @@
 <template>
 	<div class="outerWrap accountIndexWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
-
-				<div class="commonTitle_one">钱包管理</div>
-				<!-- <div class="addAccountWrap">
-					<div class="commonTitle_two">添加账户</div>
-
-					<el-row  class="row-bg" :gutter="30" justify="center" style="margin-right:0;">
-					  <el-col :lg="8" >
-								<div class="addAccountItem" @click="$router.push('/main/createAccout')">新建账户</div>
-						</el-col>
-					  <el-col :lg="8">
-								<div class="addAccountItem" @click="$router.push('/main/recoveryMnemonic')">助记词恢复</div>
-						</el-col>
-					  <el-col :lg="8">
-								<div class="addAccountItem" @click="$router.push('/main/importBackup')">备份导入</div>
-						</el-col>
-					</el-row>
-				</div> -->
-
-				<div class="selectAccountWrap">
-					<div class="commonTitle_two">
-						我的钱包
-						<div>
-							<!-- <span @click="$router.push('/main/importBackup')">导入钱包</span> -->
-							<span @click="createFlag=true">创建钱包</span>
-						</div>
-					</div>
 
 
-					<el-row
-						v-for="(item,index) in lists"
-						:key="index"
-						:class="['selectAccountItem',{use:item.status!=0}]"
-						type="flex"
-						justify="center">
-						<div class="leftTag">
-							<span v-if="item.status==0">未&#10;使{{'\n'}}用</span>
-							<span v-else>使&#10;用{{'\n'}}中</span>
-						</div>
-						<el-col :lg="18" class="left">
-							<div class="title">
-								{{item.account_alias}}
-								<span>{{(item.sign_key_num-0)>1 ?'多签' :'单签'}}</span>
-							</div>
-							<div class="blue leftText">
-								<span>关联密钥:</span>
-								<div>
-									<div
-										v-for="(list,i) in item.xpubs"
-										:key="i">{{list}}</div>
-								</div>
-							</div>
-							<!-- <div class="leftText">主公钥:jkjl32434hkjkj</div> -->
-						</el-col>
-						<el-col :lg="6" class="right">
-							<div @click="zairu(item)" v-if="item.status==0">载入</div>
-							<div v-else>载入</div>
-							<div
-								@click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
-							<div style="color:#999;">备份</div>
-              <!-- @click="$router.push('/main/backupType')" -->
-							<div @click="del(item,index)">删除</div>
-						</el-col>
-					</el-row>
+    <div class="commonTitle_one">钱包管理</div>
+    <!-- <div class="addAccountWrap">
+      <div class="commonTitle_two">添加账户</div>
 
-          <div class="paginationWrap" v-if="lists.length">
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :total="params.total"
-              :page-size="params.page_size"
-              @current-change="pageChange"
-             >
-            </el-pagination>
+      <el-row  class="row-bg" :gutter="30" justify="center" style="margin-right:0;">
+        <el-col :lg="8" >
+            <div class="addAccountItem" @click="$router.push('/main/createAccout')">新建账户</div>
+        </el-col>
+        <el-col :lg="8">
+            <div class="addAccountItem" @click="$router.push('/main/recoveryMnemonic')">助记词恢复</div>
+        </el-col>
+        <el-col :lg="8">
+            <div class="addAccountItem" @click="$router.push('/main/importBackup')">备份导入</div>
+        </el-col>
+      </el-row>
+    </div> -->
+
+    <div class="selectAccountWrap">
+      <div class="commonTitle_two">
+        我的钱包
+        <div>
+          <!-- <span @click="$router.push('/main/importBackup')">导入钱包</span> -->
+          <span @click="createFlag=true">新建钱包</span>
+        </div>
+      </div>
+
+
+      <div class="commonListsWrap">
+        <div
+          v-for="(item,index) in lists"
+          :key="index"
+          class="commonListWrap"
+        >
+          <div class="tit">{{item.account_alias}}
+           <div @click="zairu(item)" v-if="item.status==0" >载入</div>
+           <div v-else class="has">载入</div>
           </div>
 
-					<div class="noresult" v-if="!lists.length">暂无数据</div>
+
+          <div class="tags">
+            <span>{{(item.sign_key_num-0)>1 ?'多签' :'单签'}}</span>
+            <div>
+              <div
+                @click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
+              <div >备份</div>
+              <!-- @click="$router.push('/main/backupType')" -->
+              <div @click="del(item,index)">删除</div>
+            </div>
+          </div>
+
+          <div class="relation">
+            <span>关联密钥:</span>
+            <div>
+              <div
+                v-for="(list,i) in item.xpubs"
+                :key="i">{{list}}</div>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
 
 
 
-				</div>
+      <!-- <el-row
+        v-for="(item,index) in lists"
+        :key="index"
+        :class="['selectAccountItem',{use:item.status!=0}]"
+        type="flex"
+        justify="center">
+        <div class="leftTag">
+          <span v-if="item.status==0">未&#10;使{{'\n'}}用</span>
+          <span v-else>使&#10;用{{'\n'}}中</span>
+        </div>
+        <el-col :lg="18" class="left">
+          <div class="title">
+            {{item.account_alias}}
+            <span>{{(item.sign_key_num-0)>1 ?'多签' :'单签'}}</span>
+          </div>
+          <div class="blue leftText">
+            <span>关联密钥:</span>
+            <div>
+              <div
+                v-for="(list,i) in item.xpubs"
+                :key="i">{{list}}</div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :lg="6" class="right">
 
-			</el-col>
-		</el-row>
+          <div
+            @click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
+          <div style="color:#999;">备份</div>
+          <div @click="del(item,index)">删除</div>
+        </el-col>
+      </el-row>
+ -->
+      <div class="paginationWrap" v-if="lists.length">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="params.total"
+          :page-size="params.page_size"
+          @current-change="pageChange"
+         >
+        </el-pagination>
+      </div>
+
+      <div class="noresult" v-if="!lists.length">暂无数据</div>
+
+
+
+    </div>
+
+
 
 
 		<!-- 点击秘钥管理输入密码弹窗 -->
@@ -196,7 +230,7 @@
 							this.getLists();
 						}else{
 							this.$message({
-								type:"warning",
+								type:"error",
 								message:data.error||'载入失败'
 							})
 						}
@@ -234,7 +268,7 @@
 
 						}else{
 							this.$message({
-								type:"warning",
+								type:"error",
 								message:data.error||'载入失败'
 							})
 						}
@@ -290,144 +324,107 @@
 
 <style lang="scss">
 	.accountIndexWrap{
-		.addAccountWrap>div:nth-of-type(2){
-			display:flex;
-			justify-content: space-between;
-			align-items: center;
-			padding-bottom:10px;
+    .commonListsWrap{
+      .commonListWrap{
+        .tit{
+          display:flex;
+          justify-content: space-between;
+          align-items: center;
+          >div{
+            font-size:15px;
+             padding-left:30px;
+             background:url(../../assets/walletManagement/icon.png) no-repeat left center;
+             background-size:25px;
+             cursor:pointer;
+             &.has{
+               background-image:url(../../assets/walletManagement/icon_checked.png);
+             }
+          }
+        }
 
-			.addAccountItem{
-				background:$blue;
-				cursor:pointer;
-				justify-content: center;
-				align-items: center;
-				line-height:80px;
-				font-size:16px;
-				color:#fff;
-				text-align:center;
-			}
-		}
+        .tags{
+          display:flex;
+          align-items: center;
+          justify-content: space-between;
+          padding:20px 0 16px;
+          border-bottom:1px solid #d5e5f2;
+          >span{
+            width:58px;
+            line-height:28px;
+            border-radius:3px;
+            color:$color-333;
+            background:#d6e0e9;
+            text-align:center;
+          }
+          >div{
+            display:flex;
+            >div{
+              width:85px;
+              line-height:32px;
+              background:#3d5265;
+              color:#fff;
+              text-align:center;
+              cursor:pointer;
+              margin-left:13px;
+              border-radius:3px;
+              &.disabled{
+                cursor:not-allowed
+              }
+            }
+          }
+        }
 
-		.selectAccountWrap{
-			.selectAccountItem{
-				border:4px solid transparent;
-				background:#eee;
-				height:100px;
-				align-items: center;
-				position:relative;
-				margin-bottom:20px;
-				&.use{
-					border-color:rgba(121, 121, 121, 1);
-					>.leftTag{
-						background:rgba(0, 0, 0, 1);
-					}
+        .relation{
+          position:relative;
+          padding:15px 0 0;
+          >span{
+            width:68px;
+            position:absolute;
+            left:0;
+            top:15px;
+            font-size:14px;
+            color:#60697a;
+          }
+          >div{
+            margin-left:68px;
+            >div{
+              margin-bottom:13px;
+              font-size:13px;
+              color:#43515c;
+              line-height:14px;
+            }
+          }
+        }
 
-				}
+      }
+    }
 
-				>.leftTag{
-					position:absolute;
-					left:-4px;
-					top:10px;
-					bottom:10px;
-					background:rgba(148, 148, 148, 1);
-					border-radius:4px;
-					width:18px;
-					color:#fff;
-					text-align:center;
-					font-size:13px;
-					>span{
-						position:absolute;
-						left:0;
-						right:0;
-						top:50%;
-						transform: translate(0,-50%);
-						line-height:18px;
-					}
-				}
-				>.left{
-					padding-left:50px;
-					>.title{
-						padding-bottom:16px;
-						display:flex;
-						align-items: center;
-						font-size:18px;
-						>span{
-							margin-left:10px;
-							padding:4px 10px;
-							background:#000;
-							color:#fff;
-							font-size:13px;
-							border-radius:5px;
-						}
-					}
-					>.leftText{
-						color:#999;
-						display:flex;
-						>span{
-							width:100px;
-						}
-						>div{
-							width:300px;
-							>div{
-								white-space: nowrap;
-								text-overflow: ellipsis;
-								overflow:hidden;
-							}
+    .el-dialog__wrapper{
+      .contentWrap{
+        border:1px solid #DCDFE6;
+        cursor:pointer;
+        padding:15px;
 
-						}
-						&.blue{
-							font-weight:bold;
-							color:$blue;
-							padding-bottom:2px;
-						}
-					}
-				}
-				>.right{
-					padding-right:15px;
-					display:flex;
-					justify-content: flex-end;
-					>div{
-						padding:34px 2px 0;
-						background:url(../../assets/account/accountIndex_selectIcon1.png) no-repeat center top;
-						background-size:24px;
-						font-size:13px;
-						margin-right:20px;
-						cursor:pointer;
-						&:nth-of-type(1){
-							background-size:28px 24px;
-						}
-						&:nth-of-type(2){
-							color:$blue;
-							background-image:url(../../assets/account/accountIndex_selectIcon2.png);
-						}
-						&:nth-of-type(3){
-							color:$blue;
-							background-image:url(../../assets/account/accountIndex_selectIcon3.png);
-						}
-						&:nth-of-type(4){
-							color:red;
-							background-image:url(../../assets/account/accountIndex_selectIcon4.png);
-						}
-					}
-				}
-			}
-		}
-		.selectWalletWrap{
-			.contentWrap{
-				text-align:center;
-				padding:15px 10px;
-				cursor:pointer;
-				border:1px solid #999;
-				.title{
-					padding-bottom:20px;
-					font-size:16px;
-				}
-				&.active{
-					color:#409EFF;
-					border-color:#409EFF;
-				}
-			}
-		}
-	}
+        &.active{
+          border:2px solid #324558;
+           background:#f1f1f1;
+        }
+
+        .title{
+          font-size:16px;
+          color:$color-333;
+          padding-bottom:20px;
+          text-align:center;
+        }
+        .content{
+          line-height:20px;
+          font-size:12px;
+        }
+
+
+      }
+    }
+
+  }
 
 </style>

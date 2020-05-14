@@ -68,7 +68,7 @@ aside, details,figcaption,figure,footer,header,hgroup, menu,nav,section{ -webkit
 
 
 body {
-  background: #f0f2f5;
+  background: rgba(244, 246, 248, 1);
   font-family:"PingFang SC","Lantinghei SC","Microsoft YaHei",arial,"\5b8b\4f53",sans-serif,tahoma;
   font-size: 12px;
   color: #1b1b1b;

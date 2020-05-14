@@ -1,64 +1,103 @@
 <template>
 	<div class="outerWrap addressManagementIndexWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
-				<div class="commonTitle_one">地址管理</div>
 
-				<div class="commonTitle_two">
-					账户地址
-					<!-- <span @click="dialogVisible=true">创建地址</span> -->
-					<span @click="create">创建地址</span>
+    <div class="commonTitle_one">地址管理</div>
 
-				</div>
+    <div class="commonTitle_two">
+      账户地址
+      <!-- <span @click="dialogVisible=true">创建地址</span> -->
+      <span @click="create">创建地址</span>
 
-				<div class="addressManagementIndexListsWrap">
+    </div>
 
-					<el-row
-						v-for="(item, index) in lists"
-						:key="index"
-						class="addressManagementIndexListWrap">
-						<el-col :lg="12" class="addressManagementIndexListLeft">
-							<div>{{item.address_id}}</div>
-							<div>
-								<span>包含资产：</span>
-								<div>
-									<span
-										v-for="(list,i) in item.asset_names"
-										:key="i">{{list}}</span>
-								</div>
-							</div>
-						</el-col>
-						<el-col :lg="12" class="addressManagementIndexListRight">
-							<div>
-								<span
-									class="tag-read blue"
-									:data-clipboard-text="item.address_id"
-									@click="copy">拷贝地址</span>
-								<span @click="$router.push('/main/transfer')">发起转账</span>
-								<span @click="$router.push('/main/issue')">发行资产</span>
-							</div>
-						</el-col>
-					</el-row>
-
-          <div class="paginationWrap" v-if="lists.length">
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :total="params.total"
-              :page-size="params.page_size"
-              @current-change="pageChange"
-             >
-            </el-pagination>
+    <div class="commonListsWrap">
+      <div
+        v-for="(item,index) in lists"
+        :key="index"
+        class="commonListWrap"
+      >
+        <div class="infoBtnWrap" style="border-bottom:0 none;">
+          <div class="des">
+             <span>
+              {{item.address_id}}
+             </span>
+             <!-- <img src="../assets/leftNavBg.png" alt=""> -->
+             <span
+             	class="tag-read blue"
+             	:data-clipboard-text="item.address_id"
+             	@click="copy"
+             	style="font-size:18px;margin-left:10px;"></span>
           </div>
+        </div>
 
-					<div class="noresult" v-if="!lists.length">暂无数据</div>
+        <div class="assets">
+          <div>
+            <span>包含资产</span>
+            <div>
+              <span
+                v-for="(list,i) in item.asset_names"
+                :key="i">{{list}}</span>
+                
+            </div>
+          </div>
+          <div>
+            <span @click="$router.push('/main/transfer')">发起转账</span>
+            <span @click="$router.push('/main/issue')">发行资产</span>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+    <!-- <div class="addressManagementIndexListsWrap">
+
+      <el-row
+        v-for="(item, index) in lists"
+        :key="index"
+        class="addressManagementIndexListWrap">
+        <el-col :lg="12" class="addressManagementIndexListLeft">
+          <div>{{item.address_id}}</div>
+          <div>
+            <span>包含资产：</span>
+            <div>
+              <span
+                v-for="(list,i) in item.asset_names"
+                :key="i">{{list}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :lg="12" class="addressManagementIndexListRight">
+          <div>
+            <span
+              class="tag-read blue"
+              :data-clipboard-text="item.address_id"
+              @click="copy">拷贝地址</span>
+            <span @click="$router.push('/main/transfer')">发起转账</span>
+            <span @click="$router.push('/main/issue')">发行资产</span>
+          </div>
+        </el-col>
+      </el-row>
+
+      <div class="paginationWrap" v-if="lists.length">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="params.total"
+          :page-size="params.page_size"
+          @current-change="pageChange"
+         >
+        </el-pagination>
+      </div>
+
+      <div class="noresult" v-if="!lists.length">暂无数据</div>
 
 
 
-				</div>
+    </div>
 
-			</el-col>
-		</el-row>
+ -->
 
 
 		<el-dialog
@@ -160,7 +199,7 @@
 						}else{
 							var msg  = data.error
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:msg
 							})
 						}
@@ -190,7 +229,67 @@
 
 <style lang="scss">
 	.addressManagementIndexWrap{
+    .commonListWrap{
+      padding-bottom:20px;
+      
+      .des{
+         padding: 20px 0 30px 0;
+        >span:nth-of-type(1){
 
+          font-size: 16px;
+          line-height: 16px;
+        }
+      }
+
+      .assets{
+        display:flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        >div:nth-of-type(1){
+          flex:1;
+          display:flex;
+          >span{
+            width:100px;
+            line-height:28px;
+          }
+          >div{
+            display:flex;
+            flex:1;
+            flex-wrap: wrap;
+            >span{
+                  float: left;
+                  padding:0 30px;
+                  height: 28px;
+                  line-height: 28px;
+                  borer-radius: 3px;
+                  background: #d6e0e9;
+                  color: #27334b;
+                  margin-right: 13px;
+                  margin-bottom: 15px;
+                  border-radius: 3px;
+                  text-align: center;
+                  font-size: 12px;
+            }
+          }
+        }
+        >div:nth-of-type(2){
+          width:200px;
+          display:flex;
+          >span{
+            font-size: 12px;
+                cursor: pointer;
+                background: #3d5265;
+                color: #fff;
+                line-height: 32px;
+                margin-left: 10px;
+                width: 120px;
+                text-align: center;
+                border-radius: 5px;
+          }
+        }
+      }
+
+    }
 
 	}
 

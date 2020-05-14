@@ -1,21 +1,74 @@
 <template>
 	<div class="outerWrap createAssetWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
-			
-				<div class="commonTitle_one">
-					资产管理
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>创建资产</span>
-					</span>
-					<div @click="$router.go(-1)">返回</div>
-				</div>
-					
-				<div class="commonTitle_two">创建资产</div>
-				
-				<div class="transferInpWrap">
-					
+
+    <div class="commonTitle_one">
+      <span @click="$router.go(-1)">创建资产</span>/创建资产
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>转账</span>
+      </span> -->
+      <!-- <div>返回</div> -->
+    </div>
+
+
+    <div class="transferInpWrap">
+
+      <div class="inpItemWrap">
+        <div>
+          <span>名称</span>
+          <el-input v-model="param.asset_name" placeholder=""></el-input>
+        </div>
+      </div>
+
+
+
+      <div class="inpTitl">资产参数</div>
+
+      <div class="transferInfoWrap">
+
+        <div
+          class="inpItemWrap"
+          v-for="(item, index) in param.parameters"
+      		:key="index"
+        >
+          <div>
+            <span>参数名</span>
+           <el-input v-model="item.key" placeholder=""></el-input>
+          </div>
+          <div>
+            <span>参数值</span>
+            <el-input v-model="item.value" placeholder=""></el-input>
+          </div>
+          <span @click="delPara(index)">删除</span>
+        </div>
+
+
+        <div class="inpItemWrap btnWrap">
+          <div>
+            <span></span>
+            <span class="btn"  @click="addPara">+ 添加资产参数</span>
+          </div>
+        </div>
+
+
+        <div class="inpItemWrap">
+          <div>
+            <span></span>
+             <span class="submit" @click="save">保存</span>
+          </div>
+
+        </div>
+
+       </div>
+    </div>
+
+
+
+
+				<!-- <div class="commonTitle_two">创建资产</div> -->
+
+				<!-- <div class="transferInpWrap">
+
 					<el-row class="transferInpListsWrap">
 						<el-col :lg="24">
 							<div class="transferInpListLeft">名称</div>
@@ -25,7 +78,7 @@
 							<div class="transferInpListLeft">资产参数</div>
 						</el-col>
 					</el-row>
-					
+
 					<div class="paraWrap">
 						<el-row class="top">
 							<el-col :lg="11">
@@ -35,7 +88,7 @@
 								参数值
 							</el-col>
 						</el-row>
-						<el-row 
+						<el-row
 							v-for="(item, index) in param.parameters"
 							:key="index"
 							style="margin-bottom:20px;">
@@ -56,41 +109,38 @@
 								<span class="addBtnWrap" @click="addPara">+添加资产参数</span>
 							</el-col>
 						</el-row>
-						
+
 					</div>
-					
+
 					<el-row style="margin-top:20px;">
 						<el-col :lg="24">
 							<div class="createAssetBtn" @click="save">保存</div>
 						</el-col>
 					</el-row>
-					
-					
-					
-					
-						
+
+
+
+
+
 				</div>
-		
-			</el-col>
-		</el-row>
-		
-		
-		
+
+ -->
+
 	</div>
 </template>
 
 <script>
 	import { createAsset } from '@/util/server.js'
-	
+
 	import Vue from 'vue';
 	import { Row, Col, Input } from 'element-ui';
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Input);
 
-	
-	
+
+
 	export default {
 		created(){
 
@@ -103,7 +153,7 @@
 					asset_name:'',
 					parameters:[{key:'',value:''}]
 				},
-				
+
 			}
 		},
 		methods:{
@@ -141,7 +191,7 @@
 					return false;
 				}
 				this.submitFlag = false;
-				
+
 				createAsset.bind(this)(param)
 					.then(({data})=>{
 						if(data.status === 'success' ){
@@ -174,4 +224,3 @@
 		},
 	}
 </script>
-

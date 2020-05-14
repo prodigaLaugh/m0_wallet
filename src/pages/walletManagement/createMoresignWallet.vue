@@ -1,23 +1,105 @@
 <template>
 	<div class="outerWrap createAccountWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
 
-				<div class="commonTitle_one">
-					钱包管理
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>创建多签钱包</span>
-					</span>
-				</div>
+        <div class="commonTitle_one">
+          <span @click="$router.push('/main/walletIndex')">钱包管理</span>/创建多签钱包
+          <!-- <span>
+            <i class="el-icon-arrow-right"></i>
+            <span>转账</span>
+          </span> -->
+          <!-- <div>返回</div> -->
+        </div>
 
-				<div class="commonTitle_two">
-					创建多签钱包
-					<span @click="$router.go(-1)">返回</span>
-				</div>
+
+
+
 
 				<div class="transferInpWrap">
-					<el-row>
+
+          <div class="inpItemWrap">
+            <div>
+              <span>钱包名称</span>
+              <el-input v-model="params.alias" placeholder=""></el-input>
+            </div>
+          </div>
+
+          <div class="inpItemWrap">
+            <div>
+              <span>钱包秘钥</span>
+              <el-select
+              	v-model="privatekey"
+              	@change="selectChange"
+              	placeholder="请选择钱包所使用的密钥">
+              	<el-option
+              		v-for="item in lists"
+              		:key="item.xpub"
+              		:label="item.alias"
+              		:value="item.xpub">
+              	</el-option>
+              </el-select>
+            </div>
+          </div>
+
+          <div class="inpTitl">可签名秘钥</div>
+
+          <div class="transferInfoWrap">
+            <div
+            	class="signaturedAccountListWrap"
+            	v-for="(item,index) in xpubs"
+            	:key="index">
+              <span>
+                秘钥：
+              </span>
+              <div>
+                <span>{{item}}</span>
+                <div>
+                	<span @click="openDialog(item,index)" class="green" style="margin-right:20px;">编辑</span>
+                	<span @click="del(index)" class="red">删除</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="inpItemWrap btnWrap" style="margin-top:30px;">
+              <div>
+                <span style="width:86px;"></span>
+                <span class="btn"  @click="addAccount">+ 添加可签名账户</span>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="inpItemWrap" >
+            <div>
+              <span>所需签名数</span>
+              <el-select v-model="params.quorum" placeholder="请选择">
+              	<el-option
+              	  v-for="item in signNums"
+              	  :key="item"
+              	  :label="item"
+              	  :value="item">
+              	</el-option>
+              </el-select>
+            </div>
+
+          </div>
+
+
+
+
+          <div class="inpItemWrap"   >
+            <div>
+              <span></span>
+               <span class="submit" @click="create">创建账户</span>
+            </div>
+
+          </div>
+
+
+
+					<!-- <el-row>
 						<el-col >
 							<el-row class="transferInpListsWrap">
 								<el-col :md="24">
@@ -81,10 +163,10 @@
 							</el-row>
 						</el-col>
 					</el-row>
-				</div>
+				 -->
+        </div>
 
-			</el-col>
-		</el-row>
+
 
 
 		<el-dialog
@@ -132,9 +214,9 @@
 			getPrivateKeyLists.bind(this)()
 				.then(({data})=>{
           const { list_keys: lists } = data.data
-          
+
           this.lists.splice(0,999, ...lists ? lists : []);
-          
+
 					if(this.$route.query.from){
 						var list = JSON.parse(localStorage.privateItem);
 						this.privatekey = list.xpub
@@ -215,7 +297,7 @@
 			create(){
 				if(this.xpubs.length < (this.params.quorum-1)){
 					this.$message({
-						type:'warning',
+						type:'error',
 						message:'秘钥总数不能大于所需签名数'
 					})
 					return;
@@ -242,7 +324,7 @@
 						}else{
 							var msg = data.error;
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:msg
 							})
 							setTimeout(()=>{
@@ -275,6 +357,37 @@
 			color:#fff;
 			font-size:13px;
 		}
+
+    .signaturedAccountListWrap{
+      display:flex;
+      >span{
+        width:86px;
+      }
+      >div{
+        flex:1;
+        position:relative;
+        word-break: break-all;
+        font-size:14px;
+        color:#5a6877;
+        >span{
+          display:block;
+          padding-right:200px;
+          word-break: break-all;
+          line-height:20px;
+        }
+        >div{
+          position:absolute;
+          right:0;
+          top:0;
+          >span{
+            cursor:pointer;
+          }
+        }
+      }
+
+
+
+    }
 	}
 
 </style>

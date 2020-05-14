@@ -1,82 +1,91 @@
 <template>
 	<div class="outerWrap transactionRecordWrap">
-		<el-row>
-			<el-col >
 
-				<div class="commonTitle_one">
-					资产钱包
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>交易记录</span>
-					</span>
-				</div>
+    <div class="commonTitle_one">
+      <span @click="$router.go(-1)">资产钱包</span>/交易记录
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>转账</span>
+      </span> -->
+      <!-- <div>返回</div> -->
+    </div>
 
-
-				<div class="consoleRecordsWrap">
-					<div class="commonTitle_two">交易记录</div>
-
-					<el-row class="transactionRecordContentWrap">
-						<el-col :lg="24">
-							<span>资产类型</span>
-							<span>{{asset_name}}</span>
-						</el-col>
-						<el-col :lg="24" v-if="address_id">
-							<span>所在地址</span>
-							<span>{{address_id}}</span>
-						</el-col>
-
-					</el-row>
-
-					<div
-            style="overflow-y:auto;height:500px;padding:2px 10px"
-          >
-            <div
-              class="consoleListsWrap"
-              v-infinite-scroll="getMoreLists"
-              infinite-scroll-disabled="disabled"
-            >
-
-              <div
-                class="consoleListWrap"
-                v-for="(item,index) in lists"
-                :key="index">
-
-                <div v-if="item.tx_type==1">
-                  <transfer :item="item" :asset_name="asset_name"/>
-                </div>
-                <div v-if="item.tx_type==2">
-                  <issue :item="item" :asset_name="asset_name"/>
-                </div>
-                <div v-if="item.tx_type==3">
-                  <retire :item="item" :asset_name="asset_name"/>
-                </div>
-
-              </div>
-
-            <!-- <div class="paginationWrap" v-if="lists.length">
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="params.total"
-                :page-size="params.page_size"
-                @current-change="pageChange"
-               >
-              </el-pagination>
-            </div> -->
+    <div class="infWrap">
+      <div class="listWrap">
+        <span>资产类型：</span>
+        <span>{{asset_name}}</span>
+      </div>
+      <div class="listWrap" v-if="address_id">
+       <span>所在地址：</span>
+       <span>{{address_id}}</span>
+      </div>
+    </div>
 
 
-              <p v-if="loading" class="noresult">加载中...</p>
-              <div class="noresult" v-else-if="!lists.length">暂无数据</div>
-              <p v-else="noMore" class="noresult">没有更多了</p>
+    <div class="consoleRecordsWrap">
+
+
+      <!-- <el-row class="transactionRecordContentWrap">
+        <el-col :lg="24">
+          <span>资产类型</span>
+          <span>{{asset_name}}</span>
+        </el-col>
+        <el-col :lg="24" v-if="address_id">
+          <span>所在地址</span>
+          <span>{{address_id}}</span>
+        </el-col>
+
+      </el-row> -->
+
+      <div
+        style="overflow-y:auto;height:500px;padding:2px 10px"
+      >
+        <div
+          class="consoleListsWrap"
+          v-infinite-scroll="getMoreLists"
+          infinite-scroll-disabled="disabled"
+        >
+
+          <div
+            class="commonListsWrap"
+            v-for="(item,index) in lists"
+            :key="index">
+
+            <div v-if="item.tx_type==1" >
+              <transfer :item="item" :asset_name="asset_name"/>
+            </div>
+            <div v-if="item.tx_type==2" >
+              <issue :item="item" :asset_name="asset_name"/>
+            </div>
+            <div v-if="item.tx_type==3">
+              <retire :item="item" :asset_name="asset_name"/>
             </div>
 
-					</div>
+          </div>
+
+        <!-- <div class="paginationWrap" v-if="lists.length">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="params.total"
+            :page-size="params.page_size"
+            @current-change="pageChange"
+           >
+          </el-pagination>
+        </div> -->
 
 
-				</div>
+          <p v-if="loading" class="noresult">加载中...</p>
+          <div class="noresult" v-else-if="!lists.length">暂无数据</div>
+          <p v-else="noMore" class="noresult">没有更多了</p>
+        </div>
 
-			</el-col>
-		</el-row>
+      </div>
+
+
+    </div>
+
+
 
 	</div>
 </template>
@@ -169,7 +178,7 @@
               }
               this.params.total = total
             }
-            
+
             this.loading = false;
 
 
@@ -183,6 +192,20 @@
 
 <style lang="scss">
 	.transactionRecordWrap{
+    .infWrap{
+      border-bottom:1px solid #E4E4E4;
+      padding:15px 0 15px 30px;
+      .listWrap{
+        line-height:40px;
+        font-size:14px;
+        color:#425263;
+        >span:nth-of-type(1){
+          padding-right:10px;
+        }
+
+      }
+    }
+
 
 		.consoleRecordsWrap{
 			padding-right:30px;

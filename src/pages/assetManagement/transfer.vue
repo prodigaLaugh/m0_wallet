@@ -1,24 +1,118 @@
 <template>
 	<div class="outerWrap transferWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
-				<div class="commonTitle_one">
-					资产操作
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>转账</span>
-					</span>
-					<div>返回</div>
-				</div>
 
-			</el-col>
-		</el-row>
+    <div class="commonTitle_one">
+      <span @click="$router.go(-1)">资产操作</span>/转账
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>转账</span>
+      </span> -->
+      <!-- <div>返回</div> -->
+    </div>
 
 
-		<div class="commonTitle_two">转账</div>
+
+
+		<!-- <div class="commonTitle_two">转账</div> -->
 
 		<div class="transferInpWrap">
-			<el-row>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>转出地址</span>
+          <el-select
+          	v-model="params.from_address"
+          	 @change="adressChangeQueryAmount"
+          	placeholder="请选择">
+          	<el-option
+          	  v-for="item in address"
+          	  :key="item.address_id"
+          	  :label="item.address_id?item.address_id:'全部'"
+          	  :value="item.address_id">
+          	</el-option>
+            </el-select>
+        </div>
+      </div>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>转出资产</span>
+          <el-select
+          	v-model="params.asset_id"
+          	@change="adressChangeQueryAmount"
+          	placeholder="请选择">
+          	<el-option
+          		v-for="item in allAssetsLists"
+          		:key="item.value"
+          		:label="item.asset_name"
+          		:value="item.asset_id">
+          	</el-option>
+          </el-select>
+        </div>
+      </div>
+
+      <div class="inpItemWrap"  v-if="amount || amount ===0">
+        <div>
+          <span>当前资产余额</span>
+          <span>{{amount}}</span>
+        </div>
+      </div>
+
+      <div class="inpTitl">转账详情</div>
+
+      <div class="transferInfoWrap">
+
+        <div
+          class="inpItemWrap"
+          v-for="(item, index) in params.receive_info"
+					:key="index"
+        >
+          <div>
+            <span>目标地址</span>
+            <el-input v-model="item.to_address" placeholder="请输入目标地址"></el-input>
+          </div>
+          <div>
+            <span>转出数量</span>
+            <el-input v-model="item.to_address" placeholder="请输入目标地址"></el-input>
+          </div>
+          <span @click="delPara(index)">删除</span>
+        </div>
+
+
+        <div class="inpItemWrap btnWrap">
+          <div>
+            <span></span>
+            <span class="btn"  @click="addPara">+ 添加转账地址</span>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>密码</span>
+          <el-input
+          	v-model="params.password"
+          	placeholder="请输入密码"
+          	autocomplete="new-password"
+          	type="password"></el-input>
+        </div>
+
+      </div>
+
+
+      <div class="inpItemWrap">
+        <div>
+          <span></span>
+           <span class="submit" @click="transfer">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
+        </div>
+
+      </div>
+
+
+
+			<!-- <el-row>
 				<el-col :lg="20" :md="22">
 					<el-row class="transferInpListsWrap">
 						<el-col :lg="24">
@@ -112,7 +206,8 @@
 					</el-row>
 				</el-col>
 			</el-row>
-		</div>
+		 -->
+    </div>
 
 
 
@@ -288,8 +383,8 @@
 							},1500)
 						}else{
 							this.$message({
-								type:'warning',
-								message:data.error
+								type:'error',
+								message:data.error,
 							})
 						}
 					})
@@ -300,7 +395,7 @@
 						console.log(data,222)
 						if(data.status=='error'){
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:data.error
 							})
 						}else{
@@ -324,6 +419,6 @@
 <style lang="scss">
 	.transferWrap{
 
-	}
+  }
 
 </style>

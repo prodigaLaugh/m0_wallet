@@ -7,8 +7,30 @@
 <style lang="scss">
 	@import url("../css/reset.css");
 	@import url("../css/common.css");
+  .red{
+    color:$red;
+  }
+  .el-button--primary,
+  .el-button--primary:hover{
+    background-color: $btnBg;
+    border-color: $btnBg;
+  }
+  .el-button--default:hover{
+    color:#606266;
+    background:#fff;
+    border:1px solid #DCDFE6;
+  }
+  .blue{
+    color:$blue;
+    cursor:pointer;
+  }
+  .green{
+    color:$green;
+    cursor:pointer;
+  }
+
   .app-content{
-    padding-top:28px;
+    padding-top:15px;
   }
   .paginationWrap{
     text-align:right;
@@ -34,15 +56,25 @@
 	        margin-bottom:10px;
 	    }
 	}
+
+
 	// 一级标题样式
 	.commonTitle_one{
-		font-size:24px;
+		font-size:18px;
+    line-height:18px;
 		font-weight:bold;
-		color:#333;
-		padding:40px 0 20px;
+		color:#425263;
+    background:#e4ebf1;
+		padding:20px 0 20px 18px;
 		display:flex;
 		align-items:flex-end;
 		position:relative;
+    >span:first-of-type{
+      cursor:pointer;
+      &:hover{
+        color:#243546;
+      }
+    }
 		>span{
 			display:flex;
 			align-items: flex-end;
@@ -70,19 +102,21 @@
 	}
 	// 二级标题
 	.commonTitle_two{
-		font-size:18px;
-		padding:20px 0;
+		font-size:16px;
+		padding:26px 32px 20px 30px;
 		display:flex;
 		justify-content: space-between;
 		align-items: center;
+    border-bottom:1px solid #e4e4e4;
 		>span,
 		>div>span{
-			line-height:32px;
-			padding:0 30px;
-			background:#5c6ac4;
+			line-height:44px;
+      width:160px;
+			background:$blue;
+      text-align:center;
 			border-radius:5px;
 			color:#fff;
-			font-size:13px;
+			font-size:14px;
 			cursor:pointer;
 		}
 		>div{
@@ -93,6 +127,346 @@
 			}
 		}
 	}
+
+
+  // 列表公共样式
+  .commonListsWrap{
+    padding:28px 30px 30px 28px;
+    .commonListWrap{
+      margin-bottom:48px;
+      border:1px solid #E4E4E4;
+      border-radius:10px;
+      padding:7px 26px 0 26px;
+      position:relative;
+      overflow:hidden;
+
+      .recordInfo{
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding:36px 0 26px;
+
+        >div{
+          display:flex;
+          font-size:14px;
+          align-items: center;
+
+          >span{
+            &:nth-of-type(2){
+              width:120px;
+              overflow:hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+            &.icon{
+              padding-right:30px;
+              background:url(../assets/assetOper/dui.png) no-repeat right center;
+              background-size:22px;
+              line-height:22px;
+              margin-right:30px;
+
+            }
+            &.icon+span{
+              width:150px;
+            }
+          }
+        }
+      }
+
+      .recordLists{
+        .recordList{
+          border-top:1px solid #d5e5f2;
+
+          display:flex;
+           >div{
+
+             line-height:60px;
+             font-size:12px;
+             color:#4d5967;
+             &:nth-of-type(1){
+              flex:3;
+             }
+             &:nth-of-type(2){
+              flex:2;
+             }
+             &:nth-of-type(3){
+              flex:1;
+             }
+           }
+        }
+      }
+
+
+
+
+      .infoBtnWrap{
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom:1px solid #dce5ec;
+        padding-bottom:18px;
+
+        .des{
+          color:$color-333;
+          font-size:13px;
+          display:flex;
+          align-items: center;
+          .tag-read{
+            width:16px;
+            height:16px;
+            background:url(../assets/privatekeyManagement/icon.png) no-repeat center;
+            background-size:cover;
+            margin-left:20px;
+          }
+        }
+
+        .btn{
+          display:flex;
+          >div{
+            font-size:12px;
+            cursor:pointer;
+            background:$btnBg;
+            color:#fff;
+            line-height:32px;
+            margin-left:10px;
+            width:120px;
+            text-align:center;
+            border-radius:5px;
+            &.disable{
+              cursor:not-allowed;
+              opacity: .3;
+            }
+          }
+        }
+      }
+
+
+
+      &:after{
+        content:'';
+        position:absolute;
+        left:0;
+        right:0;
+        top:0;
+        height:7px;
+        background:$green;
+      }
+
+      .tit{
+        padding:20px 0 30px 0;
+        font-size:16px;
+        line-height:16px;
+        font-weight:bold;
+        color:$color-4;
+        display:flex;
+        align-items: center;
+        >i{
+          margin-left:20px;
+          font-size:12px;
+          background:#d6e0e9;
+          line-height:24px;
+          padding:0 15px;
+          font-weight:normal;
+          border-radius:3px;
+        }
+      }
+    }
+
+  }
+  
+  // 详情页样式
+  .detailInfoListsWrap.itemWrap{
+    border-bottom:1px solid #e4e4e4;
+    padding:0 30px 30px;
+    .tit{
+      padding:30px 0px;
+      font-size: 16px;
+      color:$color-333;
+      font-weight:bold;
+    }
+  
+    .infoW{
+      .list{
+        display:flex;
+        line-height:40px;
+        font-size:14px;
+        color:$color-4;
+        >span:nth-of-type(1){
+          width:120px;
+        }
+      }
+    }
+  
+    .lists{
+      .list{
+        line-height:60px;
+        display:flex;
+        border-bottom:1px solid #e4e4e4;
+        font-size:14px;
+        color:$color-333;
+  
+        &:last-of-type,
+        &.title{
+          border-bottom: 0 none;
+        }
+        &.title{
+          line-height:40px;
+          background:#f6f7fb;
+        }
+  
+        >span:nth-of-type(1){
+          flex:2;
+          padding-left:15px;
+        }
+        >span:nth-of-type(2){
+          flex:2;
+        }
+        >span:nth-of-type(3){
+          flex:3;
+        }
+      }
+    }
+  
+  }
+  
+
+  //转账发行样式
+  .transferInpWrap{
+    background:#fff;
+    padding:30px;
+    color:#5a6877;
+    font-size:14px;
+
+    .inpItemWrap{
+      position:relative;
+      &:after{
+        content:'';
+        display:block;
+        overflow:hidden;
+        clear:both;
+      }
+      >div{
+        float:left;
+        width:40%;
+        display:flex;
+        align-items: center;
+        margin-bottom:30px;
+        margin-right:10%;
+        >span:nth-of-type(1){
+          width:100px;
+
+        }
+        >div{
+          flex:1;
+        }
+
+        .btn{
+          border:2px solid #324558;
+          line-height:40px;
+          border-radius:5px;
+          text-align:center;
+          cursor:pointer;
+          color:$color-333;
+          font-size:13px;
+          flex:1;
+        }
+
+        .submit{
+          color:#fff;
+          background:#3d5265;
+          flex:1;
+          border-radius:5px;
+          text-align:center;
+          line-height:42px;
+          font-size:12px;
+          cursor:pointer;
+        }
+      }
+      >span{
+        position:absolute;
+        left:90%;
+        line-height:40px;
+        margin-left:30px;
+        color:$red;
+        cursor:pointer;
+      }
+    }
+
+
+
+    .inpTitl{
+      padding:10px 0 15px;
+    }
+
+    .transferInfoWrap{
+      background:#f9f9f9;
+      padding:30px 30px 0;
+      margin-bottom:30px;
+
+    }
+
+  }
+
+
+  // 公共导航样式
+  .commonNavsWrap{
+    background:#e4ebf1;
+    span{
+      margin-right:10px;
+      border:1px solid #E4E4E4;
+      border-bottom:0 none;
+      border-radius:8px 8px 0 0;
+      display:inline-block;
+      width:118px;
+      line-height:38px;
+      background:#d5e0e9;
+      text-align:center;
+      color:#243546;
+      font-size:14px;
+      cursor:pointer;
+      &.active{
+        background:#fff;
+      }
+    }
+  }
+.el-select-dropdown__item,
+.el-input--suffix .el-input__inner{
+  font-size:13px;
+}
+  // 筛选样式
+  .filterWrap{
+    display:flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background:#fff;
+    padding:24px 32px 10px 4px;
+    border-bottom:1px solid #E4E4E4;
+    >div{
+      display:flex;
+      .assetSelectItemWrap{
+        padding-bottom:20px;
+        margin-left:24px;
+        display:flex;
+        align-items: center;
+        >span{
+          color:#425263;
+          width:68px;
+          padding-right:10px;
+          font-size:13px;
+        }
+      }
+    }
+    >span{
+      background:$blue;
+      color:#fff;
+      width:160px;
+      font-size:13px;
+      line-height:42px;
+      border-radius:5px;
+      text-align:center;
+      cursor:pointer;
+    }
+  }
 
 	// 导航样式
 	.contentNavWrap{
@@ -457,6 +831,7 @@
           >span{
             width:80px;
             font-size:14px;
+            margin-left:-4px;
             color:$color-333;
           }
           .el-input{

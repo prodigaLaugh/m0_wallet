@@ -1,21 +1,84 @@
 <template>
 	<div class="outerWrap depositDetailWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
-			
-				<div class="commonTitle_one">
-					链上存证
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>存证详情</span>
-					</span>
-					<div @click="$router.go(-1)">返回</div>
-				</div>
-					
+
+    <div class="commonTitle_one">
+      <span @click="$router.go(-1)">可信存证</span>/存证详情
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>转账</span>
+      </span> -->
+      <!-- <div>返回</div> -->
+    </div>
+
+    <div class="detailInfoListsWrap itemWrap">
+      <div class="tit">存证概况</div>
+
+      <div class="infoW">
+        <div class="list">
+          <span>存证名称</span>
+          <span>{{detail.evidence_name}}</span>
+        </div>
+
+        <div class="list">
+          <span>上链交易hash</span>
+          <span>{{detail.tx_id}}</span>
+        </div>
+
+        <div class="list">
+          <span>备注信息</span>
+          <span>{{detail.describe}}</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="detailInfoListsWrap itemWrap">
+      <div class="tit">存证文件</div>
+
+      <div class="infoW">
+        <div class="list">
+          <span>文件名</span>
+          <span>{{detail.file_name||'--'}}</span>
+        </div>
+
+        <div class="list">
+          <span>文件大小</span>
+          <span>{{detail.file_size||'--'}}</span>
+        </div>
+
+        <div class="list">
+          <span>备注信息</span>
+          <span>{{detail.describe}}</span>
+        </div>
+
+        <div class="btn"  v-if="detail.file_name">
+          <span>操作</span>
+          <div>
+            <span
+            	@click="download(detail.uuid, detail.file_name)"
+            	class="blue">下载链上文件</span>
+            <span class="blue" @click="uploadfileDialFlag=true">校验我的文件</span>
+          </div>
+        </div>
+
+        <div class="depositData">
+          <span>存证数据</span>
+          <span>{{detail.evidence_data}}</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+<!--
 				<div class="commonTitle_two">
 					存证概况
 				</div>
-				
+
 				<div class="systemStatusIndexContentWrap">
 					<el-row class="systemStatusIndexContentItem">
 						<el-col :lg="6">存证名称</el-col>
@@ -35,10 +98,10 @@
 							<span style="width:auto;">{{detail.describe}}</span>
 						</el-col>
 					</el-row>
-				</div>
-				
-				<div class="commonTitle_two">存证文件</div>
-				
+				</div> -->
+
+				<!-- <div class="commonTitle_two">存证文件</div>
+
 				<div class="systemStatusIndexContentWrap">
 					<el-row class="systemStatusIndexContentItem">
 						<el-col :lg="8">文件名</el-col>
@@ -53,16 +116,16 @@
 							<span>{{detail.file_size||'--'}}</span>
 						</el-col>
 						<el-col :lg="10" v-if="detail.file_name">
-							<span 
+							<span
 								@click="download(detail.uuid, detail.file_name)"
 								class="blue">下载链上文件</span>
 							<span class="blue" @click="uploadfileDialFlag=true">校验我的文件</span>
 
 						</el-col>
-						
+
 					</el-row>
-					
-					
+
+
 				</div>
 
 
@@ -70,8 +133,8 @@
 
 				<div class="depositDataContent">
 					{{detail.evidence_data}}
-				</div>
-				
+				</div> -->
+
 				<el-dialog
 					title="文件校验"
 					:visible.sync="uploadfileDialFlag"
@@ -90,7 +153,7 @@
 						<el-button type="primary" @click="verifyFile">上传文件</el-button>
 					</span>
 				</el-dialog>
-				
+
 				<el-dialog
 					title="文件校验"
 					:visible.sync="uploadfileCompleteFlag"
@@ -98,7 +161,7 @@
 					custom-class="uploadFileCompleteWrap"
 					:center="true">
 					<div>
-						
+
 						<div class="contentWrap" v-if="uploadSuccess">
 							<div class="green">
 								<span class="el-icon-success"></span>
@@ -111,9 +174,9 @@
 							</div>
 							<div>校验未通过<br>上传文件与链上存证不文件一致</div>
 						</div>
-						
+
 					</div>
-					
+
 					<span slot="footer" class="dialog-footer" v-if="uploadSuccess">
 						<el-button type="primary" @click="uploadfileCompleteFlag=false">返回</el-button>
 					</span>
@@ -122,12 +185,11 @@
 						<el-button type="primary" @click="uploadfileCompleteFlag=false;uploadfileDialFlag=true;fileName=''">重新上传</el-button>
 					</span>
 				</el-dialog>
-				
-		
-			
-			</el-col>
-		</el-row>
-		
+
+
+
+
+
 	</div>
 </template>
 
@@ -136,12 +198,12 @@
 
 	import Vue from 'vue';
 	import { Row, Col, Dialog } from 'element-ui';
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Dialog);
-	
-	
+
+
 	export default {
 		created(){
 			let id = this.$route.query.id;
@@ -151,24 +213,24 @@
 					var data = data.data;
 					this.detail = data;
 					this.params.file_hash = data.tx_id;
-						
+
 				})
 		},
 		data(){
 			return {
 				downloadUrl:'',
 				detail:{
-					
+
 				},
-				
+
 				uploadfileDialFlag:false,
 				params:{
 					myfile:'',
 					file_hash:'',
 				},
-				
+
 				fileName:'',
-				
+
 				uploadfileCompleteFlag:false,
 				uploadSuccess:false,
 			}
@@ -178,7 +240,7 @@
 				var formdata = new FormData();
 				formdata.append('uuid',uuid);
 				formdata.append('file_name',file_name)
-				
+
 				evidenceDownload.bind(this)(formdata)
 					.then(({data})=>{
 						console.log(data,4444)
@@ -192,24 +254,24 @@
 							a.href = e.target.result;
 							document.body.appendChild(a)
 							a.click()
-							
+
 							document.body.removeChild(a)
 						}
-						
-						
-						
+
+
+
 					})
 			},
 			fileSelect(e){
 				var  target= e.target
 				var file = target.files[0];
-				
+
 				this.fileName = target.value;
 				this.params.myfile = file;
-				
+
 			},
 			verifyFile(){
-				
+
 				var formdata = new FormData();
 				formdata.append('myfile',this.params.myfile);
 				formdata.append('tx_id',this.params.file_hash);
@@ -224,13 +286,52 @@
 						}
 					})
 			}
-			
+
 		},
 	}
 </script>
 
 <style lang="scss">
 	.depositDetailWrap{
+
+    .infoW{
+      .btn>span,
+      .depositData>span:nth-of-type(1){
+        font-size:14px;
+        line-height:40px;
+        color:#425263;
+      }
+      .btn{
+
+        >div{
+          display:flex;
+          padding-bottom:20px;
+          >span{
+            cursor:pointer;
+            background: #3D5265;
+            color: #fff;
+            line-height: 34px;
+            width: 120px;
+            text-align: center;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right:20px;
+          }
+        }
+      }
+
+      .depositData{
+        >span:nth-of-type(2){
+          display:block;
+          width:40%;
+          height:240px;
+          padding:10px 15px;
+          line-height:24px;
+          border:1px solid #e4e4e4;
+        }
+      }
+    }
+
 		padding-bottom:80px;
 		.systemStatusIndexContentWrap{
 			padding:20px 0;
@@ -250,7 +351,7 @@
             line-height:20px;
             padding:10px;
         }
-							
+
 		.uploadFileWrap{
 			.fileWrap{
 				.tips{
@@ -276,9 +377,9 @@
 					>span{
 						display:inline-block;
 						line-height:146px;
-						
+
 					}
-					
+
 				}
 				.filename{
 					font-size:12px;
@@ -286,7 +387,7 @@
 				}
 			}
 		}
-		
+
 		.uploadFileCompleteWrap{
 			.contentWrap{
 				text-align:center;
@@ -307,5 +408,5 @@
 			}
 		}
 	}
-	
+
 </style>

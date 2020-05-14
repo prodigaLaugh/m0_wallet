@@ -1,19 +1,59 @@
 <template>
 	<div class="outerWrap chainDepositWrap">
-		<el-row>
-			<el-col :lg="20" :md="24">
-				
-				<div class="commonTitle_one">链上存证</div>
+
+
+				<div class="commonTitle_one">可信存证</div>
 
 				<div class="commonTitle_two">
 					我的存证
 					<span @click="$router.push('/main/uploadDeposit')">上传存证</span>
 				</div>
-					
+
+
+        <div class="commonListsWrap">
+          <div
+            v-for="(item,index) in lists"
+            :key="index"
+            class="commonListWrap"
+          >
+            <div class="tit">{{item.evidence_name}}
+             <i>{{item.file_size}}</i>
+            </div>
+
+            <div class="infoBtnWrap" style="border-bottom:0 none;">
+              <div class="des">
+                 <span>
+                   交易hash：{{item.tx_hash | interceptPubStr}}
+                 </span>
+                 <!-- <img src="../assets/leftNavBg.png" alt=""> -->
+                 <span
+                 	class="tag-read blue "
+                 	:data-clipboard-text="item.tx_hash"
+                 	@click="copy"
+                 	style="font-size:18px;margin-left:10px;"></span>
+
+              </div>
+
+              <div class="btn">
+                <div @click="$router.push({path:'/main/depositDetail',query:{id:item.id}})">查看存证</div>
+              </div>
+            </div>
+
+            <div class="des2">
+              <span>描述</span>
+              <div>{{item.describe||'--'}}</div>
+            </div>
+
+          </div>
+
+
+
+
+        </div>
 
 				<div class="chainDepositListsWrap">
-					<div 
-						v-for="(item,index) in lists"
+					<div
+						v-for="(item,index) in []"
 						:key="index"
 						class="chainDepositItem" >
 						<el-row :gutter="30" class="chainDepositItemTitleWrap">
@@ -31,34 +71,33 @@
 							<el-col>
 								<div class="hashWrap">
 									交易hash：{{item.tx_hash | interceptPubStr}}
-									<span 
-										class="tag-read blue el-icon-document " 
-										:data-clipboard-text="item.tx_hash" 
+									<span
+										class="tag-read blue el-icon-document "
+										:data-clipboard-text="item.tx_hash"
 										@click="copy"
 										style="font-size:18px;margin-left:10px;"></span>
-									
+
 								</div>
 							</el-col>
 						</el-row>
-						
+
 						<el-row  :gutter="20" class="chainDepositItemContent">
 							<el-col :lg="24" :md="22" class="center">
 								{{item.describe||'--'}}
 							</el-col>
 						</el-row>
-					   
-						
+
+
 					</div>
-					
+
 					<div class="noresult" v-if="!lists.length">暂无数据</div>
 
 
 				</div>
-	
-			</el-col>
-		</el-row>
-		
-	
+
+
+
+
 	</div>
 </template>
 
@@ -68,11 +107,11 @@
 
 	import Vue from 'vue';
 	import { Row, Col } from 'element-ui';
-		
+
 	Vue.use(Row);
 	Vue.use(Col);
 
-	
+
 	export default {
 		created(){
 			var accountInfo = this.getLocalAccountInfo()
@@ -83,7 +122,7 @@
 					if(data.status =='success'){
 						this.lists = data.data
 					}
-					
+
 				})
 		},
 		data(){
@@ -114,8 +153,30 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.chainDepositWrap{
+    .commonListsWrap{
+      .des2{
+        margin-bottom:30px;
+        background:#f9f9f9;
+        line-height:20px;
+        font-size:14px;
+        display:flex;
+        padding:15px;
+        >span{
+          word-break: break-all;
+          &:nth-of-type(1){
+            width:80px;
+          }
+
+        }
+        >div{
+           flex:1;
+           word-break: break-all;
+        }
+      }
+    }
+
         .chainDepositItem{
             margin-bottom:20px;
             background:#eee;
@@ -169,5 +230,5 @@
 
         }
     }
-	
+
 </style>

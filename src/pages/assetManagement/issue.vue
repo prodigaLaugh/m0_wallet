@@ -1,26 +1,82 @@
 <template>
 	<div class="outerWrap transferWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
-				<div class="commonTitle_one">
-					资产操作
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>发行</span>
-					</span>
-					<div>返回</div>
-				</div>
 
-			</el-col>
-		</el-row>
+    <div class="commonTitle_one">
 
-		<div class="commonTitle_two">发行</div>
+      <span @click="$router.go(-1)">资产操作</span>/发行
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>发行</span>
+      </span>
+      <div>返回</div> -->
+    </div>
 
-		<div class="transferInpWrap">
-			<el-row>
-				<el-col :lg="20" :md="22">
-					<el-row class="transferInpListsWrap">
-						<el-col :lg="24">
+
+
+		<!-- <div class="commonTitle_two">发行</div> -->
+
+    <div class="transferInpWrap">
+
+      <div class="inpItemWrap">
+        <div>
+          <span>发行地址</span>
+          <el-select v-model="to_address" placeholder="请选择">
+          	<el-option
+          	  v-for="item in address"
+          	  :key="item.address_id"
+          	  :label="item.address_id"
+          	  :value="item.address_id">
+          	</el-option>
+            </el-select>
+        </div>
+      </div>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>发行资产</span>
+          <el-select v-model="params.asset_id" placeholder="请选择">
+          	<el-option
+          		v-for="item in allAssetsLists"
+          		:key="item.value"
+          		:label="item.asset_name"
+          		:value="item.asset_id">
+          	</el-option>
+          </el-select>
+        </div>
+      </div>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>发行数量</span>
+          <el-input v-model="to_amount" placeholder="请输入要发行的资产数量"></el-input>
+        </div>
+      </div>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>密码</span>
+          <el-input
+          	v-model="params.password"
+          	placeholder="请输入密码"
+          	autocomplete="new-password"
+          	type="password"></el-input>
+        </div>
+      </div>
+
+      <div class="inpItemWrap"   >
+        <div>
+          <span></span>
+           <span class="submit" @click="issue">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
+        </div>
+
+      </div>
+
+      <!-- <div
+      	@click="issue"
+      	class="transferAccoutItemBtn">{{isSingleSign?'提交交易':'生成签名文件'}}</div>
+
+					<el-row class="transferInpListsWrap"> -->
+						<!-- <el-col :lg="24">
 							<div class="transferInpListLeft">发行地址</div>
 							<el-select v-model="to_address" placeholder="请选择">
 								<el-option
@@ -30,9 +86,9 @@
 								  :value="item.address_id">
 								</el-option>
 							  </el-select>
-						</el-col>
+						</el-col> -->
 
-						<el-col :lg="24">
+						<!-- <el-col :lg="24">
 							<div class="transferInpListLeft">发行资产</div>
 							<el-select v-model="params.asset_id" placeholder="请选择">
 								<el-option
@@ -42,8 +98,8 @@
 									:value="item.asset_id">
 								</el-option>
 							</el-select>
-						</el-col>
-						<el-col :lg="24">
+						</el-col> -->
+						<!-- <el-col :lg="24">
 							<div class="transferInpListLeft">发行数量</div>
 							<el-input v-model="to_amount" placeholder="请输入要发行的资产数量"></el-input>
 						</el-col>
@@ -56,17 +112,17 @@
 								type="password"></el-input>
 						</el-col>
 
-						<el-col :lg="24">
+						<el-col :lg="24"> -->
 							<!-- <div
 								@click="issue"
 								class="transferAccoutItemBtn">提交交易</div> -->
-							<div
+							<!-- <div
 								@click="issue"
 								class="transferAccoutItemBtn">{{isSingleSign?'提交交易':'生成签名文件'}}</div>
 						</el-col>
 					</el-row>
 				</el-col>
-			</el-row>
+			</el-row> -->
 		</div>
 
 
@@ -152,6 +208,11 @@
 					return item.asset_id ==this.params.asset_id
 				})
 
+       
+        if(!list[0]){
+          this.$message.error('请完善信息')
+          return;
+        }
 				this.params.asset_name = list[0].asset_name;
 				var amount = this.to_amount-0||0;
 				var receive_info = [{
@@ -186,7 +247,7 @@
 							},1500)
 						}else{
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:data.error
 							})
 						}
@@ -200,7 +261,7 @@
 							console.log(1)
 
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:data.error
 							})
 						}else{

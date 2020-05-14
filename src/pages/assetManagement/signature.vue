@@ -1,22 +1,115 @@
 <template>
 	<div class="outerWrap signatureWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
-				<div class="commonTitle_one">
-					资产操作
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>签名</span>
-					</span>
-					<div>返回</div>
-				</div>
-			</el-col>
-		</el-row>
 
 
-		<div class="commonTitle_two">签名交易</div>
+    <div class="commonTitle_one">
+      <span @click="$router.go(-1)">资产操作</span>/签名
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>转账</span>
+      </span> -->
+      <!-- <div>返回</div> -->
+    </div>
 
-		<el-row>
+
+		<!-- <div class="commonTitle_two">签名交易</div> -->
+
+
+    <div class="transferInpWrap">
+
+      <div class="inpItemWrap">
+        <div>
+          <span>签名文件</span>
+
+          <span v-if="!uploadFlag" class="uploadFileBtn" @click="bindClick">+上传签名文件</span>
+          <span v-else class="uploadFileBtn" @click="bindClick">{{uploadParams.filename}}</span>
+          <input type="file" ref="file" @change="selectFile" style="display:none">
+        </div>
+      </div>
+
+
+
+
+      <div class="inpTitl" v-if="uploadFlag">交易信息</div>
+
+
+      <div class="singsWrap" v-if="uploadFlag">
+
+        <div class="signListWrap">
+          <span>交易类型:</span>
+          <div>{{uploadFileDetail.tx_type|transactionTextByType}}</div>
+        </div>
+
+        <div class="signListWrap">
+          <span>资产类型:</span>
+          <div>{{uploadFileDetail.asset_name}}</div>
+        </div>
+
+        <div class="signListWrap">
+          <span>资产ID:</span>
+          <div>{{uploadFileDetail.asset_id}}</div>
+        </div>
+
+        <div class="signListWrap">
+          <span>从：</span>
+          <div>
+            <div
+            	v-for="(item,index) in uploadFileDetail.from"
+            	:key="index">
+            	{{item.Address||'--'}}（{{item.account||'--'}})
+            </div>
+          </div>
+        </div>
+
+        <div class="signListWrap">
+          <span>到：</span>
+          <div>
+            <div
+            	v-for="(item,index) in uploadFileDetail.to"
+            	:key="index">
+            	{{item.Address||'--'}}（{{item.account||'--'}})
+            </div>
+          </div>
+        </div>
+
+        <div class="signListWrap">
+          <span>需要签名:</span>
+          <div>{{uploadFileDetail.need_signnum}}</div>
+        </div>
+
+        <div class="signListWrap">
+          <span>已完成签名:</span>
+          <div>{{uploadFileDetail.complete_signnum}}</div>
+        </div>
+
+      </div>
+
+
+       <div class="inpItemWrap" v-if="uploadFlag">
+         <div>
+           <span>密码</span>
+           <el-input
+            v-model="uploadParams.password"
+            placeholder="请输入密码"
+            autocomplete="new-password"
+            type="password"></el-input>
+         </div>
+
+       </div>
+
+       <div class="inpItemWrap" v-if="uploadFlag">
+         <div>
+           <span></span>
+            <span class="submit" @click="signFn">{{isTxFlag?'提交交易':'生成签名文件'}}</span>
+         </div>
+
+       </div>
+       
+    </div>
+
+
+
+		<!-- <el-row>
 			<el-col :lg="20" :md="22">
 
 				<div class="signatureInpWrap">
@@ -67,7 +160,7 @@
 
 			</el-col>
 		</el-row>
-
+ -->
 	</div>
 </template>
 
@@ -110,6 +203,9 @@
 			}
 		},
 		methods:{
+      bindClick(){
+        this.$refs.file.click()
+      },
 			selectFile(e){
 
 
@@ -138,13 +234,14 @@
 							var rightNum = parseInt(nums[1]) ;
 							this.isTxFlag = (rightNum - leftNum)==1
               console.log(this.isTxFlag,rightNum , leftNum,1111)
+              this.uploadFlag = true;
 						}else{
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:data.error
 							})
 						}
-            this.uploadFlag = true;
+
 					})
 			},
 			signFn(){
@@ -158,15 +255,15 @@
 
 				sign.bind(this)(formdata)
 					.then(({data})=>{
-            
+
             if(data.status === 'error'){
               this.$message({
-              	type:'warning',
+              	type:'error',
               	message:data.error
               })
             }else{
               if(this.isTxFlag){
-                
+
               	this.$message({
               		type:'success',
               		message:'提交交易成功'
@@ -174,7 +271,7 @@
               	setTimeout(()=>{
               		this.$router.go(-1);
               	},1500)
-                
+
               }else{
                 let element = document.createElement('a')
                 element.setAttribute('href', 'data:text/json;charset=utf-8,' + JSON.stringify(data) )
@@ -184,9 +281,9 @@
                 element.click()
                 document.body.removeChild(element)
               }
-              
+
             }
-          
+
 						console.log(data,87797)
 					})
 			}
@@ -196,6 +293,36 @@
 
 <style lang="scss">
 	.signatureWrap{
+
+    .singsWrap{
+
+      background: #f9f9f9;
+      padding: 30px 30px 0;
+      margin-bottom: 30px;
+      .signListWrap{
+        display:flex;
+        padding-bottom:20px;
+        line-height:20px;
+        >span{
+          width:100px;
+        }
+        >div{
+          flex:1;
+          flex-wrap: wrap;
+        }
+      }
+    }
+
+    .transferInpWrap{
+      .uploadFileBtn{
+        flex:1;
+        text-align:center;
+        border:2px dashed #324558;
+        line-height: 40px;
+        cursor: pointer;
+        color: #324558;
+      }
+    }
 
 		.signatureInpWrap{
 			position:relative;

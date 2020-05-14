@@ -10,7 +10,7 @@
 				<router-link to="/main/assetWalletIndex">资产钱包</router-link>
 				<router-link to="/main/assetManagementIndex">资产操作</router-link>
 				<router-link to="/main/createAssetIndex">创建资产</router-link>
-				<router-link to="/main/chainDeposit">链上存证</router-link>
+				<router-link to="/main/chainDeposit">可信存证</router-link>
 				<router-link to="/main/addressManagementIndex">地址管理</router-link>
 				<!-- <router-link to="/main/systemStatusIndex">系统状态</router-link> -->
 				<div class="left_progressWrap" v-if="systemStatus.NetInfo">
@@ -85,43 +85,68 @@
     background:$blackBg;
     position:fixed;
     left:0;
-    top:82px;
+    top:69px;
     bottom:0;
     z-index:10;
     transition:all .5s;
 		padding-top:8px;
 		min-height:400px;
     text-align:center;
+    overflow-y:auto;
+    &:before{
+      content:'';
+      position:absolute;
+      right:10px;
+      top:300px;
+      background:url(../assets/leftNavBg.png) no-repeat center;
+      width:150px;
+      height:150px;
+      background-size:cover;
+      transform: rotate(-30deg);
+      opacity:.8;
+    }
 
     .logWrap{
-      padding:50px 0 0;
+      padding:26px 0 0;
       img{
-        height:46px;
+        height:24px;
       }
       >div{
         color:#fff;
-        font-size:18px;
+        font-size:12px;
         opacity:.8;
-        padding-top:13px;
+        padding-top:4px;
       }
     }
     .leftTitle{
-      padding:30px 0 30px;
+      padding:30px 0 40px;
       color:#fff;
-      font-size:20px;
-      line-height:20px;
+      font-size:24px;
+      line-height:24px;
+      overflow:hidden;
     }
     >a{
 			display: block;
 			text-align: center;
-			font-size:14px;
+			font-size:12px;
 			color:#fff;
-			line-height:40px;
+			line-height:60px;
 			position:relative;
 			transition:color .5s;
     }
     >a.Aactive{
-      color:#5c6ac4;
+      position:relative;
+      font-size:16px;
+      &:after{
+        content:'';
+        position:absolute;
+        left:50%;
+        transform: translate(-50%,0);
+        width:42px;
+        bottom:10px;
+        height:2px;
+        background:#fff;
+      }
     }
 
 		>.left_progressWrap{

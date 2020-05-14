@@ -5,102 +5,253 @@
 
 
 				<div class="commonTitle_one">资产操作</div>
-				<div class="consoleIndexOperWrap">
-					<div class="commonTitle_two">操作选项</div>
 
-					<el-row  class="row-bg" :gutter="30" style="margin-right:0;">
-					  <el-col
-							:lg="6"
-							v-for="(item,index) in operParams"
-							:key="index">
-							<div class="addAccountItem" @click="$router.push(item.route)">{{item.text}}</div>
-						</el-col>
-
-					</el-row>
-				</div>
-
-				<div class="consoleRecordsWrap">
-					<div class="commonTitle_two">操作记录</div>
-					<div class="contentNavWrap">
-						<span
-							:class="{active:operIndex===0}"
-							@click="toggleNav(0)">转账</span>
-						<span
-							:class="{active:operIndex===1}"
-							@click="toggleNav(1)">签名</span>
-						<span
-							:class="{active:operIndex===2}"
-							@click="toggleNav(2)">发行</span>
-						<span
-							:class="{active:operIndex===3}"
-							@click="toggleNav(3)">销毁</span>
-					</div>
-
-					<el-row  class="consoleInpWrap" :gutter="30" >
-						<el-col :lg="20" class="consoleInpItem">
-							<el-col :lg="10">
-								<span>资产类型</span>
-								<el-select
-									v-model="params.asset_id"
-									placeholder="请选择"
-									@change="selectFn">
-									<el-option
-										v-for="item in allAssetsLists"
-										:key="item.value"
-										:label="item.asset_name"
-										:value="item.asset_id ? item.asset_id: item.asset_name ">
-									</el-option>
-								</el-select>
-							</el-col>
-
-							<el-col :lg="14">
-								<span>选择时间</span>
-
-                <el-date-picker
-                      v-model="time"
-                      type="daterange"
-                      range-separator="至"
-                      start-placeholder="开始日期"
-                      value-format="yyyy-MM-dd"
-                      @change="selectFn"
-                      end-placeholder="结束日期">
-                </el-date-picker>
-
-								<!-- <el-select
-									v-if="operIndex==1"
-									v-model="signOrder_by"
-									placeholder="请选择"
-									@change="toggleNav">
-									<el-option
-										v-for="item in signOptions"
-										:key="item.value"
-										:label="item.label"
-										:value="item.value">
-									</el-option>
-								</el-select>
-								<el-select
-									v-else
-									v-model="params.order_by"
-									placeholder="请选择"
-									@change="toggleNav">
-									<el-option
-										v-for="item in orderOptions"
-										:key="item.value"
-										:label="item.label"
-										:value="item.value">
-									</el-option>
-								</el-select> -->
-							</el-col>
-
-						</el-col>
-					</el-row>
+        <div class="commonNavsWrap">
+         <span
+         	:class="{active:operIndex===0}"
+         	@click="toggleNav(0)">转账</span>
+         <span
+         	:class="{active:operIndex===1}"
+         	@click="toggleNav(1)">签名</span>
+         <span
+         	:class="{active:operIndex===2}"
+         	@click="toggleNav(2)">发行</span>
+         <span
+         	:class="{active:operIndex===3}"
+         	@click="toggleNav(3)">销毁</span>
+        </div>
 
 
 
-        <div >
+        <div class="filterWrap">
+          <div>
+            <div class="assetSelectItemWrap">
+              <span>资产类型</span>
+              <el-select
+              	v-model="params.asset_id"
+              	placeholder="请选择"
+              	@change="selectFn">
+              	<el-option
+              		v-for="item in allAssetsLists"
+              		:key="item.value"
+              		:label="item.asset_name"
+              		:value="item.asset_id ? item.asset_id: item.asset_name ">
+              	</el-option>
+              </el-select>
+            </div>
+
+            <div class="assetSelectItemWrap">
+              <span>选择时间</span>
+
+              <el-date-picker
+                    v-model="time"
+                    type="daterange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    value-format="yyyy-MM-dd"
+                    @change="selectFn"
+                    end-placeholder="结束日期">
+              </el-date-picker>
+            </div>
+
+          </div>
+
+
+          <span
+            v-for="(item,index) in operParams"
+            :key="index"
+            @click="$router.push(item.route)"
+            v-if="operIndex===index"
+           >{{item.text}}</span>
+
+        </div>
+
+
+        <div class="commonListsWrap" v-if="operIndex==0">
+          <div
+            class="commonListWrap"
+            v-for="(item,index) in transfterLists"
+            :key="index">
+
+
+            <div class="recordInfo">
+              <div>
+                <span>操作ID：</span>
+                <span>{{item.transfer_id}}</span>
+              </div>
+              <div>
+               <span>交易ID：</span>
+               <span>{{item.tx_id}}</span>
+              </div>
+
+              <div class="last">
+                <span class="icon"> {{item.status | recordTextByType}}</span>
+                <span>{{item.create_time}}</span>
+              </div>
+            </div>
+
+            <div class="recordLists">
+              <div
+                class="recordList"
+                v-for="(list,i,key) in item.from.item_info"
+                :key="key"
+              >
+                <div>
+                  From:  {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+                </div>
+                <div>- {{list.amount}}</div>
+                <div>{{item.to.asset_name||'--'}}</div>
+              </div>
+
+              <div
+                class="recordList"
+                v-for="(list,i,key) in item.to.item_info"
+                :key="key"
+              >
+                <div>
+                  To:  {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+                </div>
+                <div>+ {{list.amount}}</div>
+                <div>{{item.to.asset_name||'--'}}</div>
+              </div>
+
+
+
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="commonListsWrap" v-if="operIndex==1">
+          <div
+            class="commonListWrap"
+            v-for="(item,index) in signLists"
+            :key="index">
+
+
+            <div class="recordInfo">
+              <div>
+                <span>操作ID：</span>
+                <span>{{item.transfer_id}}</span>
+              </div>
+              <div>
+               <span>交易ID：</span>
+               <span>{{item.tx_id}}</span>
+              </div>
+
+              <div class="last">
+                <span class="icon"> {{item.status | recordTextByType}}</span>
+                <span>{{item.create_time}}</span>
+              </div>
+            </div>
+
+            <div class="recordLists">
+              <div
+                class="recordList"
+
+              >
+                <div>
+                  From:  {{item.from_user}}
+                </div>
+                <div></div>
+                <div>{{item.asset_name}}</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="commonListsWrap" v-if="operIndex==2">
+          <div
+            class="commonListWrap"
+            v-for="(item,index) in issueLists"
+            :key="index">
+
+
+            <div class="recordInfo">
+              <div>
+                <span>操作ID：</span>
+                <span>{{item.transfer_id}}</span>
+              </div>
+              <div>
+               <span>交易ID：</span>
+               <span>{{item.tx_id}}</span>
+              </div>
+
+              <div class="last">
+                <span class="icon"> {{item.status | recordTextByType}}</span>
+                <span>{{item.create_time}}</span>
+              </div>
+            </div>
+
+            <div class="recordLists">
+              <div
+                class="recordList"
+                v-for="(list,i,key) in item.to.item_info"
+                :key="key"
+              >
+                <div>
+                  To:  {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+                </div>
+                <div>+ {{list.amount}}</div>
+                <div>{{item.to.asset_name||'--'}}</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="commonListsWrap" v-if="operIndex==3">
+          <div
+            class="commonListWrap"
+            v-for="(item,index) in retireLists"
+            :key="index">
+
+
+            <div class="recordInfo">
+              <div>
+                <span>操作ID：</span>
+                <span>{{item.transfer_id}}</span>
+              </div>
+              <div>
+               <span>交易ID：</span>
+               <span>{{item.tx_id}}</span>
+              </div>
+
+              <div class="last">
+                <span class="icon"> {{item.status | recordTextByType}}</span>
+                <span>{{item.create_time}}</span>
+              </div>
+            </div>
+
+            <div class="recordLists">
+              <div
+                class="recordList"
+                v-for="(list,i,key) in item.from.item_info"
+                :key="key"
+              >
+                <div>
+                  From: {{list.Address | interceptStr}}（{{list.account | interceptStr}}
+                </div>
+                <div>- {{list.amount}}</div>
+                <div>{{item.from.asset_name||'--'}}</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+
 
           <div >
-            <div class="consoleListsWrap" v-if="operIndex==0" >
+            <div class="consoleListsWrap" v-if="false" >
+              <!-- operIndex==0 -->
               <div
                 class="consoleListWrap"
 
@@ -189,7 +340,7 @@
 
             </div>
 
-            <div class="consoleListsWrap" v-if="operIndex==1" style="overflow:auto">
+            <div class="consoleListsWrap" v-if="false" style="overflow:auto">
               <div
                 class="consoleListWrap"
                 v-for="(item,index) in signLists"
@@ -245,7 +396,7 @@
 
             </div>
 
-            <div class="consoleListsWrap" v-if="operIndex==2" >
+            <div class="consoleListsWrap" v-if="false" >
               <div
                 class="consoleListWrap"
                 v-for="(item,index) in issueLists"
@@ -304,7 +455,7 @@
 
             </div>
 
-            <div class="consoleListsWrap" v-if="operIndex==3" style="overflow:auto">
+            <div class="consoleListsWrap" v-if="false" style="overflow:auto">
 
               <div
                 class="consoleListWrap"
@@ -717,6 +868,13 @@
 
 <style lang="scss">
   .assetManagementWrap{
+    .commonListsWrap{
+      .commonListWrap{
+        color:#4a5662;
+
+      }
+    }
+
     .consoleListsWrap .consoleListWrap .inner > div.consoleListIDWrap .listWrap{
       width:230px;
       display:flex;

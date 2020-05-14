@@ -8,22 +8,22 @@
 
 				<!-- <div class="right hidden-xs-only"> -->
 				<div class="right">
-					
+
 					<div class="rightContainer">
 						<div @click="$router.push('/main/privatekeyManagement')">
-							<img src="../assets/praviteKeyIcon.png" style="width:40px;" alt="">
+							<img src="../assets/praviteKeyIcon.png" style="width:24px;padding-right:4px;" alt="">
 							秘钥管理
 						</div>
 						<div @click="$router.push('/main/walletIndex')">
-							<span class="el-icon-setting"></span>
+							<span class="el-icon-setting" style="font-size:14px;font-weight:bold;padding-right:8px;"></span>
 							钱包管理
 						</div>
 						<div class="user">
-							<img src="../assets/defaultUser.png" style="width:27px;margin-right:10px;" alt="">
+							<img src="../assets/defaultUser.png" style="width:14px;margin-right:10px;" alt="">
 							{{username}}
 							<div>
-								<span @click="visitcodeFlag=true">生成邀请码</span>
-								<span @click="logout">登出</span>
+								<span @click="visitcodeFlag=true"><img src="../assets/headerIconInvite.png" alt="">生成邀请码</span>
+								<span @click="logout"><img src="../assets/headerIconLogout.png" alt="">登出</span>
 							</div>
 						</div>
 					</div>
@@ -219,7 +219,7 @@ export default {
 						this.visitcodeLists = data.data.codes;
 					}else{
 						this.$message({
-							type:'warning',
+							type:'error',
 							message:data.detail
 						})
 					}
@@ -232,7 +232,7 @@ export default {
 		}
 
 	},
-	
+
 }
 </script>
 
@@ -252,22 +252,22 @@ export default {
 				width:200px;
 				line-height:54px;
 				color:#fff;
-				font-size:13px;
-				padding-left:20px;
+				font-size:14px;
+				padding-left:40px;
         display:flex;
         align-items: center;
         img{
-          height:44px;
+          height:24px;
         }
         >span{
-          margin-left:18px;
+          margin-left:10px;
         }
 			}
 
 			.right{
 				flex:1;
 				display:flex;
-				justify-content: space-between;
+				justify-content:flex-end;
 				align-items:center;
 				.title{
 					padding-left:40px;
@@ -278,11 +278,11 @@ export default {
 					display:flex;
 					align-items:center;
 					>div{
-						font-size:14px;
+						font-size:12px;
 						color:#fff;
 						display:flex;
 						align-items:center;
-						padding-right:30px;
+						padding-right:40px;
 						height:54px;
 						cursor:pointer;
 
@@ -294,24 +294,38 @@ export default {
 							position:relative;
 							min-width:100px;
 							&:hover>div{
-								height:80px;
+								height:88px;
 							}
 							>div{
 								position:absolute;
-								left:0;
-								right:0;
-								top:66px;
+								right:10px;
+								top:56px;
 								height:0;
 								overflow:hidden;
 								transition:height .5s;
+                padding-right:14px;
+                padding-left:18px;
+                width:182px;
+                background:$blackBg;
 
 								>span{
-									line-height:40px;
-									font-size:14px;
+                  height:44px;
+									font-size:12px;
 									color:#fff;
-									background:$blue;
-									display:block;
-									text-align:center;
+                  display:flex;
+                  align-items: center;
+                  border-bottom:1px solid #525858;
+                  &:last-of-type{
+                    border-bottom:0 none;
+                    img{
+                      width:15px;
+                    }
+                  }
+
+                  img{
+                    margin-right:16px;
+                    width:17px;
+                  }
 								}
 
 							}

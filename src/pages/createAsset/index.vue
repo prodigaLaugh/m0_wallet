@@ -1,86 +1,86 @@
 <template>
 	<div class="outerWrap assetManagementIndexWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
 
-				<div class="commonTitle_one">资产管理</div>
 
-				<div class="commonTitle_two">
-					我创建的资产
-					<span @click="$router.push('/main/createAsset')">创建资产</span>
-				</div>
-				<div class="contentNavWrap">
-					<span
-						:class="{active:navIndex===0}"
-						@click="changeNav(0)">未发行资产</span>
-					<span
-						:class="{active:navIndex===1}"
-						@click="changeNav(1)">已发行资产</span>
-				</div>
+    <div class="commonTitle_one">创建资产</div>
 
-				<div class="assetManagementIndexListsWrap">
-					<el-row class="assetManagementIndexListWrap">
-						<el-col :lg="7" >名称</el-col>
-						<el-col :lg="10">资产ID</el-col>
-						<el-col :lg="3">发行状态</el-col>
-						<el-col :lg="4">操作</el-col>
-					</el-row>
-					<el-row
-						class="assetManagementIndexListWrap"
-						v-for="(item, index) in lists"
-						:key="item.id">
-						<el-col :lg="7">
-							<div
-								@click="$router.push({path:'/main/assetDetail',query:{id:item.id}})"
-								class="blue">
-								{{item.asset_name}}
-							</div>
-						</el-col>
-						<el-col :lg="10">{{item.asset_id}}</el-col>
-						<el-col :lg="3">{{navIndex===0?'未发行':'已发行'}}</el-col>
-						<el-col :lg="4" v-if="navIndex===0">
-							<!-- <span
-								class="blue"
-								@click.stop="$router.push({path:'/main/editAsset',query:{id:item.id}})">编辑</span> -->
-							<span
-								@click="$router.push({path:'/main/issue',query:{asset_id:item.asset_id,asset_name:item.asset_name}})"
-								class="blue">发行</span>
-							<span
-								@click="delAsset(item.id)"
-								style="color:red">删除</span>
-						</el-col>
-						<el-col :lg="4" v-else>
-							<span
-								@click="$router.push({path:'/main/assetDetail',query:{id:item.id}})"
-								class="blue">详情</span>
-							<span
-								@click="$router.push({path:'/main/issue',query:{asset_id:item.asset_id,asset_name:item.asset_name}})"
-								class="blue">增发</span>
-							<span style="display:none;">删除</span>
-						</el-col>
-					</el-row>
+    <div class="commonNavsWrap">
+      <span
+        :class="{active:navIndex===0}"
+        @click="changeNav(0)">未发行资产</span>
+      <span
+        :class="{active:navIndex===1}"
+        @click="changeNav(1)">已发行资产</span>
+    </div>
 
-          <div class="paginationWrap" v-if="lists.length">
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :total="params.total"
-              :page-size="params.page_size"
-              @current-change="pageChange"
-             >
-            </el-pagination>
+
+    <div class="commonTitle_two">
+      {{navIndex===0 ? '未发行资产' : '已发行资产'}}
+      <span @click="$router.push('/main/createAsset')">创建资产</span>
+    </div>
+
+
+    <div class="assetManagementIndexListsWrap">
+      <el-row class="assetManagementIndexListWrap tit">
+        <el-col :lg="3" >名称</el-col>
+        <el-col :lg="11">资产ID</el-col>
+        <el-col :lg="6">发行状态</el-col>
+        <el-col :lg="4">操作</el-col>
+      </el-row>
+      <el-row
+        class="assetManagementIndexListWrap"
+        v-for="(item, index) in lists"
+        :key="item.id">
+        <el-col :lg="3">
+          <div
+            @click="$router.push({path:'/main/assetDetail',query:{id:item.id}})"
+            class="green">
+            {{item.asset_name}}
           </div>
+        </el-col>
+        <el-col :lg="11">{{item.asset_id}}</el-col>
+        <el-col :lg="6">{{navIndex===0?'未发行':'已发行'}}</el-col>
+        <el-col :lg="4" v-if="navIndex===0">
+          <!-- <span
+            class="blue"
+            @click.stop="$router.push({path:'/main/editAsset',query:{id:item.id}})">编辑</span> -->
+          <span
+            @click="$router.push({path:'/main/issue',query:{asset_id:item.asset_id,asset_name:item.asset_name}})"
+            class="blue">发行</span>
+          <span
+            @click="delAsset(item.id)"
+            style="color:red">删除</span>
+        </el-col>
+        <el-col :lg="4" v-else>
+          <span
+            @click="$router.push({path:'/main/assetDetail',query:{id:item.id}})"
+            class="green">详情</span>
+          <span
+            @click="$router.push({path:'/main/issue',query:{asset_id:item.asset_id,asset_name:item.asset_name}})"
+            class="green">增发</span>
+          <span style="display:none;">删除</span>
+        </el-col>
+      </el-row>
 
-					<el-row v-if="!lists.length">
-						<el-col>
-							<div class="noresult">暂无数据</div>
-						</el-col>
-					</el-row>
+      <div class="paginationWrap" v-if="lists.length">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="params.total"
+          :page-size="params.page_size"
+          @current-change="pageChange"
+         >
+        </el-pagination>
+      </div>
 
-				</div>
+      <el-row v-if="!lists.length">
+        <el-col>
+          <div class="noresult">暂无数据</div>
+        </el-col>
+      </el-row>
 
-			</el-col>
-		</el-row>
+    </div>
+
 
 	</div>
 </template>
@@ -90,10 +90,11 @@
 
 
 	import Vue from 'vue';
-	import { Row, Col } from 'element-ui';
+	import { Row, Col, Pagination } from 'element-ui';
 
 	Vue.use(Row);
 	Vue.use(Col);
+  Vue.use(Pagination);
 
 
 	export default {
@@ -187,23 +188,30 @@
 	.assetManagementIndexWrap{
 
 		.assetManagementIndexListsWrap{
-			padding-right:30px;
-			padding-top:20px;
+
+      padding:18px 32px 30px 30px;
 			.assetManagementIndexListWrap{
+        &.tit{
+          background:#f6f7fb;
+          >div{
+            line-height:40px;
+            border-bottom:0 none;
+          }
+        }
 				font-size:13px;
 				>div{
-					border:1px solid #aaa;
+					border-bottom:1px solid #dce5ec;
+          color:$color-333;
 					margin-left:-1px;
 					margin-top:-1px;
-					text-align:center;
-					line-height:36px;
+					line-height:60px;
 					overflow:hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
-					padding:0 10px;
+					padding:0 15px;
 					>span{
 						cursor:pointer;
-						line-height:36px;
+						line-height:60px;
 						display:inline-block;
 						padding:0 4px;
 					}

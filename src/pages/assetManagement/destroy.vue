@@ -1,25 +1,97 @@
 <template>
 	<div class="outerWrap transferWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
-				<div class="commonTitle_one">
-					资产操作
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>销毁</span>
-					</span>
-					<div>返回</div>
-				</div>
-			</el-col>
-		</el-row>
 
-		<div class="commonTitle_two">销毁</div>
+    <div class="commonTitle_one">
+
+      <span @click="$router.go(-1)">资产操作</span>/销毁
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>发行</span>
+      </span>
+      <div>返回</div> -->
+    </div>
+
+
+
+		<!-- <div class="commonTitle_two">销毁</div> -->
 
 		<div class="transferInpWrap">
+
+      <div class="inpItemWrap">
+        <div>
+          <span>所在地址</span>
+          <el-select v-model="params.from_address" placeholder="请选择">
+          	<el-option
+          	  v-for="item in address"
+          	  :key="item.address_id"
+          	  :label="item.address_id"
+          	  :value="item.address_id">
+          	</el-option>
+          </el-select>
+        </div>
+      </div>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>销毁资产类型</span>
+          <el-select
+            v-model="params.asset_id"
+            placeholder="请选择"
+            @change="adressChangeQueryAmount"
+           >
+          	<el-option
+          		v-for="item in allAssetsLists"
+          		:key="item.value"
+          		:label="item.asset_name"
+          		:value="item.asset_id">
+          	</el-option>
+          </el-select>
+        </div>
+      </div>
+
+      <div class="inpItemWrap"  v-if="amount || amount ===0">
+        <div>
+          <span>当前资产余额：</span>
+          <span>{{amount}}</span>
+        </div>
+      </div>
+
+
+      <div class="inpItemWrap">
+        <div>
+          <span>销毁数量</span>
+          <el-input v-model="params.amount" placeholder="请输入目标地址"></el-input>
+        </div>
+      </div>
+
+      <div class="inpItemWrap">
+        <div>
+          <span>密码</span>
+          <el-input
+          	v-model="params.password"
+          	placeholder="请输入密码"
+          	autocomplete="new-password"
+          	type="password"></el-input>
+        </div>
+      </div>
+
+
+      <div class="inpItemWrap"   >
+        <div>
+          <span></span>
+           <span class="submit" @click="retire">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
+        </div>
+
+      </div>
+
+
+
+
+
 			<el-row>
 				<el-col :lg="20" :md="22">
 					<el-row class="transferInpListsWrap">
-						<el-col :lg="24">
+						<!-- <el-col :lg="24">
 							<div class="transferInpListLeft">所在地址</div>
 							<el-select v-model="params.from_address" placeholder="请选择">
 								<el-option
@@ -29,9 +101,9 @@
 								  :value="item.address_id">
 								</el-option>
 							  </el-select>
-						</el-col>
+						</el-col> -->
 
-						<el-col :lg="24">
+						<!-- <el-col :lg="24">
 							<div class="transferInpListLeft">销毁资产类型</div>
 							<el-select
                 v-model="params.asset_id"
@@ -45,31 +117,30 @@
 									:value="item.asset_id">
 								</el-option>
 							</el-select>
-						</el-col>
-            <el-col
+						</el-col> -->
+            <!-- <el-col
             	:md="24"
             	v-if="amount || amount ===0"
-            	style="margin-top:-10px">当前资产余额：{{amount}}</el-col>
+            	style="margin-top:-10px">当前资产余额：{{amount}}</el-col> -->
 
-						<el-col :lg="24">
+						<!-- <el-col :lg="24">
 							<div class="transferInpListLeft">销毁数量</div>
 							<el-input v-model="params.amount" placeholder="请输入目标地址"></el-input>
-						</el-col>
-						<el-col :lg="24">
+						</el-col> -->
+						<!-- <el-col :lg="24">
 							<div class="transferInpListLeft">请输入密码</div>
 							<el-input
 								v-model="params.password"
 								placeholder="请输入密码"
 								autocomplete="new-password"
 								type="password"></el-input>
-						</el-col>
+						</el-col> -->
 
-						<el-col :lg="24">
+						<!-- <el-col :lg="24">
 							<div
 								class="transferAccoutItemBtn"
 								@click="retire">{{isSingleSign?'提交交易':'生成签名文件'}}</div>
-							<!-- <div class="transferAccoutItemBtn">提交交易</div> -->
-						</el-col>
+						</el-col> -->
 					</el-row>
 				</el-col>
 			</el-row>
@@ -143,7 +214,7 @@
 
 				allAssetsLists:[],
 				address:[],
-        
+
         amount:'',
 
 
@@ -210,7 +281,7 @@
 							},1500)
 						}else{
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:data.error
 							})
 						}
@@ -221,7 +292,7 @@
 					.then(({data})=>{
 						if(data.status=='error'){
 							this.$message({
-								type:'warning',
+								type:'error',
 								message:data.error
 							})
 						}else{

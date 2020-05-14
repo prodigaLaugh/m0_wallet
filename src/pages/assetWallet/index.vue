@@ -1,165 +1,144 @@
 <template>
 	<div class="outerWrap assetWalletIndexWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
 
 
-				<div class="commonTitle_one">资产钱包</div>
-				<div class="addAccountWrap">
-					<div class="commonTitle_two">
-            <div>
-              <div>
-                <span :class=" navIndex===0 ? 'active' : '' " @click="toggleNav(0)">我的资产</span>
-                <span :class=" navIndex===1 ? 'active' : '' " @click="toggleNav(1)">历史资产</span>
-              </div>
-            </div>
+    <div class="commonTitle_one">资产钱包</div>
+    <div class="addAccountWrap">
 
-						<span @click="$router.push('/main/receiveTransfer')">接受转账</span>
-					</div>
-					<el-row  class="row-bg" :gutter="30" justify="center">
-						<el-col :lg="12" v-if="navIndex===0">
-							<div class="assetSelectItemWrap">
-								<span>排序方式</span>
-								<el-select
-									v-model="params.order_by"
-									placeholder="请选择"
-									@change="getLists">
-									<el-option
-									  v-for="item in orderOptions"
-									  :key="item.value"
-									  :label="item.label"
-									  :value="item.value">
-									</el-option>
-								</el-select>
-							</div>
-						</el-col>
+      <div class="commonNavsWrap">
+        <span :class=" navIndex===0 ? 'active' : '' " @click="toggleNav(0)">我的资产</span>
+        <span :class=" navIndex===1 ? 'active' : '' " @click="toggleNav(1)">历史资产</span>
+      </div>
 
-						<!-- <el-col :lg="8">
-							<div class="assetSelectItemWrap">
-								<span>所在地址</span>
-								<el-select v-model="value" placeholder="请选择">
-									<el-option
-									v-for="item in options"
-									:key="item.value"
-									:label="item.label"
-									:value="item.value">
-									</el-option>
-								</el-select>
-							</div>
-						</el-col> -->
-
-						<el-col :lg="12">
-							<div class="assetSelectItemWrap">
-								<span>资产类型</span>
-								<el-select
-									v-model="params.asset_id"
-									placeholder="请选择"
-									@change="getLists">
-									<el-option
-										v-for="item in allAssetsLists"
-										:key="item.value"
-										:label="item.asset_name"
-										:value="item.asset_id">
-									</el-option>
-								</el-select>
-							</div>
-						</el-col>
-					</el-row>
-
-
-
-          <div
-          >
-
-            <div
-              class="assetListsWrap"
-            >
-              <div
-                class="selectAccountItem"
-                v-for="(item,index) in lists"
-                :key="index">
-                <el-row :gutter="30" class="selectAccountItemTitleWrap">
-                  <el-col :lg="14" :md="14" class="left">
-                    <div>{{item.asset_name}}</div>
-                    <div>
-                      资产ID:&nbsp;&nbsp;{{item.asset_id | interceptStr}}
-                    </div>
-                  </el-col>
-                  <el-col :lg="6" :md="6" class="right">
-                    <div>当前余额:</div>
-                    <div>{{item.amount}}</div>
-                  </el-col>
-                  <el-col :lg="4" :md="4" >
-                    <div
-                      @click="$router.push({path:'/main/transactionRecord',query:getParams(item,'','tx')})"
-                      class="transactionRecordIcon">交易记录</div>
-                  </el-col>
-                </el-row>
-
-                <!-- <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
-                  <el-col :lg="16" class="left">
-                    <div>所在地址：jlkj23234jkh2j4n21mk</div>
-                  </el-col>
-                  <el-col :lg="8" class="right">
-                    <span @click="$router.push('/main/transactionRecord')">交易记录</span>
-                    <span>转账</span>
-                    <span>销毁</span>
-                  </el-col>
-                </el-row> -->
-                <div style="margin-top:20px;"></div>
-                <el-row  :gutter="20" class="selectAccountItemTransactionWrap">
-                  <el-col :lg="9" :md="9" class="left">
-                    所在地址
-                  </el-col>
-                  <el-col :lg="8" :md="8" class="center">
-                    地址余额
-                  </el-col>
-                  <el-col :lg="7" :md="7" class="right">
-                    操作
-                  </el-col>
-                </el-row>
-                <el-row
-                  :gutter="20"
-                  class="selectAccountItemTransactionWrap"
-                  v-for="(list,i) in item.address_balance"
-                  :key="i">
-                  <el-col :lg="9" :md="9" class="left">
-                    {{list.address_id | interceptPubStr}}
-                  </el-col>
-                  <el-col :lg="8" :md="8" class="center">
-                    {{list.balance}}
-                  </el-col>
-                  <el-col :lg="7" :md="7" class="right">
-                    <span @click="$router.push({path:'/main/transactionRecord',query:getParams(item,list.address_id,'address')})">交易记录</span>
-                    <span @click="getTransferParams(item,list.address_id)">转出资产</span>
-                  </el-col>
-                </el-row>
-
-              </div>
-
-
-             <!-- <div class="paginationWrap" v-if="lists.length">
-                <el-pagination
-                  background
-                  layout="prev, pager, next"
-                  :total="params.total"
-                  :page-size="params.page_size"
-                  @current-change="pageChange"
-                 >
-                </el-pagination>
-              </div> -->
-
-            </div>
-
-            <p v-if="loading" class="noresult">加载中...</p>
-            <div class="noresult" v-else-if="!lists.length">暂无数据</div>
-            <p v-else="noMore" class="noresult">没有更多了</p>
+      <div class="filterWrap">
+        <div>
+          <div class="assetSelectItemWrap" v-if="navIndex===0">
+            <span>排序方式</span>
+            <el-select
+              v-model="params.order_by"
+              placeholder="请选择"
+              @change="getLists">
+              <el-option
+                v-for="item in orderOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </div>
 
-				</div>
+          <div class="assetSelectItemWrap">
+            <span>资产类型</span>
+            <el-select
+              v-model="params.asset_id"
+              placeholder="请选择"
+              @change="getLists">
+              <el-option
+                v-for="item in allAssetsLists"
+                :key="item.value"
+                :label="item.asset_name"
+                :value="item.asset_id">
+              </el-option>
+            </el-select>
+          </div>
 
-			</el-col>
-		</el-row>
+        </div>
+
+        <span @click="$router.push('/main/receiveTransfer')">接受转账</span>
+
+      </div>
+
+
+
+        <!-- <el-col :lg="8">
+          <div class="assetSelectItemWrap">
+            <span>所在地址</span>
+            <el-select v-model="value" placeholder="请选择">
+              <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </el-col> -->
+
+
+
+
+      <div>
+
+        <div class="commonListsWrap" >
+          <div
+            class="commonListWrap"
+            v-for="(item,index) in lists"
+            :key="index">
+
+            <div class="tit">{{item.asset_name}}</div>
+            <div class="infoWrap">
+              <div>
+                <span>资产ID:</span>
+                <span>{{item.asset_id | interceptStr}}</span>
+              </div>
+              <div class="money">
+                <span>当前总余额:</span>
+                <span>{{item.amount}}</span>
+              </div>
+              <div>
+                <a
+                  href="javascript:void(0)"
+                  @click="$router.push({path:'/main/transactionRecord',query:getParams(item,'','tx')})"
+                  class="transactionRecordIcon">交易记录</a>
+              </div>
+            </div>
+
+            <div class="lists">
+              <div class="list title">
+                <span>所在地址</span>
+                <span>地址余额</span>
+                <span class="last">操作</span>
+              </div>
+
+              <div
+                class="list"
+                v-for="(list,i) in item.address_balance"
+                :key="i"
+              >
+                <span> {{list.address_id | interceptPubStr}}</span>
+                <span> {{list.balance}}</span>
+                <div class="last">
+                  <span @click="$router.push({path:'/main/transactionRecord',query:getParams(item,list.address_id,'address')})">交易记录</span>
+                  <span @click="getTransferParams(item,list.address_id)">转出资产</span>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
+         <!-- <div class="paginationWrap" v-if="lists.length">
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :total="params.total"
+              :page-size="params.page_size"
+              @current-change="pageChange"
+             >
+            </el-pagination>
+          </div> -->
+
+        </div>
+
+        <p v-if="loading" class="noresult">加载中...</p>
+        <div class="noresult" v-else-if="!lists.length">暂无数据</div>
+        <p v-else="noMore" class="noresult">没有更多了</p>
+      </div>
+
+    </div>
+
+
 
 
 	</div>
@@ -358,111 +337,115 @@
       }
     }
 
-		.assetSelectItemWrap{
-			padding-bottom:20px;
-			>span{
-				padding-right:10px;
-				font-size:13px;
-			}
-		}
+		
 
-		.selectAccountItem{
-			background:#eee;
-			padding:20px 30px 40px;
-			margin-bottom:30px;
-			.selectAccountItemTitleWrap{
-				border-bottom:1px solid #333;
-				padding-bottom:20px;
-				>.left,>.right{
-					display:flex;
-					flex-direction: column;
-					justify-content: space-between;
-					height:54px;
-				}
-				>.left{
-					>div:nth-of-type(1){
-						font-size:18px;
-						font-weight:bold;
-						color:#000;
-					}
-					>div:nth-of-type(2){
-						font-size:14px;
-					}
+    .commonListsWrap{
 
-				}
-				>.right{
-					>div:nth-of-type(1){
-						color:#888;
-						font-size:14px;
-						text-align:center;
-					}
-					>div:nth-of-type(2){
-						text-align:center;
-						font-size:18px;
-						font-weight:bold;
-					}
-				}
-				.transactionRecordIcon{
-					width:92px;
-					height:63px;
-					background:#fff url(../../assets/assetwallet/transactionRecordsIcon.png) no-repeat center 5px;
-					text-align:center;
-					border:1px solid #333;
-					border-radius:5px;
-					padding-top:44px;
-					@include pointer;
+      .commonListWrap{
 
-				}
-			}
+        .infoWrap{
+          display:flex;
+          align-items: center;
+          justify-content: space-between;
+          >div{
+            display:flex;
+            align-items: center;
+            font-size:14px;
+            color:$color-333;
+            &:nth-of-type(1){
+              width:300px;
+            }
+            &:first-of-type{
+              padding-left:15px;
+              width:500px;
+            }
+            &:nth-of-type(2){
+              padding-left:15px;
+              flex:1;
+            }
+
+            >span:nth-of-type(1){
+              padding-right:14px;
+            }
+            >a{
+              background:#3D5265;
+              color:#fff;
+              line-height:34px;
+              width:120px;
+              text-align:center;
+              border-radius:3px;
+              cursor:pointer;
+              font-size:12px;
+            }
+
+            &.money{
+              >span:nth-of-type(1){
+                color:$color-2;
+              }
+              >span:nth-of-type(2){
+                font-weight:bold;
+
+              }
+            }
+
+          }
+        }
+
+        .lists{
+          .list{
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size:12px;
+            border-bottom:1px solid #DAE6EF;
+            &.title,
+            &:last-of-type{
+              border-bottom:0 none;
+            }
+            &.title{
+              background:#F6F7FB;
+              margin-top:18px;
+              font-weight:bold;
+              >span{
+                line-height:40px;
+
+              }
+            }
+
+            >span{
+              line-height:60px;
+
+              &:first-of-type{
+                padding-left:15px;
+                width:500px;
+              }
+              &:nth-of-type(2){
+                padding-left:15px;
+                flex:1;
+              }
+            }
+            .last{
+              width:200px;
+              flex:inherit;
+              >span{
+                color:$green;
+                cursor:pointer;
+                &:first-of-type{
+                  margin-right:15px;
+                }
+              }
+            }
+            >div{
+              display:flex;
+            }
+          }
+
+        }
 
 
-			.selectAccountItemTransactionWrap{
-				background:#fff;
-				line-height:40px;
-				.right{
-					text-align:center;
-					>span{
-						@include pointer;
-						margin:0 6px;
-					}
-				}
-				// >.left,>.right{
+      }
+    }
 
-				// 	height:54px;
-				// }
-				// >.left{
-				// 	display:flex;
-				// 	align-items: flex-end;
-				// 	color:#888;
-				// 	font-size:13px;
-				// }
-				// >.right{
-				// 	display:flex;
-				// 	align-items: flex-end;
-				// 	justify-content: center;
-				// 	>span{
-				// 		padding-top:30px;
-				// 		background:url(../../assets/assetwallet/operIcon1.png) no-repeat center top;
-				// 		background-size:24px 18px;
-				// 		margin-right:20px;
-				// 		min-width:26px;
-				// 		text-align:center;
-				// 		cursor:pointer;
-				// 		&:nth-of-type(2){
-				// 			background-image:url(../../assets/assetwallet/operIcon2.png);
-				// 			background-size:26px 20px;
-				// 		}
-				// 		&:nth-of-type(3){
-				// 			background-image:url(../../assets/assetwallet/operIcon3.png);
-				// 			color:red;
-				// 			background-size:24px 26px;
-				// 			margin-right:0;
-				// 		}
-				// 	}
-				// }
-			}
-
-		}
 	}
 
 </style>

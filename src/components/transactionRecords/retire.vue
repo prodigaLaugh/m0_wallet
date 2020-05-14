@@ -1,20 +1,57 @@
 <template>
-	<div class="inner">
-		<el-row 
-			class="consoleListIDWrap" 
+
+    <div class="commonListWrap">
+
+
+      <div class="recordInfo">
+        <div>
+          <span>交易ID：</span>
+          <span>{{item.tx_id}}</span>
+        </div>
+        <div>
+         <span>销毁</span>
+         <!-- <span>{{item.tx_id}}</span> -->
+        </div>
+
+        <div class="last">
+          <span class="icon"> 已确认</span>
+          <span>{{item.to_time}}</span>
+        </div>
+      </div>
+
+      <div class="recordLists">
+        <div
+          class="recordList"
+          v-for="(list,i,key) in item.from"
+          :key="key"
+        >
+          <div>
+            From: {{list.Address | interceptStr}}（{{list.account | interceptStr}}
+          </div>
+          <div>- {{list.amount}}</div>
+          <div>{{item.from.asset_name||'--'}}</div>
+        </div>
+      </div>
+
+    </div>
+
+
+	<!-- <div class="inner">
+		<el-row
+			class="consoleListIDWrap"
 			:gutter="20">
 			<el-col :md="12">
 				<span>交易ID</span>
 				<span>{{item.tx_id}}</span>
-				
+
 				<span>已确认</span>
 			</el-col>
 			<el-col :md="12">
 				{{item.to_time}}
 			</el-col>
 		</el-row>
-		
-		<el-row 
+
+		<el-row
 			:gutter="20"
 			class="consoleList_list"
 			v-for="(list,i,key) in item.from"
@@ -34,6 +71,7 @@
 			<el-col :md="4">{{asset_name||'--'}}</el-col>
 		</el-row>
 	</div>
+  -->
 </template>
 
 <script>
@@ -41,7 +79,7 @@
 		props:['item','asset_name'],
 		data(){
 			return {
-				
+
 			}
 		}
 	}
