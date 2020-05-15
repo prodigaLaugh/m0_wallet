@@ -143,6 +143,7 @@
 			background:$blue;
 			color:#fff;
 			font-size:13px;
+      @include pointer;
 		}
 	}
 

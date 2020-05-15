@@ -9,6 +9,7 @@
           <span>{{item.tx_id}}</span>
         </div>
         <div>
+          <span>交易类型：</span>
           <span>发行</span>
          <!-- <span>{{item.tx_id}}</span> -->
         </div>
@@ -26,7 +27,7 @@
           :key="key"
         >
           <div>
-            To:  {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+            To:  {{list.Address}}（{{list.account | interceptStr}}）
           </div>
           <div>+ {{list.amount}}</div>
           <div>{{asset_name||'--'}}</div>

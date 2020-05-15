@@ -7,8 +7,15 @@
 <style lang="scss">
 	@import url("../css/reset.css");
 	@import url("../css/common.css");
+  body{
+    min-width:1200px;
+    overflow-x:auto;
+  }
   .red{
     color:$red;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active{
+    background-color: $btnBg
   }
   .el-button--primary,
   .el-button--primary:hover{
@@ -21,7 +28,7 @@
     border:1px solid #DCDFE6;
   }
   .blue{
-    color:$blue;
+    color:#00a66b;
     cursor:pointer;
   }
   .green{
@@ -36,9 +43,10 @@
     text-align:right;
   }
 	.noresult{
-		padding-left:15px;
+		padding-left:30px;
 		line-height:50px;
 		font-size:14px;
+    color:$color-333;
 	}
 	//弹窗内容样式
 	.dialogContentWrap{
@@ -139,6 +147,56 @@
       padding:7px 26px 0 26px;
       position:relative;
       overflow:hidden;
+
+      .assets{
+          display:flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          >div:nth-of-type(1){
+            flex:1;
+            display:flex;
+            >span{
+              width:100px;
+              line-height:28px;
+            }
+            >div{
+              display:flex;
+              flex:1;
+              flex-wrap: wrap;
+              >span{
+                    float: left;
+                    padding:0 30px;
+                    height: 28px;
+                    line-height: 28px;
+                    borer-radius: 3px;
+                    background: #d6e0e9;
+                    color: #27334b;
+                    margin-right: 13px;
+                    margin-bottom: 15px;
+                    border-radius: 3px;
+                    text-align: center;
+                    font-size: 12px;
+              }
+            }
+          }
+          >div:nth-of-type(2){
+            width:200px;
+            display:flex;
+            >span{
+              font-size: 12px;
+                  cursor: pointer;
+                  background: #3d5265;
+                  color: #fff;
+                  line-height: 32px;
+                  margin-left: 10px;
+                  width: 120px;
+                  text-align: center;
+                  border-radius: 5px;
+            }
+          }
+        }
+
+
 
       .recordInfo{
         display:flex;
@@ -273,7 +331,7 @@
     }
 
   }
-  
+
   // 详情页样式
   .detailInfoListsWrap.itemWrap{
     border-bottom:1px solid #e4e4e4;
@@ -284,7 +342,7 @@
       color:$color-333;
       font-weight:bold;
     }
-  
+
     .infoW{
       .list{
         display:flex;
@@ -296,7 +354,7 @@
         }
       }
     }
-  
+
     .lists{
       .list{
         line-height:60px;
@@ -304,7 +362,7 @@
         border-bottom:1px solid #e4e4e4;
         font-size:14px;
         color:$color-333;
-  
+
         &:last-of-type,
         &.title{
           border-bottom: 0 none;
@@ -313,7 +371,7 @@
           line-height:40px;
           background:#f6f7fb;
         }
-  
+
         >span:nth-of-type(1){
           flex:2;
           padding-left:15px;
@@ -326,9 +384,9 @@
         }
       }
     }
-  
+
   }
-  
+
 
   //转账发行样式
   .transferInpWrap{

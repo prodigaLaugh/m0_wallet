@@ -22,25 +22,25 @@
 
     <div class="assetManagementIndexListsWrap">
       <el-row class="assetManagementIndexListWrap tit">
-        <el-col :lg="3" >名称</el-col>
-        <el-col :lg="11">资产ID</el-col>
-        <el-col :lg="6">发行状态</el-col>
-        <el-col :lg="4">操作</el-col>
+        <el-col :span="3" >名称</el-col>
+        <el-col :span="11">资产ID</el-col>
+        <el-col :span="5" >发行状态</el-col>
+        <el-col :span="5" >操作</el-col>
       </el-row>
       <el-row
         class="assetManagementIndexListWrap"
         v-for="(item, index) in lists"
         :key="item.id">
-        <el-col :lg="3">
+        <el-col :span="3">
           <div
             @click="$router.push({path:'/main/assetDetail',query:{id:item.id}})"
             class="green">
             {{item.asset_name}}
           </div>
         </el-col>
-        <el-col :lg="11">{{item.asset_id}}</el-col>
-        <el-col :lg="6">{{navIndex===0?'未发行':'已发行'}}</el-col>
-        <el-col :lg="4" v-if="navIndex===0">
+        <el-col :span="11" >{{item.asset_id}}</el-col>
+        <el-col :span="5" >{{navIndex===0?'未发行':'已发行'}}</el-col>
+        <el-col :span="5" v-if="navIndex===0">
           <!-- <span
             class="blue"
             @click.stop="$router.push({path:'/main/editAsset',query:{id:item.id}})">编辑</span> -->
@@ -51,7 +51,7 @@
             @click="delAsset(item.id)"
             style="color:red">删除</span>
         </el-col>
-        <el-col :lg="4" v-else>
+        <el-col :span="4" v-else>
           <span
             @click="$router.push({path:'/main/assetDetail',query:{id:item.id}})"
             class="green">详情</span>
@@ -99,10 +99,14 @@
 
 	export default {
 		created(){
-        var accountInfo = this.getLocalAccountInfo()
-        var account_id = accountInfo.account_id;
-        this.params.account_id = account_id;
-			 this.getLists()
+      var accountInfo = this.getLocalAccountInfo()
+      var account_id = accountInfo.account_id;
+      this.params.account_id = account_id;
+      const navIndex = this.$route.query.navIndex?(this.$route.query.navIndex-0) : 0;
+      this.navIndex = navIndex
+      this.params.is_issue = navIndex
+
+			this.getLists()
 
 
 		},
@@ -156,6 +160,9 @@
 				this.navIndex = index;
 				this.params.is_issue = index;
         this.params.page = 1;
+
+        this.$router.replace({path:'/main/createAssetIndex', query:{navIndex:index } })
+
         this.getLists()
 
 			},
@@ -191,8 +198,10 @@
 
       padding:18px 32px 30px 30px;
 			.assetManagementIndexListWrap{
+        border-bottom:1px solid #dce5ec;
         &.tit{
           background:#f6f7fb;
+          border-bottom:0 none;
           >div{
             line-height:40px;
             border-bottom:0 none;
@@ -200,7 +209,7 @@
         }
 				font-size:13px;
 				>div{
-					border-bottom:1px solid #dce5ec;
+
           color:$color-333;
 					margin-left:-1px;
 					margin-top:-1px;

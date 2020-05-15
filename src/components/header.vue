@@ -139,7 +139,9 @@ export default {
 							}
 
 						})
-					}
+					}else{
+            localStorage.removeItem('accountInfo');
+          }
 
 				}
 

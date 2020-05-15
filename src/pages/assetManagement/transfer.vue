@@ -73,7 +73,7 @@
           </div>
           <div>
             <span>转出数量</span>
-            <el-input v-model="item.to_address" placeholder="请输入目标地址"></el-input>
+            <el-input v-model="item.to_amount" placeholder="请输入转出数量"></el-input>
           </div>
           <span @click="delPara(index)">删除</span>
         </div>
@@ -399,14 +399,7 @@
 								message:data.error
 							})
 						}else{
-
-							let element = document.createElement('a')
-							element.setAttribute('href', 'data:text/json;charset=utf-8,' + JSON.stringify(data) )
-							element.setAttribute('download', 'data.hex')
-							element.style.display = 'none'
-							document.body.appendChild(element)
-							element.click()
-							document.body.removeChild(element)
+              this.createSignFile(data)
 						}
 
 

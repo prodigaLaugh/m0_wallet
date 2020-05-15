@@ -57,7 +57,7 @@
               <span>关联多签钱包：</span>
               <div>
                 <span
-                  v-if="list.sign_key_num == 1"
+                  v-if="list.sign_key_num != 1"
                   v-for="(list,i) in item.associate_account"
                   :key="i">{{list.account_alias}}</span>
               </div>
@@ -254,6 +254,7 @@
             .listWrap{
 
               position:relative;
+              min-height:28px;
 
               >span{
                 width:118px;

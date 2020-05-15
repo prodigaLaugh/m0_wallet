@@ -97,7 +97,7 @@
                 :key="key"
               >
                 <div>
-                  From:  {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+                  From:  <span>{{list.Address }}</span>（{{list.account | interceptStr}}）
                 </div>
                 <div>- {{list.amount}}</div>
                 <div>{{item.to.asset_name||'--'}}</div>
@@ -109,7 +109,7 @@
                 :key="key"
               >
                 <div>
-                  To:  {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+                  To:  {{list.Address }}（{{list.account | interceptStr}}）
                 </div>
                 <div>+ {{list.amount}}</div>
                 <div>{{item.to.asset_name||'--'}}</div>
@@ -193,7 +193,7 @@
                 :key="key"
               >
                 <div>
-                  To:  {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+                  To:  {{list.Address }}（{{list.account | interceptStr}}）
                 </div>
                 <div>+ {{list.amount}}</div>
                 <div>{{item.to.asset_name||'--'}}</div>
@@ -235,7 +235,7 @@
                 :key="key"
               >
                 <div>
-                  From: {{list.Address | interceptStr}}（{{list.account | interceptStr}}
+                  From: {{list.Address }}（{{list.account | interceptStr}}
                 </div>
                 <div>- {{list.amount}}</div>
                 <div>{{item.from.asset_name||'--'}}</div>
@@ -584,9 +584,8 @@
 			var account_id = accountInfo.account_id;
 			var account_type = accountInfo.account_type;
 
-			this.params.account_id = account_id;
+			this.params.account_id = account_id || '';
 			this.params.account_type = account_type;
-
 
 
 
@@ -601,7 +600,8 @@
 
       this.time = [start_time, end_time]
 
-      this.toggleNav(0)
+      this.operIndex = this.$route.query.navIndex?(this.$route.query.navIndex-0) : 0;
+      this.toggleNav(this.operIndex )
 
       var _this = this;
       var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -712,6 +712,8 @@
 				}
         this.params.asset_name = '全部';
         this.params.asset_id = ''
+
+        this.$router.replace({path:'/main/assetManagementIndex', query:{navIndex:index } })
 
         this.setLoadingParams()
 

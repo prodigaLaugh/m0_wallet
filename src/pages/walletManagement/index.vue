@@ -46,7 +46,7 @@
             <div>
               <div
                 @click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
-              <div >备份</div>
+              <!-- <div >备份</div> -->
               <!-- @click="$router.push('/main/backupType')" -->
               <div @click="del(item,index)">删除</div>
             </div>
@@ -259,7 +259,11 @@
 								type:'success',
 								message:'载入成功'
 							})
-
+              
+              localStorage.accountInfo  = JSON.stringify(item);
+             
+              this.$store.commit('changeAccountAlias', item.account_alias)
+              
 							this.getLists();
 							setTimeout(()=>{
 								this.$router.push('/main/assetWalletIndex')
@@ -392,6 +396,7 @@
               font-size:13px;
               color:#43515c;
               line-height:14px;
+              word-break: break-all;
             }
           }
         }

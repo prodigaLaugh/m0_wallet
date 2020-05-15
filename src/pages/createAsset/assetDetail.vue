@@ -199,7 +199,7 @@
 <style lang="scss">
 	.assetDetailWrap{
     padding-bottom:60px;
-    
+
 		.assetDetaiContentWrap{
 			padding:20px 0;
 			.assetDetaiContentItem{

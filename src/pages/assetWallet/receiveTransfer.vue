@@ -1,53 +1,95 @@
 <template>
 	<div class="outerWrap addressManagementIndexWrap">
-		<el-row>
-			<el-col :lg="20" :md="22">
 
-				<div class="commonTitle_one">
-					资产钱包
-					<span>
-						<i class="el-icon-arrow-right"></i>
-						<span>接收转账</span>
-					</span>
-				</div>
+    <div class="commonTitle_one">
+      <span @click="$router.go(-1)">资产钱包</span>/接收转账
+      <!-- <span>
+        <i class="el-icon-arrow-right"></i>
+        <span>转账</span>
+      </span> -->
+      <!-- <div>返回</div> -->
+    </div>
 
-				<div class="commonTitle_two">
-					接收地址
-				</div>
+    <div class="commonListsWrap">
+      <div
+        v-for="(item,index) in lists"
+        :key="index"
+        class="commonListWrap"
+      >
+        <div class="infoBtnWrap" style="border-bottom:0 none;">
+          <div class="des">
+             <span>
+              {{item.address_id}}
+             </span>
+             <!-- <img src="../assets/leftNavBg.png" alt=""> -->
+             <span
+             	class="tag-read blue"
+             	:data-clipboard-text="item.address_id"
+             	@click="copy"></span>
+          </div>
+        </div>
 
-				<div class="addressManagementIndexListsWrap">
+        <div class="assets">
+          <div>
+            <span>包含资产</span>
+            <div>
+              <span
+              	v-for="(list,i) in item.asset_names"
+              	:key="i">{{list}}</span>
 
-					<el-row
-						class="addressManagementIndexListWrap"
-						v-for="(item,index) in lists"
-						:key="index">
-						<el-col :lg="12" class="addressManagementIndexListLeft">
-							<div>{{item.address_id}}</div>
-							<div>
-								<span>包含资产：</span>
-								<div>
-									<span
-										v-for="(list,i) in item.asset_names"
-										:key="i">{{list}}</span>
-								</div>
-							</div>
-						</el-col>
-						<el-col :lg="12" class="addressManagementIndexListRight">
-							<div>
-								<span
-									class="tag-read blue"
-									:data-clipboard-text="item.address_id"
-									@click="copy">拷贝地址</span>
-							</div>
-						</el-col>
-					</el-row>
+            </div>
+          </div>
+          <div>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
 
 
 
-				</div>
 
-			</el-col>
-		</el-row>
+
+
+<!--    <div class="commonTitle_two">
+      接收地址
+    </div>
+
+    <div class="addressManagementIndexListsWrap">
+
+      <el-row
+        class="addressManagementIndexListWrap"
+        v-for="(item,index) in lists"
+        :key="index">
+        <el-col :lg="12" class="addressManagementIndexListLeft">
+          <div>{{item.address_id}}</div>
+          <div>
+            <span>包含资产：</span>
+            <div>
+              <span
+                v-for="(list,i) in item.asset_names"
+                :key="i">{{list}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :lg="12" class="addressManagementIndexListRight">
+          <div>
+            <span
+              class="tag-read blue"
+              :data-clipboard-text="item.address_id"
+              @click="copy">拷贝地址</span>
+          </div>
+        </el-col>
+      </el-row>
+
+
+
+    </div>
+
+ -->
+
 
 	</div>
 </template>
@@ -118,7 +160,19 @@
 
 <style lang="scss">
 	.addressManagementIndexWrap{
+    .commonListWrap{
+          padding-bottom:20px;
+          
+          .des{
+             padding: 20px 0 30px 0;
+            >span:nth-of-type(1){
 
+              font-size: 16px;
+              line-height: 16px;
+            }
+          }
+      
+      }
 
 	}
 

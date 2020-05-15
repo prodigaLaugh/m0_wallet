@@ -17,7 +17,7 @@
             <el-select
               v-model="params.order_by"
               placeholder="请选择"
-              @change="getLists">
+              @change="selectChange">
               <el-option
                 v-for="item in orderOptions"
                 :key="item.value"
@@ -32,7 +32,7 @@
             <el-select
               v-model="params.asset_id"
               placeholder="请选择"
-              @change="getLists">
+              @change="selectChange">
               <el-option
                 v-for="item in allAssetsLists"
                 :key="item.value"
@@ -79,7 +79,7 @@
             <div class="infoWrap">
               <div>
                 <span>资产ID:</span>
-                <span>{{item.asset_id | interceptStr}}</span>
+                <span>{{item.asset_id}}</span>
               </div>
               <div class="money">
                 <span>当前总余额:</span>
@@ -105,7 +105,7 @@
                 v-for="(list,i) in item.address_balance"
                 :key="i"
               >
-                <span> {{list.address_id | interceptPubStr}}</span>
+                <span> {{list.address_id}}</span>
                 <span> {{list.balance}}</span>
                 <div class="last">
                   <span @click="$router.push({path:'/main/transactionRecord',query:getParams(item,list.address_id,'address')})">交易记录</span>
@@ -161,6 +161,8 @@
 			var accountInfo = this.getLocalAccountInfo()
 			var account_id = accountInfo.account_id;
 			var account_type = accountInfo.account_type;
+
+      this.navIndex = this.$route.query.navIndex?(this.$route.query.navIndex-0) : 0;
 
 			this.params.account_id = account_id;
       this.getLists()
@@ -231,10 +233,16 @@
         }
     },
 		methods:{
+      selectChange(){
+         this.params.page = 1;
+         this.noMoreData = false;
+         this.getLists()
+      },
       toggleNav(index){
         this.navIndex = index;
         this.params.page = 1;
         this.noMoreData = false;
+        this.$router.replace({path:'/main/assetWalletIndex', query:{navIndex:index } })
 
         this.getLists()
         this.getAlllists()
@@ -287,10 +295,17 @@
 			getLists(){
 
         const fn = this.navIndex === 0 ? getAssetWalletLists : getAssetHistoryWalletLists;
+        if(this.noMoreData){
+          return
+        }
+
+        this.noMoreData = true;
+
 				fn.bind(this)(this.params)
 					.then(({data})=>{
 
             const { list_asset: lists, total_item: total } = data.data
+
 
             if(data.status=='success'){
               if(lists){
@@ -299,6 +314,7 @@
                 }else{
                   this.lists.push(...lists);
                 }
+                this.noMoreData = false;
               }else{
                 if(this.params.page === 1){
                   this.lists.splice(0,999);
@@ -337,7 +353,7 @@
       }
     }
 
-		
+
 
     .commonListsWrap{
 
@@ -356,8 +372,16 @@
               width:300px;
             }
             &:first-of-type{
-              padding-left:15px;
               width:500px;
+              overflow:hidden;
+              display:flex;
+              >span:nth-of-type(2){
+                width:300px;
+                overflow:hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+              }
             }
             &:nth-of-type(2){
               padding-left:15px;

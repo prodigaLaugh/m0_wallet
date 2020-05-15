@@ -51,15 +51,18 @@
         </div>
 
 
-        <div class="inpItemWrap">
-          <div>
-            <span></span>
-             <span class="submit" @click="save">保存</span>
-          </div>
-
-        </div>
+        
 
        </div>
+       
+       <div class="inpItemWrap">
+         <div>
+           <span></span>
+            <span class="submit" @click="save">保存</span>
+         </div>
+       
+       </div>
+       
     </div>
 
 
@@ -210,7 +213,7 @@
 							var msg = data.error || '创建失败'
 							this.$message ({
 								message: msg,
-								type: 'warning'
+								type: 'error'
 							});
 						}
 						this.submitFlag = true;

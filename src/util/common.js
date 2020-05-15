@@ -1,14 +1,14 @@
 export default{
   install(Vue,options){
-    
-    
-		
+
+
+
 		Vue.prototype.linkTo = function (path,obj) {
       this.$router.push({path:path,query:obj});
-    }  
+    }
 
     Vue.prototype.getSearchType= function (params, sucessFn, errFn) {
-      
+
       let url = `/chain_browser/searchtype`
       this.$http.post(url,params)
         .then(({data})=>{
@@ -17,15 +17,15 @@ export default{
           }else{
             errFn(data);
           }
-          
+
         })
         .catch(({data})=>{
           errFn(data)
         })
-    }  
+    }
 
     Vue.prototype.getBlockchainLists= function (sucessFn, errFn) {
-      
+
       let url = `/chain_manager/list`
       this.$http.get(url)
         .then(({data})=>{
@@ -34,7 +34,7 @@ export default{
         .catch(({data})=>{
           errFn(data)
         })
-    } 
+    }
 
     Vue.prototype.getLinkAdressByType = function(val){
       var json = {
@@ -61,17 +61,30 @@ export default{
       })
       return obj;
     }
-		
+
 		Vue.prototype.goBack = function () {
 		  this.$router.go(-1)
-		} 
+		}
 		Vue.prototype.getLocalAccountInfo = function () {
 		   return localStorage.accountInfo ? JSON.parse(localStorage.accountInfo):{}
-		} 
+		}
 		Vue.prototype.judgeIsSingleSign = function () {
 		   return this.getLocalAccountInfo().account_type ==1
-		} 
-    
-    
+		}
+
+    Vue.prototype.createSignFile = function (data) {
+      const name = localStorage.USERTOKEN + new Date().getTime() +'.hex'
+       let element = document.createElement('a')
+       element.setAttribute('href', 'data:text/json;charset=utf-8,' + JSON.stringify(data) )
+       element.setAttribute('download', name)
+       element.style.display = 'none'
+       document.body.appendChild(element)
+       element.click()
+       document.body.removeChild(element)
+    }
+
+
+
+
   }
 }

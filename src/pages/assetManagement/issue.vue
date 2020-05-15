@@ -148,9 +148,15 @@
 
 			var query = this.$route.query;
 			var asset_id = query.asset_id;
+      var address_id = query.address_id;
 			if(asset_id){
 				this.params.asset_id = asset_id;
 			}
+      if(address_id){
+        this.to_address = address_id
+      }
+      
+      
 
 
 			var account_id = this.getLocalAccountInfo().account_id;
@@ -265,14 +271,7 @@
 								message:data.error
 							})
 						}else{
-							console.log(2)
-							let element = document.createElement('a')
-							element.setAttribute('href', 'data:text/json;charset=utf-8,' + JSON.stringify(data) )
-							element.setAttribute('download', 'data.hex')
-							element.style.display = 'none'
-							document.body.appendChild(element)
-							element.click()
-							document.body.removeChild(element)
+							 this.createSignFile(data)
 
 						}
 					})

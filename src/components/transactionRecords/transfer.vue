@@ -10,7 +10,8 @@
         <span>{{item.tx_id}}</span>
       </div>
       <div>
-      <span>转账</span>
+        <span>交易类型：</span>
+        <span>转账</span>
        <!-- <span>{{item.tx_id}}</span> -->
       </div>
 
@@ -27,7 +28,7 @@
         :key="key"
       >
         <div>
-          From:  {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+          From:  {{list.Address }}（{{list.account | interceptStr}}）
         </div>
         <div>- {{list.amount}}</div>
         <div>{{asset_name||'--'}}</div>
@@ -39,7 +40,7 @@
         :key="key"
       >
         <div>
-          To: {{list.Address | interceptStr}}（{{list.account | interceptStr}}）
+          To: {{list.Address }}（{{list.account | interceptStr}}）
         </div>
         <div>+ {{list.amount}}</div>
         <div>{{asset_name||'--'}}</div>

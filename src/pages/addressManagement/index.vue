@@ -37,12 +37,12 @@
               <span
                 v-for="(list,i) in item.asset_names"
                 :key="i">{{list}}</span>
-                
+
             </div>
           </div>
           <div>
-            <span @click="$router.push('/main/transfer')">发起转账</span>
-            <span @click="$router.push('/main/issue')">发行资产</span>
+            <span @click="$router.push({path: '/main/transfer', query:{ address_id: item.address_id } })">发起转账</span>
+            <span @click="$router.push({path: '/main/issue', query:{  address_id: item.address_id  } })">发行资产</span>
           </div>
         </div>
 
@@ -154,7 +154,9 @@
           page_size: 10,
           total: 0,
           account_alias:''
-        }
+        },
+        
+        submitFlag:true
 			}
 		},
 		methods:{
@@ -186,6 +188,11 @@
 					account_alias:account_alias,
 					account_id:account_id
 				};
+        
+        if(!this.submitFlag){
+          return;
+        }
+        this.submitFlag = false
 
 				createAddress.bind(this)(para)
 					.then(({data})=>{
@@ -203,6 +210,7 @@
 								message:msg
 							})
 						}
+            this.submitFlag = true
 					})
 			},
 			copy() {
@@ -231,7 +239,7 @@
 	.addressManagementIndexWrap{
     .commonListWrap{
       padding-bottom:20px;
-      
+
       .des{
          padding: 20px 0 30px 0;
         >span:nth-of-type(1){
@@ -241,55 +249,7 @@
         }
       }
 
-      .assets{
-        display:flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        >div:nth-of-type(1){
-          flex:1;
-          display:flex;
-          >span{
-            width:100px;
-            line-height:28px;
-          }
-          >div{
-            display:flex;
-            flex:1;
-            flex-wrap: wrap;
-            >span{
-                  float: left;
-                  padding:0 30px;
-                  height: 28px;
-                  line-height: 28px;
-                  borer-radius: 3px;
-                  background: #d6e0e9;
-                  color: #27334b;
-                  margin-right: 13px;
-                  margin-bottom: 15px;
-                  border-radius: 3px;
-                  text-align: center;
-                  font-size: 12px;
-            }
-          }
-        }
-        >div:nth-of-type(2){
-          width:200px;
-          display:flex;
-          >span{
-            font-size: 12px;
-                cursor: pointer;
-                background: #3d5265;
-                color: #fff;
-                line-height: 32px;
-                margin-left: 10px;
-                width: 120px;
-                text-align: center;
-                border-radius: 5px;
-          }
-        }
       }
-
-    }
 
 	}
 
