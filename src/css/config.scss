@@ -1,12 +1,8 @@
-$header-height: 70px;
-$content-width: 1200px;
 
 // 颜色
 $color-2:#243546;
 $color-333:#324558;
 $color-4:#425263;
-$color-666:#666;
-$color-999:#999;
 $blue: #3F51B5;
 $green:#00a66b;
 $blackBg:#1F2525;
@@ -14,21 +10,7 @@ $red:#fb8282;
 $ddd:#ddd;
 $btnBg:#3d5265;
 
-$bgcolor-ddd:#ddd;
-$bgcolor-fff:#fff;
 
-//font-size
-$fontsize-14:14px;
-$fontsize-18:18px;
-$fontsize-20:20px;
-
-
-// 加省略号
-@mixin overflow {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
 @mixin pointer {
   cursor:pointer;

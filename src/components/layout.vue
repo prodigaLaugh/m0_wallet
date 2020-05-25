@@ -37,7 +37,7 @@
   }
 
   .app-content{
-    padding-top:15px;
+    // padding-top:15px;
   }
   .paginationWrap{
     text-align:right;

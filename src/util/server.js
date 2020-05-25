@@ -258,10 +258,3 @@ export async function  getAssetRecordsByAddress(para){//资产钱包地址下的
 	return result;
 }
 
-
-//系统状态
-export async function  getSystemStatus(para){//获取系统状态
-	let url = `/v1/blocks/chain_state`;
-	let result = await this.$http.post(url, Object.assign({}, baseParams, para) )
-	return result;
-}

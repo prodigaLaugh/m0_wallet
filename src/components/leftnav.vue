@@ -12,28 +12,14 @@
 				<router-link to="/main/createAssetIndex">创建资产</router-link>
 				<router-link to="/main/addressManagementIndex">地址管理</router-link>
         <router-link to="/main/chainDeposit">可信存证</router-link>
-				<!-- <router-link to="/main/systemStatusIndex">系统状态</router-link> -->
-				<div class="left_progressWrap" v-if="systemStatus.NetInfo">
-					<div class="left_progressTextWrap">
-						<div>区块同步中...</div>
-						<div>连接数：{{systemStatus.NetInfo.peer_count}}</div>
-					</div>
-					<div  class="left_progress">
-						<el-progress
-							:text-inside="true"
-							:show-text="false"
-							:stroke-width="18"
-							:percentage="listeningLength"></el-progress>
-						<div class="left_progressP">{{systemStatus.NetInfo.current_block}}/{{systemStatus.NetInfo.highest_block}} （{{ listeningLength }}%）</div>
-					</div>
-				</div>
+				
+				
 		</div>
 	</div>
 
 
 </template>
 <script>
-	import { getSystemStatus } from '@/util/server.js'
 	import Vue from 'vue';
 	import {Progress} from 'element-ui';
 
@@ -45,24 +31,8 @@
 				listeningLength:0,
 			}
 		},
-		created(){
-// 			setInterval(()=>{
-// 				getSystemStatus.bind(this)()
-// 					.then(({data})=>{
-// 						console.log(data,222)
-// 						if(data.status=='success'){
-// 							var data = data.data;
-// 							this.$store.commit('changeSystemStatus',data)
-// 							this.listeningLength = parseInt(data.NetInfo.current_block/data.NetInfo.highest_block)*100;
-// 						}
-// 					})
-// 			},1000)
-		},
+//
 		computed: {
-			systemStatus () {
-			  return this.$store.state.systemStatus
-			  // 或者 return this.$store.getter.count2
-			},
       accountAlias () {
         return this.$store.state.accountAlias
         // 或者 return this.$store.getter.count2
