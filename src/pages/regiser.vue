@@ -135,7 +135,7 @@ export default {
 				});
 				return false;
 		}
-		if(this.verifycode.password!=this.verifycode.againPassword){
+		if(this.loginParams.password!=this.loginParams.againPassword){
 			this.$message ({
 				message: '两次密码不一致',
 				type: 'warning'

@@ -120,7 +120,7 @@
           account_id:'',
           is_issue:0,
           page: 1,
-          page_size: 2,
+          page_size: 10,
           total: 0,
         }
 
@@ -178,7 +178,7 @@
 						}else{
 							this.$message ({
 								message: data,
-								type: 'warning'
+								type: 'error'
 							});
 						}
 						console.log(data,122)

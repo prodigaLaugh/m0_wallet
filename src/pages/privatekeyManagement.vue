@@ -76,7 +76,7 @@
 
          <div class="dialogContentWrap">
            <div class="title">请设置密钥别称</div>
-           <div class="tips">密钥别称是用来区分密钥的标签，该信息不会在区块链上保存</div>
+           <div class="tips">密钥别称是用来区分密钥的标签，该信息不会在区块链上保存（请设置字母格式的名称）</div>
            <el-input
             v-model="params.alias"
             placeholder="输入别称"></el-input>
@@ -186,6 +186,12 @@
           this.$message({
           	type:'error',
           	message:'请输入密钥别称'
+          })
+          return;
+        }else if(!/^[a-zA-Z]+$/.test(alias) ){
+          this.$message({
+          	type:'error',
+          	message:'请输入正确格式的密钥别称'
           })
           return;
         }else if(

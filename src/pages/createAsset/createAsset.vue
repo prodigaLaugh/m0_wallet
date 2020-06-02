@@ -51,18 +51,18 @@
         </div>
 
 
-        
+
 
        </div>
-       
+
        <div class="inpItemWrap">
          <div>
            <span></span>
             <span class="submit" @click="save">保存</span>
          </div>
-       
+
        </div>
-       
+
     </div>
 
 
@@ -170,13 +170,38 @@
 				this.param.parameters.push({key:'', value:''})
 			},
 			save(){
+        var reg = /^[\u4e00-\u9fa5]+/
+
 				if(!this.param.asset_name){
 					this.$message ({
 						message: '请输入资产名称',
-						type: 'warning'
+						type: 'error'
 					});
-					return false;
-				}
+					return;
+				}else if(reg.test(this.param.asset_name)){
+          this.$message ({
+          	message: '资产名称不支持中文',
+          	type: 'error'
+          });
+          return;
+        }
+
+
+        var flag = this.param.parameters.some((item)=>{
+          return reg.test(item.key) || reg.test(item.value)
+        })
+
+        if(flag){
+          this.$message ({
+          	message: '资产参数不支持中文',
+          	type: 'error'
+          });
+          return;
+        }
+
+       
+
+
 // 				var flag = false;
 // 				flag = this.param.parameters.some((item,index)=>{
 // 					return !item.key||!item.value

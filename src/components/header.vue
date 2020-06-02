@@ -207,9 +207,19 @@ export default {
 	    },
 		generate(){
 
+    
+      if(!this.amount){
+        this.$message({
+        	type:'error',
+        	message:'请选择生成码邀请数量'
+        })
+        return;
+      }
+      
 			let params = {
 				amount: this.amount,
 			}
+
 			if(!this.submitFlag){
 				return false;
 			}
@@ -222,7 +232,7 @@ export default {
 					}else{
 						this.$message({
 							type:'error',
-							message:data.detail
+							message:data.error
 						})
 					}
 					setTimeout(()=>{

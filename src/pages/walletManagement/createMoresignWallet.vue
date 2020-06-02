@@ -92,7 +92,7 @@
           <div class="inpItemWrap"   >
             <div>
               <span></span>
-               <span class="submit" @click="create">创建账户</span>
+               <span class="submit" @click="create">创建钱包</span>
             </div>
 
           </div>
@@ -295,7 +295,20 @@
 
 			},
 			create(){
-				if(this.xpubs.length < (this.params.quorum-1)){
+
+        if(!this.params.alias){
+          this.$message({
+          	type:'error',
+          	message:'请输入钱包名称'
+          })
+          return;
+        }else if(!this.privatekey){
+          this.$message({
+          	type:'error',
+          	message:'请选择钱包秘钥'
+          })
+          return;
+        }else if(this.xpubs.length < (this.params.quorum-1)){
 					this.$message({
 						type:'error',
 						message:'秘钥总数不能大于所需签名数'
