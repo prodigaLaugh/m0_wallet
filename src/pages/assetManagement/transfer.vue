@@ -3,7 +3,7 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">资产操作</span>/转账
-     
+
     </div>
 
 
@@ -250,7 +250,22 @@
         var correct_to_address = this.params.receive_info.every(item=> item.to_address.length === 42 ||  item.to_address.length === 62)
         var has_to_amount = this.params.receive_info.every(item=>item.to_amount)
         var not0_to_amount = this.params.receive_info.every(item=> item.to_amount === '0')
-        var int_to_amount = this.params.receive_info.every(item=> item.to_amount.indexOf('.') > -1 )
+        var int_to_amount = this.params.receive_info.every(item=> {
+          return item.to_amount.indexOf('.') > -1
+        } )
+
+
+        let para = Object.assign({},this.params);
+
+
+
+        para.receive_info.map((item,index)=>{
+        	var to_amount = item.to_amount - 0;
+        	para.receive_info[index].to_amount = to_amount;})
+
+        para.amount = para.receive_info.reduce((pre,cur)=>{
+        	return (pre-0) + (cur.to_amount-0)
+        },0)
 
 
         if(!this.params.asset_name){
@@ -270,20 +285,13 @@
         }else if(int_to_amount){
           this.$message.error('转出数量需为整数位数字')
           return
+        }else if(this.amount < para.amount){
+          this.$message.error('转出数量不能大于当前资产余额')
+          return
         }
 
 
-				let para = Object.assign({},this.params);
 
-
-
-				para.receive_info.map((item,index)=>{
-					var to_amount = item.to_amount - 0;
-					para.receive_info[index].to_amount = to_amount;})
-
-				para.amount = para.receive_info.reduce((pre,cur)=>{
-					return (pre-0) + (cur.to_amount-0)
-				},0)
 
 				if(this.isSingleSign){
 					this.signleSignFn(para)

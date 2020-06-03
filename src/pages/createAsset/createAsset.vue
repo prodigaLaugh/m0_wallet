@@ -63,7 +63,7 @@
 
 
 
-				
+
 
 	</div>
 </template>
@@ -121,10 +121,11 @@
           });
           return;
         }
-
+        
+        var chineseReg = /^[\u4e00-\u9fa5]+/;
 
         var flag = this.param.parameters.some((item)=>{
-          return reg.test(item.key) || reg.test(item.value)
+          return chineseReg.test(item.key) || chineseReg.test(item.value)
         })
 
         if(flag){
