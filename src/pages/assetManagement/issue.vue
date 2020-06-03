@@ -4,7 +4,7 @@
     <div class="commonTitle_one">
 
       <span @click="$router.go(-1)">资产操作</span>/发行
-   
+
     </div>
 
 
@@ -66,7 +66,7 @@
 
       </div>
 
-      
+
 		</div>
 
 
@@ -99,8 +99,8 @@
       if(address_id){
         this.to_address = address_id
       }
-      
-      
+
+
 
 
 			var account_id = this.getLocalAccountInfo().account_id;
@@ -120,9 +120,11 @@
 			let account_alias = this.getLocalAccountInfo().account_alias;
 			var params = {account_alias: account_alias,  page: 1,
           page_size: 999999 }
+
 			getAddressLists.bind(this)(params)
 				.then(({data})=>{
-					const lists = data.data.list_address;
+          console.log(data,111)
+          const lists = data.data.list_address;
 					if(lists){
 					  this.address.splice(0,99999, ...lists) ;
 					}else{
@@ -154,15 +156,26 @@
 		},
 		methods:{
 			issue(){
+
+        if(!this.to_address){
+          this.$message.error('请选择发行地址')
+          return;
+        }else if(!this.params.asset_id){
+          this.$message.error('请选择发行资产')
+          return
+        }else if(!this.to_amount){
+          this.$message.error('请输入发行数量')
+          return
+        }else if(!this.params.password){
+          this.$message.error('请输入密码')
+          return
+        }
+
 				var list = this.allAssetsLists.filter((item,index)=>{
 					return item.asset_id ==this.params.asset_id
 				})
 
-       
-        if(!list[0]){
-          this.$message.error('请完善信息')
-          return;
-        }
+
 				this.params.asset_name = list[0].asset_name;
 				var amount = this.to_amount-0||0;
 				var receive_info = [{

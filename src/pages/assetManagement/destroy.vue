@@ -4,7 +4,7 @@
     <div class="commonTitle_one">
 
       <span @click="$router.go(-1)">资产操作</span>/销毁
-  
+
     </div>
 
 
@@ -15,7 +15,11 @@
       <div class="inpItemWrap">
         <div>
           <span>所在地址</span>
-          <el-select v-model="params.from_address" placeholder="请选择">
+          <el-select
+            v-model="params.from_address"
+            placeholder="请选择"
+            @change="adressChangeQueryAmount"
+           >
           	<el-option
           	  v-for="item in address"
           	  :key="item.address_id"
@@ -83,7 +87,7 @@
 
 
 
-			
+
 		</div>
 
 
@@ -166,6 +170,8 @@
 					asset_id:"",
 					from_address:'',
 				},
+
+        submitFlag:true,
 			}
 		},
 		methods:{
@@ -183,11 +189,28 @@
       	para.address_id = this.params.from_address;
       	queryAssetAmount.bind(this)(para)
       		.then(({data})=>{
-      			console.log(data,9898)
       			this.amount = data.data;
       		})
       },
 			retire(){
+
+        if(!this.params.from_address){
+          this.$message.error('请选择所在地')
+        }else if(!this.params.asset_id){
+          this.$message.error('请选择销毁资产类型')
+          return
+        }else if(!this.params.amount){
+          this.$message.error('请输入销毁数量')
+          return
+        }else if(this.params.amount > this.amount){
+          this.$message.error('销毁数量不能大于当前资产余额')
+          return
+        }else if(!this.params.password){
+          this.$message.error('请输入密码')
+          return
+        }
+
+
 				var list = this.allAssetsLists.filter((item,index)=>{
 					return item.asset_id ==this.params.asset_id
 				})
@@ -196,6 +219,12 @@
 
 				let para = Object.assign({},this.params);
 				para.amount-=0;
+
+        if(!this.submitFlag){
+          this.amount
+          return;
+        }
+        this.submitFlag = false;
 
 
 				if(this.isSingleSign){
@@ -225,7 +254,10 @@
 								message:data.error
 							})
 						}
-					})
+            this.submitFlag = true;
+					}).catch(()=>{
+            this.submitFlag = true;
+          })
 			},
 			retireMutil(para){
 				retireMultsign.bind(this)(para)
@@ -238,8 +270,11 @@
 						}else{
 							 this.createSignFile(data)
 						}
-
+            this.submitFlag = true;
 					})
+          .catch(()=>{
+            this.submitFlag = true;
+          })
 			}
 		},
 	}
