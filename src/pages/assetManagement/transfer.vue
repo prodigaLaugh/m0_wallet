@@ -112,101 +112,7 @@
 
 
 
-			<!-- <el-row>
-				<el-col :lg="20" :md="22">
-					<el-row class="transferInpListsWrap">
-						<el-col :lg="24">
-							<div class="transferInpListLeft">转出地址</div>
-							<el-select
-								v-model="params.from_address"
-								 @change="adressChangeQueryAmount"
-								placeholder="请选择">
-								<el-option
-								  v-for="item in address"
-								  :key="item.address_id"
-								  :label="item.address_id?item.address_id:'全部'"
-								  :value="item.address_id">
-								</el-option>
-							  </el-select>
-						</el-col>
 
-						<el-col :lg="24">
-							<div class="transferInpListLeft">转出资产</div>
-							<el-select
-								v-model="params.asset_id"
-								@change="adressChangeQueryAmount"
-								placeholder="请选择">
-								<el-option
-									v-for="item in allAssetsLists"
-									:key="item.value"
-									:label="item.asset_name"
-									:value="item.asset_id">
-								</el-option>
-							</el-select>
-						</el-col>
-
-						<el-col
-							:md="24"
-              v-if="amount || amount ===0"
-							style="margin-top:-10px">当前资产余额：{{amount}}</el-col>
-
-						<el-col :lg="24">
-							<div class="transferInpListLeft">转账详情</div>
-						</el-col>
-
-						<div class="paraWrap" style="clear:both;margin-bottom:40px;">
-							<el-row class="top">
-								<el-col :lg="11">
-									目标地址
-								</el-col>
-								<el-col :lg="11">
-									转出数量
-								</el-col>
-							</el-row>
-							<el-row
-								v-for="(item, index) in params.receive_info"
-								:key="index"
-								style="margin-bottom:20px;">
-								<el-col :lg="10">
-									<el-input v-model="item.to_address" placeholder="请输入目标地址"></el-input>
-								</el-col>
-								<el-col :lg="1">&nbsp;</el-col>
-								<el-col :lg="10">
-									<el-input v-model="item.to_amount" placeholder="请输入要转出的资产数量"></el-input>
-								</el-col>
-								<el-col :lg="1">&nbsp;</el-col>
-								<el-col :lg="2" class="btn" >
-									<span @click="delPara(index)">删除</span>
-								</el-col>
-								<el-col :md="24" style="padding-top:10px;">
-									所属账户：
-								</el-col>
-							</el-row>
-							<el-row class="addBtn">
-								<el-col>
-									<span class="addBtnWrap" @click="addPara">+添加转账地址</span>
-								</el-col>
-							</el-row>
-
-						</div>
-						<el-col :lg="24">
-							<div class="transferInpListLeft">请输入密码</div>
-							<el-input
-								v-model="params.password"
-								placeholder="请输入密码"
-								autocomplete="new-password"
-								type="password"></el-input>
-						</el-col>
-						<el-col :lg="24">
-
-							<div
-								@click="transfer"
-								class="transferAccoutItemBtn">{{isSingleSign?'提交交易':'生成签名文件'}}</div>
-						</el-col>
-					</el-row>
-				</el-col>
-			</el-row>
-		 -->
     </div>
 
 
@@ -344,16 +250,42 @@
 			},
 			transfer(){
 
+
+        var has_to_address = this.params.receive_info.every(item=>item.to_address)
+        var correct_to_address = this.params.receive_info.every(item=> item.to_address.length === 42 ||  item.to_address.length === 62)
+        var has_to_amount = this.params.receive_info.every(item=>item.to_amount)
+        var not0_to_amount = this.params.receive_info.every(item=> item.to_amount === '0')
+        var int_to_amount = this.params.receive_info.every(item=> item.to_amount.indexOf('.') > -1 )
+
+
+        if(!this.params.asset_name){
+          this.$message.error('请选择转出资产')
+        }else if(!has_to_address){
+          this.$message.error('请输入目标地址')
+          return
+        }else if(!correct_to_address){
+          this.$message.error('请输入正确格式的目标地址')
+          return
+        }else if(!has_to_amount){
+          this.$message.error('请输入转出数量')
+          return
+        }else if(not0_to_amount){
+          this.$message.error('转出数量不能为0')
+          return
+        }else if(int_to_amount){
+          this.$message.error('转出数量需为整数位数字')
+          return
+        }
+
+
 				let para = Object.assign({},this.params);
-				var receive_info = [{
-						to_address:this.to_address,
-						to_amount:this.to_amount-0||0
-					}]
+
 
 
 				para.receive_info.map((item,index)=>{
 					var to_amount = item.to_amount - 0;
 					para.receive_info[index].to_amount = to_amount;})
+
 				para.amount = para.receive_info.reduce((pre,cur)=>{
 					return (pre-0) + (cur.to_amount-0)
 				},0)

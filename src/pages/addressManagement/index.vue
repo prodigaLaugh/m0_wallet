@@ -47,38 +47,9 @@
         </div>
 
 
+
+
       </div>
-    </div>
-
-
-    <!-- <div class="addressManagementIndexListsWrap">
-
-      <el-row
-        v-for="(item, index) in lists"
-        :key="index"
-        class="addressManagementIndexListWrap">
-        <el-col :lg="12" class="addressManagementIndexListLeft">
-          <div>{{item.address_id}}</div>
-          <div>
-            <span>包含资产：</span>
-            <div>
-              <span
-                v-for="(list,i) in item.asset_names"
-                :key="i">{{list}}</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :lg="12" class="addressManagementIndexListRight">
-          <div>
-            <span
-              class="tag-read blue"
-              :data-clipboard-text="item.address_id"
-              @click="copy">拷贝地址</span>
-            <span @click="$router.push('/main/transfer')">发起转账</span>
-            <span @click="$router.push('/main/issue')">发行资产</span>
-          </div>
-        </el-col>
-      </el-row>
 
       <div class="paginationWrap" v-if="lists.length">
         <el-pagination
@@ -94,10 +65,9 @@
       <div class="noresult" v-if="!lists.length">暂无数据</div>
 
 
-
     </div>
 
- -->
+
 
 
 		<el-dialog
@@ -124,13 +94,14 @@
 	import { getAddressLists, createAddress } from '@/util/server.js'
 
 	import Vue from 'vue';
-	import { Row, Col, Button } from 'element-ui';
+	import { Row, Col, Button, Pagination } from 'element-ui';
 
 	import Clipboard from 'clipboard'
 
 	Vue.use(Row);
 	Vue.use(Col);
 	Vue.use(Button);
+  Vue.use(Pagination);
 
 
 
@@ -155,7 +126,7 @@
           total: 0,
           account_alias:''
         },
-        
+
         submitFlag:true
 			}
 		},
@@ -165,8 +136,6 @@
         this.getLists()
       },
 			getLists(){
-
-
 
 				getAddressLists.bind(this)(this.params)
 					.then(({data})=>{
@@ -188,7 +157,7 @@
 					account_alias:account_alias,
 					account_id:account_id
 				};
-        
+
         if(!this.submitFlag){
           return;
         }

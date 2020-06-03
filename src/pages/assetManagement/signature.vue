@@ -4,15 +4,9 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">资产操作</span>/签名
-      <!-- <span>
-        <i class="el-icon-arrow-right"></i>
-        <span>转账</span>
-      </span> -->
-      <!-- <div>返回</div> -->
     </div>
 
 
-		<!-- <div class="commonTitle_two">签名交易</div> -->
 
 
     <div class="transferInpWrap">
@@ -109,58 +103,7 @@
 
 
 
-		<!-- <el-row>
-			<el-col :lg="20" :md="22">
-
-				<div class="signatureInpWrap">
-					<input type="file" @change="selectFile">
-					<div v-if="!uploadFlag">+上传签名文件</div>
-					<div v-else>{{uploadParams.filename}}</div>
-				</div>
-
-				<div class="signatureDetailWrap" v-if="uploadFlag">
-					<div class="title">交易信息</div>
-					<div class="content">
-						<div>交易类型：{{uploadFileDetail.tx_type|transactionTextByType}}</div>
-						<div>资产类型：{{uploadFileDetail.asset_name}}</div>
-						<div>资产ID：{{uploadFileDetail.asset_id}}</div>
-						<div>交易金额：{{uploadFileDetail.amount }}</div>
-						<div>
-								从：
-								<div
-									v-for="(item,index) in uploadFileDetail.from"
-									:key="index">
-									{{item.Address||'--'}}（{{item.account||'--'}})
-								</div>
-						</div>
-						<div>
-							到：
-							<div
-								v-for="(item,index) in uploadFileDetail.to"
-								:key="index">
-								{{item.Address||'--'}}（{{item.account||'--'}})
-							</div>
-						</div>
-						<div>需要签名：{{uploadFileDetail.need_signnum}}</div>
-						<div>已完成签名：{{uploadFileDetail.complete_signnum}}</div>
-
-					</div>
-
-
-					<div class="title">请输入密码</div>
-					<el-input
-						v-model="uploadParams.password"
-						placeholder="请输入密码"
-						autocomplete="new-password"
-						type="password"></el-input>
-
-					<div class="subBtn" @click="signFn">{{isTxFlag?'提交交易':'生成签名文件'}}</div>
-
-				</div>
-
-			</el-col>
-		</el-row>
- -->
+		
 	</div>
 </template>
 

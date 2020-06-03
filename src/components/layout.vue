@@ -345,12 +345,19 @@
 
     .infoW{
       .list{
-        display:flex;
+        position:relative;
         line-height:40px;
         font-size:14px;
         color:$color-4;
         >span:nth-of-type(1){
           width:120px;
+          position:absolute;
+          left:0;
+          top:0;
+        }
+        >span:nth-of-type(2){
+          margin-left:120px;
+          display:block;
         }
       }
     }

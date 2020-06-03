@@ -19,6 +19,7 @@
           <el-input
           	v-model="params.evidence_name"
           	autocomplete="off"
+            maxlength="50"
           	placeholder="请输入上传存证的名称"></el-input>
         </div>
       </div>
@@ -52,6 +53,7 @@
         <el-input
         	v-model="params.evidence_describe"
         	type="textarea"
+          maxlength="150"
         	:rows="5" placeholder=""></el-input>
       </div>
     </div>
@@ -223,6 +225,16 @@
         this.$refs.file.click()
       },
 			save(){
+
+
+        if( !this.params.evidence_name ){
+          this.$message ({
+          	message: '存证名称不可为空',
+          	type: 'error'
+          });
+          return;
+        }
+
 				var para = this.params;
 				var formdata = new FormData();
 
@@ -257,7 +269,7 @@
 							var msg = data.error
 							this.$message ({
 								message: msg,
-								type: 'warning'
+								type: 'error'
 							});
 						}
 						this.submitFlag = true;

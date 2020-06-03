@@ -93,12 +93,13 @@
               </div>
             </div>
 
-            <div class="lists">
-              <div class="list title">
+            <div class="lists" >
+              <div class="list title" v-if="item.address_balance && item.address_balance.length">
                 <span>所在地址</span>
                 <span>地址余额</span>
                 <span class="last">操作</span>
               </div>
+              <div class="list title" v-else></div>
 
               <div
                 class="list"
@@ -221,8 +222,10 @@
           // scrollHeight 滚动条的总高度
           var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
           // 滚动条到底部的条件
+          
+           let distance = 50;
 
-          if(scrollTop + windowHeight == scrollHeight){
+          if(scrollTop + windowHeight == (scrollHeight-distance) ){
             // 加载数据
             if(!_this.noMoreData){
                _this.getMoreLists()

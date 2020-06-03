@@ -325,6 +325,7 @@
           display:block;
           width:40%;
           height:240px;
+          overflow-y:auto;
           padding:10px 15px;
           line-height:24px;
           border:1px solid #e4e4e4;

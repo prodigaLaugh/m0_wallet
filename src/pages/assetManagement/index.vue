@@ -532,17 +532,7 @@
 
           </div>
 
-            <!-- <div class="paginationWrap" v-if="retireLists.length || issueLists.length || signLists.length || transfterLists.length ">
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="params.total"
-                :page-size="params.page_size"
-                @current-change="pageChange"
-               >
-              </el-pagination>
-            </div> -->
-
+   
 
 
 
@@ -601,18 +591,14 @@
       this.time = [start_time, end_time]
 
       this.operIndex = this.$route.query.navIndex?(this.$route.query.navIndex-0) : 0;
-      this.toggleNav(this.operIndex )
+      this.toggleNav( this.operIndex )
 
       var _this = this;
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      // windowHeight 可视区的高度
-      var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-      // scrollHeight 滚动条的总高度
-      var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-      // 滚动条到底部的条件
+
       this.getMoreLists()
 
       window.onscroll = function(){
+    
           // scrollTop 滚动条滚动时，距离顶部的距离
           var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
           // windowHeight 可视区的高度
@@ -620,7 +606,11 @@
           // scrollHeight 滚动条的总高度
           var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
           // 滚动条到底部的条件
-          if(scrollTop + windowHeight == scrollHeight){
+          let distance = 50;
+
+
+
+          if(scrollTop + windowHeight >= (scrollHeight-distance)){
             // 加载数据
             _this.getMoreLists()
           }

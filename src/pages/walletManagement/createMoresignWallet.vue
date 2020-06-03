@@ -238,13 +238,13 @@
 				editIndex:-1,
 				params:{
 					alias: "",
-					quorum: 1,
+					quorum: 2,
 					xpubs: []
 				},
 				xpubs:[],//已经添加的公钥
 				privatekey:'',//钱包秘钥
 				lists:[],//秘钥列表
-				signNums: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+				signNums: [2,3,4,5,6,7,8,9,10,11,12,13,14,15],
 			}
 		},
 		methods:{
@@ -308,13 +308,19 @@
           	message:'请选择钱包秘钥'
           })
           return;
-        }else if(this.xpubs.length < (this.params.quorum-1)){
+        }else if(!this.xpubs.length ){
 					this.$message({
 						type:'error',
-						message:'秘钥总数不能大于所需签名数'
+						message:'请添加可签名秘钥'
 					})
 					return;
-				}
+				}else if( this.xpubs.length < (this.params.quorum-1) ){
+          this.$message({
+          	type:'error',
+          	message:'秘钥总数不能大于所需签名数'
+          })
+          return;
+        }
 
 				let para = Object.assign({},this.params);
 				let xpubs = [this.privatekey,...this.xpubs];

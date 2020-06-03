@@ -16,7 +16,7 @@
       <div class="inpItemWrap">
         <div>
           <span>名称</span>
-          <el-input v-model="param.asset_name" placeholder=""></el-input>
+          <el-input v-model="param.asset_name" placeholder="资产名称格式为字母"></el-input>
         </div>
       </div>
 
@@ -170,7 +170,7 @@
 				this.param.parameters.push({key:'', value:''})
 			},
 			save(){
-        var reg = /^[\u4e00-\u9fa5]+/
+        var reg = /^[a-zA-Z]+/
 
 				if(!this.param.asset_name){
 					this.$message ({
@@ -178,9 +178,9 @@
 						type: 'error'
 					});
 					return;
-				}else if(reg.test(this.param.asset_name)){
+				}else if(!reg.test(this.param.asset_name)){
           this.$message ({
-          	message: '资产名称不支持中文',
+          	message: '请输入正确格式的名称',
           	type: 'error'
           });
           return;
@@ -199,7 +199,7 @@
           return;
         }
 
-       
+
 
 
 // 				var flag = false;

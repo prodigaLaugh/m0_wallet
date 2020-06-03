@@ -114,7 +114,7 @@ export default {
 				!this.verifycode){
 					this.$message ({
 							message: '请完善信息',
-							type: 'warning'
+							type: 'error'
 					});
 					return false;
 			}
@@ -122,7 +122,7 @@ export default {
 			if(this.verifycode.toLocaleLowerCase() !== this.identifyCode.toLocaleLowerCase()){
 				this.$message ({
 					message: '验证码不正确',
-					type: 'warning'
+					type: 'error'
 				});
 				return false;
 			}
@@ -160,7 +160,7 @@ export default {
 						var msg = data.error;
 						this.$message ({
 							message: msg,
-							type: 'warning'
+							type: 'error'
 						});
 					}
 

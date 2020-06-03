@@ -49,7 +49,7 @@
             class="blue">发行</span>
           <span
             @click="delAsset(item.id)"
-            style="color:red">删除</span>
+            class="blue">删除</span>
         </el-col>
         <el-col :span="4" v-else>
           <span

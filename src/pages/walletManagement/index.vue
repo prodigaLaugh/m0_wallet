@@ -48,7 +48,8 @@
                 @click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
               <!-- <div >备份</div> -->
               <!-- @click="$router.push('/main/backupType')" -->
-              <div @click="del(item,index)">删除</div>
+              <div @click="openDeleteModal(item, index)">删除</div>
+              <!-- del(item,index) -->
             </div>
           </div>
 
@@ -118,7 +119,17 @@
 
     </div>
 
-
+    <el-dialog
+      title="提示"
+      :visible.sync="deleteWalletModalFlag"
+      width="30%"
+      :before-close="handleClose">
+      <span>是否确认删除钱包?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteWalletModalFlag = false">取 消</el-button>
+        <el-button type="primary" @click="del">确 定</el-button>
+      </span>
+    </el-dialog>
 
 
 		<!-- 点击秘钥管理输入密码弹窗 -->
@@ -207,11 +218,21 @@
         },
 
 				lists:[],
+
+        deleteWalletModalFlag:false,
+        deleteParams:{}
 			}
 		},
 		methods:{
-			del(item,index){
-				var account_alias =  item.account_alias;
+      openDeleteModal(item, index){
+        this.deleteWalletModalFlag = true;
+        this.deleteParams = {
+          account_alias:item.account_alias,
+          index
+        }
+      },
+			del(){
+				var account_alias =  this.deleteParams.account_alias;
 				let para = {
 					account_alias:account_alias
 				}
@@ -226,8 +247,9 @@
 								type:'success',
 								message:'删除成功'
 							})
-							this.lists.splice(index,1);
+							this.lists.splice(this.deleteParams.index,1);
 							this.getLists();
+              this.deleteWalletModalFlag = false;
 						}else{
 							this.$message({
 								type:"error",
@@ -259,11 +281,11 @@
 								type:'success',
 								message:'载入成功'
 							})
-              
+
               localStorage.accountInfo  = JSON.stringify(item);
-             
+
               this.$store.commit('changeAccountAlias', item.account_alias)
-              
+
 							this.getLists();
 							setTimeout(()=>{
 								this.$router.push('/main/assetWalletIndex')
@@ -305,6 +327,9 @@
 							if(data.data){
 
 								var lists = data.data.list_accounts;
+                const total_item = data.data.total_item;
+                this.params.total = total_item
+
 								lists.map((item, index)=>{
 									if(item.status==1){
 										localStorage.accountInfo  = JSON.stringify(item);
@@ -318,6 +343,7 @@
 
 						}else{
 							this.lists.splice(0,999);
+               this.params.total = 0;
 						}
 
 					})
