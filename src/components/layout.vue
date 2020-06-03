@@ -358,6 +358,7 @@
         >span:nth-of-type(2){
           margin-left:120px;
           display:block;
+          min-height:40px;
         }
       }
     }

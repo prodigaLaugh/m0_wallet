@@ -3,11 +3,7 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">可信存证</span>/上传存证
-      <!-- <span>
-        <i class="el-icon-arrow-right"></i>
-        <span>转账</span>
-      </span> -->
-      <!-- <div>返回</div> -->
+     
     </div>
 
 
@@ -82,74 +78,6 @@
 
 
 
-
-		<!-- <el-row>
-			<el-col :lg="20" :md="22">
-
-				<div class="commonTitle_two">上传存证</div>
-
-				<div class="transferInpWrap">
-
-					<el-row class="transferInpListsWrap">
-						<el-col :lg="24">
-							<div class="transferInpListLeft">存证名称</div>
-							<el-input
-								v-model="params.evidence_name"
-								autocomplete="off"
-								placeholder="请输入上传存证的名称"></el-input>
-						</el-col>
-						<el-col :lg="24">注释
-							<div class="transferInpListLeft">关联存证</div>
-							<el-input
-								v-model="params.associate_evidence"
-								autocomplete="off"
-								placeholder="请输入关联的存证hash"></el-input>
-						</el-col>
-
-						<el-col :lg="24">
-							<div class="transferInpListLeft">存证文件</div>
-							<div class="uploadFile">
-								<input type="file" @change="fileSelect">
-								<div>+选择上传文件</div>
-							</div>
-							<div>{{fileName}}</div>
-						</el-col>
-
-						<el-col :lg="24">
-							<div class="transferInpListLeft">存证数据</div>
-							<el-input
-								v-model="params.evidence_data"
-								type="textarea"
-								:rows="5" placeholder=""></el-input>
-						</el-col>
-						<el-col :lg="24">
-							<div class="transferInpListLeft">备注信息</div>
-							<el-input
-								v-model="params.evidence_describe"
-								type="textarea"
-								:rows="5" placeholder=""></el-input>
-						</el-col>
-
-						<el-col :lg="24">
-							<div class="transferInpListLeft">输入密码</div>
-							<el-input
-								type="password"
-								v-model="params.password"
-								autocomplete="new-password"
-								placeholder=""></el-input>
-						</el-col>
-
-
-						<el-col :lg="24">
-							<div class="createAccountBtn" @click="save">提交上链</div>
-						</el-col>
-					</el-row>
-
-				</div>
-
-			</el-col>
-		</el-row>
- -->
 		<el-dialog
 		  title="文件校验"
 		  :visible.sync="dialogVisible"

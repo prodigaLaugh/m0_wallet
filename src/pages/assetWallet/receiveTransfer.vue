@@ -3,11 +3,7 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">资产钱包</span>/接收转账
-      <!-- <span>
-        <i class="el-icon-arrow-right"></i>
-        <span>转账</span>
-      </span> -->
-      <!-- <div>返回</div> -->
+  
     </div>
 
     <div class="commonListsWrap">
@@ -53,42 +49,6 @@
 
 
 
-<!--    <div class="commonTitle_two">
-      接收地址
-    </div>
-
-    <div class="addressManagementIndexListsWrap">
-
-      <el-row
-        class="addressManagementIndexListWrap"
-        v-for="(item,index) in lists"
-        :key="index">
-        <el-col :lg="12" class="addressManagementIndexListLeft">
-          <div>{{item.address_id}}</div>
-          <div>
-            <span>包含资产：</span>
-            <div>
-              <span
-                v-for="(list,i) in item.asset_names"
-                :key="i">{{list}}</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :lg="12" class="addressManagementIndexListRight">
-          <div>
-            <span
-              class="tag-read blue"
-              :data-clipboard-text="item.address_id"
-              @click="copy">拷贝地址</span>
-          </div>
-        </el-col>
-      </el-row>
-
-
-
-    </div>
-
- -->
 
 
 	</div>

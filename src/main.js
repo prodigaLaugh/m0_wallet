@@ -45,5 +45,6 @@ new Vue({
   router,
   store,
   components: { Layout },
-  
+
 })
+

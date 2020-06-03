@@ -3,21 +3,7 @@
 
 
     <div class="commonTitle_one">钱包管理</div>
-    <!-- <div class="addAccountWrap">
-      <div class="commonTitle_two">添加账户</div>
 
-      <el-row  class="row-bg" :gutter="30" justify="center" style="margin-right:0;">
-        <el-col :lg="8" >
-            <div class="addAccountItem" @click="$router.push('/main/createAccout')">新建账户</div>
-        </el-col>
-        <el-col :lg="8">
-            <div class="addAccountItem" @click="$router.push('/main/recoveryMnemonic')">助记词恢复</div>
-        </el-col>
-        <el-col :lg="8">
-            <div class="addAccountItem" @click="$router.push('/main/importBackup')">备份导入</div>
-        </el-col>
-      </el-row>
-    </div> -->
 
     <div class="selectAccountWrap">
       <div class="commonTitle_two">
@@ -69,39 +55,6 @@
 
 
 
-      <!-- <el-row
-        v-for="(item,index) in lists"
-        :key="index"
-        :class="['selectAccountItem',{use:item.status!=0}]"
-        type="flex"
-        justify="center">
-        <div class="leftTag">
-          <span v-if="item.status==0">未&#10;使{{'\n'}}用</span>
-          <span v-else>使&#10;用{{'\n'}}中</span>
-        </div>
-        <el-col :lg="18" class="left">
-          <div class="title">
-            {{item.account_alias}}
-            <span>{{(item.sign_key_num-0)>1 ?'多签' :'单签'}}</span>
-          </div>
-          <div class="blue leftText">
-            <span>关联密钥:</span>
-            <div>
-              <div
-                v-for="(list,i) in item.xpubs"
-                :key="i">{{list}}</div>
-            </div>
-          </div>
-        </el-col>
-        <el-col :lg="6" class="right">
-
-          <div
-            @click="$router.push({path:'/main/walletDetail',query:{id:item.account_alias }})">详情</div>
-          <div style="color:#999;">备份</div>
-          <div @click="del(item,index)">删除</div>
-        </el-col>
-      </el-row>
- -->
       <div class="paginationWrap" v-if="lists.length">
         <el-pagination
           background

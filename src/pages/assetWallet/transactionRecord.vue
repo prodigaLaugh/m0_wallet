@@ -3,11 +3,6 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">资产钱包</span>/交易记录
-      <!-- <span>
-        <i class="el-icon-arrow-right"></i>
-        <span>转账</span>
-      </span> -->
-      <!-- <div>返回</div> -->
     </div>
 
     <div class="infWrap">
@@ -25,17 +20,6 @@
     <div class="consoleRecordsWrap">
 
 
-      <!-- <el-row class="transactionRecordContentWrap">
-        <el-col :lg="24">
-          <span>资产类型</span>
-          <span>{{asset_name}}</span>
-        </el-col>
-        <el-col :lg="24" v-if="address_id">
-          <span>所在地址</span>
-          <span>{{address_id}}</span>
-        </el-col>
-
-      </el-row> -->
 
       <div
         style="overflow-y:auto;height:500px;padding:2px 10px"
@@ -63,16 +47,6 @@
 
           </div>
 
-        <!-- <div class="paginationWrap" v-if="lists.length">
-          <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="params.total"
-            :page-size="params.page_size"
-            @current-change="pageChange"
-           >
-          </el-pagination>
-        </div> -->
 
 
           <p v-if="loading" class="noresult">加载中...</p>

@@ -3,11 +3,7 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">可信存证</span>/存证详情
-      <!-- <span>
-        <i class="el-icon-arrow-right"></i>
-        <span>转账</span>
-      </span> -->
-      <!-- <div>返回</div> -->
+     
     </div>
 
     <div class="detailInfoListsWrap itemWrap">
@@ -72,68 +68,6 @@
     </div>
 
 
-
-
-<!--
-				<div class="commonTitle_two">
-					存证概况
-				</div>
-
-				<div class="systemStatusIndexContentWrap">
-					<el-row class="systemStatusIndexContentItem">
-						<el-col :lg="6">存证名称</el-col>
-						<el-col :lg="18">
-							<span>{{detail.evidence_name}}</span>
-						</el-col>
-					</el-row>
-					<el-row class="systemStatusIndexContentItem">
-						<el-col :lg="6">上链交易hash</el-col>
-						<el-col :lg="18">
-							<span>{{detail.tx_id}}</span>
-						</el-col>
-					</el-row>
-					<el-row class="systemStatusIndexContentItem">
-						<el-col :lg="6">备注信息</el-col>
-						<el-col :lg="18">
-							<span style="width:auto;">{{detail.describe}}</span>
-						</el-col>
-					</el-row>
-				</div> -->
-
-				<!-- <div class="commonTitle_two">存证文件</div>
-
-				<div class="systemStatusIndexContentWrap">
-					<el-row class="systemStatusIndexContentItem">
-						<el-col :lg="8">文件名</el-col>
-						<el-col :lg="6">
-							<span>文件大小</span>
-						</el-col>
-						<el-col :lg="10">操作</el-col>
-					</el-row>
-					<el-row class="systemStatusIndexContentItem">
-						<el-col :lg="8">{{detail.file_name||'--'}}</el-col>
-						<el-col :lg="6">
-							<span>{{detail.file_size||'--'}}</span>
-						</el-col>
-						<el-col :lg="10" v-if="detail.file_name">
-							<span
-								@click="download(detail.uuid, detail.file_name)"
-								class="blue">下载链上文件</span>
-							<span class="blue" @click="uploadfileDialFlag=true">校验我的文件</span>
-
-						</el-col>
-
-					</el-row>
-
-
-				</div>
-
-
-				<div class="commonTitle_two">存证数据</div>
-
-				<div class="depositDataContent">
-					{{detail.evidence_data}}
-				</div> -->
 
 				<el-dialog
 					title="文件校验"

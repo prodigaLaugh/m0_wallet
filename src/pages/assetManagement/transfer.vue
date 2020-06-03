@@ -3,17 +3,12 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">资产操作</span>/转账
-      <!-- <span>
-        <i class="el-icon-arrow-right"></i>
-        <span>转账</span>
-      </span> -->
-      <!-- <div>返回</div> -->
+     
     </div>
 
 
 
 
-		<!-- <div class="commonTitle_two">转账</div> -->
 
 		<div class="transferInpWrap">
 

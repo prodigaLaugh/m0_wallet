@@ -3,11 +3,6 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">创建资产</span>/创建资产
-      <!-- <span>
-        <i class="el-icon-arrow-right"></i>
-        <span>转账</span>
-      </span> -->
-      <!-- <div>返回</div> -->
     </div>
 
 
@@ -68,66 +63,7 @@
 
 
 
-				<!-- <div class="commonTitle_two">创建资产</div> -->
-
-				<!-- <div class="transferInpWrap">
-
-					<el-row class="transferInpListsWrap">
-						<el-col :lg="24">
-							<div class="transferInpListLeft">名称</div>
-							<el-input v-model="param.asset_name" placeholder=""></el-input>
-						</el-col>
-						<el-col :lg="24">
-							<div class="transferInpListLeft">资产参数</div>
-						</el-col>
-					</el-row>
-
-					<div class="paraWrap">
-						<el-row class="top">
-							<el-col :lg="11">
-								参数名
-							</el-col>
-							<el-col :lg="11">
-								参数值
-							</el-col>
-						</el-row>
-						<el-row
-							v-for="(item, index) in param.parameters"
-							:key="index"
-							style="margin-bottom:20px;">
-							<el-col :lg="10">
-								<el-input v-model="item.key" placeholder=""></el-input>
-							</el-col>
-							<el-col :lg="1">&nbsp;</el-col>
-							<el-col :lg="10">
-								<el-input v-model="item.value" placeholder=""></el-input>
-							</el-col>
-							<el-col :lg="1">&nbsp;</el-col>
-							<el-col :lg="2" class="btn" >
-								<span @click="delPara(index)">删除</span>
-							</el-col>
-						</el-row>
-						<el-row class="addBtn">
-							<el-col>
-								<span class="addBtnWrap" @click="addPara">+添加资产参数</span>
-							</el-col>
-						</el-row>
-
-					</div>
-
-					<el-row style="margin-top:20px;">
-						<el-col :lg="24">
-							<div class="createAssetBtn" @click="save">保存</div>
-						</el-col>
-					</el-row>
-
-
-
-
-
-				</div>
-
- -->
+				
 
 	</div>
 </template>
