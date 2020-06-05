@@ -48,7 +48,7 @@
             @click="$router.push({path:'/main/issue',query:{asset_id:item.asset_id,asset_name:item.asset_name}})"
             class="blue">发行</span>
           <span
-            @click="delAsset(item.id)"
+            @click="openModal(item.id)"
             class="blue">删除</span>
         </el-col>
         <el-col :span="4" v-else>
@@ -80,6 +80,19 @@
       </el-row>
 
     </div>
+    
+    
+    
+    <el-dialog
+      title="提示"
+      :visible.sync="deleteAssetModalFlag"
+      width="30%">
+      <span>是否确认删除该资产?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteAssetModalFlag = false">取 消</el-button>
+        <el-button type="primary" @click="delAsset">确 定</el-button>
+      </span>
+    </el-dialog>
 
 
 	</div>
@@ -90,11 +103,13 @@
 
 
 	import Vue from 'vue';
-	import { Row, Col, Pagination } from 'element-ui';
+	import { Row, Col, Pagination, Dialog } from 'element-ui';
 
 	Vue.use(Row);
 	Vue.use(Col);
   Vue.use(Pagination);
+  Vue.use(Dialog);
+  
 
 
 	export default {
@@ -122,7 +137,11 @@
           page: 1,
           page_size: 10,
           total: 0,
-        }
+        },
+        
+        
+        deleteAssetModalFlag:false,
+        delId: ''
 
 
 			}
@@ -166,14 +185,20 @@
         this.getLists()
 
 			},
-			delAsset(id){
-				deleteAsset.bind(this)(id)
+      openModal(id){
+        this.delId = id;
+        this.deleteAssetModalFlag = true;
+      },
+			delAsset(){
+				deleteAsset.bind(this)(this.delId)
 					.then(({data})=>{
 						if(data=='OK'){
 							this.$message ({
 								message: '删除成功',
 								type: 'success'
 							});
+              
+              this.deleteAssetModalFlag = false;
 							this.getLists();
 						}else{
 							this.$message ({

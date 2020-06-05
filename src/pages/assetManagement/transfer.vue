@@ -155,6 +155,10 @@
 				this.params.from_address = address_id;
 				this.params.asset_name = asset_name;
 				this.params.asset_id = asset_id;
+
+        if(asset_id){
+          this.adressChangeQueryAmount()
+        }
 			}
 
 
@@ -229,11 +233,16 @@
 				var list = this.allAssetsLists.filter((item,index)=>{
 					return item.asset_id ==this.params.asset_id
 				})
-				if(!list.length){
+
+				if(!list.length && !this.params.asset_id){
 					return;
 				}
-				var asset_name = list[0].asset_name||'test';
-				this.params.asset_name = asset_name;
+
+				var asset_name = (list.length && list[0].asset_name)||'';
+        if(asset_name){
+          this.params.asset_name = asset_name
+        }
+
 
 				var para = Object.assign({},this.params)
 				para.address_id = this.params.from_address;
@@ -245,31 +254,21 @@
 			},
 			transfer(){
 
-
         var has_to_address = this.params.receive_info.every(item=>item.to_address)
         var correct_to_address = this.params.receive_info.every(item=> item.to_address.length === 42 ||  item.to_address.length === 62)
         var has_to_amount = this.params.receive_info.every(item=>item.to_amount)
         var not0_to_amount = this.params.receive_info.every(item=> item.to_amount === '0')
         var int_to_amount = this.params.receive_info.every(item=> {
-          return item.to_amount.indexOf('.') > -1
+          var to_amount = '' + item.to_amount
+          return to_amount && to_amount.indexOf('.') > -1
         } )
 
-
-        let para = Object.assign({},this.params);
-
-
-
-        para.receive_info.map((item,index)=>{
-        	var to_amount = item.to_amount - 0;
-        	para.receive_info[index].to_amount = to_amount;})
-
-        para.amount = para.receive_info.reduce((pre,cur)=>{
-        	return (pre-0) + (cur.to_amount-0)
-        },0)
-
-
-        if(!this.params.asset_name){
+        if(!this.params.from_address){
+          this.$message.error('请选择转出地址')
+          return;
+        }else if(!this.params.asset_name){
           this.$message.error('请选择转出资产')
+          return;
         }else if(!has_to_address){
           this.$message.error('请输入目标地址')
           return
@@ -285,10 +284,28 @@
         }else if(int_to_amount){
           this.$message.error('转出数量需为整数位数字')
           return
-        }else if(this.amount < para.amount){
+        }else if(!this.params.password){
+          this.$message.error('请输入密码')
+          return
+        }
+
+
+        let para = Object.assign({},this.params);
+        para.receive_info.map((item,index)=>{
+        	var to_amount = item.to_amount - 0;
+        	para.receive_info[index].to_amount = to_amount;})
+
+        para.amount = para.receive_info.reduce((pre,cur)=>{
+        	return (pre-0) + (cur.to_amount-0)
+        },0)
+
+
+
+        if(this.amount < para.amount){
           this.$message.error('转出数量不能大于当前资产余额')
           return
         }
+
 
 
 
