@@ -105,7 +105,7 @@
 import Vue from 'vue';
 import { Row, Col, Dialog, Select, Option, Input, Button } from 'element-ui';
 
-import { generateInviteCode } from '@/util/server.js'
+import { generateInviteCode, logout } from '@/util/server.js'
 import { delCookie } from '@/util/cookie'
 import {getAccountLists} from '@/util/server.js'
 
@@ -182,11 +182,22 @@ export default {
 		}
 	},
 	methods:{
-		logout(){
-			delCookie('USERTOKEN')
-			delCookie('autoLogin')
-			this.$router.push('/login')
-		},
+    logout(){
+      logout.bind(this)({})
+        .then(({data})=>{
+          delCookie('USERTOKEN')
+          delCookie('autoLogin')
+          localStorage.removeItem('USERTOKEN')
+          localStorage.removeItem('M0TOEKN')
+          this.$router.push('/login')
+
+        })
+        .catch((data)=>{
+          console.log(data)
+        })
+
+    },
+
 		copy() {
 	        var clipboard = new Clipboard('.tag-read')
 	        clipboard.on('success', e => {
@@ -207,7 +218,7 @@ export default {
 	    },
 		generate(){
 
-    
+
       if(!this.amount){
         this.$message({
         	type:'error',
@@ -215,7 +226,7 @@ export default {
         })
         return;
       }
-      
+
 			let params = {
 				amount: this.amount,
 			}

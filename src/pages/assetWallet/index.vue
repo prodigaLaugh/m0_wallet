@@ -235,6 +235,9 @@
           }
         }
     },
+    destroyed(){
+        window.onscroll = null
+    },
 		methods:{
       selectChange(){
          this.params.page = 1;

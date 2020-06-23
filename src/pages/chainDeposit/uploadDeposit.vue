@@ -39,7 +39,7 @@
         	autocomplete="off"
           :rows="5"
           type="textarea"
-        	placeholder="请输入上传存证的名称"></el-input>
+        	placeholder="请输入存证数据"></el-input>
       </div>
     </div>
 

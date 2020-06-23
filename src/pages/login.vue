@@ -145,11 +145,14 @@ export default {
 								hour = 24 * 3;
 								autoLogin = 'true';
 							}
+              const token = data.data.auth_key
 							setCookie('USERTOKEN',this.loginParams.user_name,hour)
 							setCookie('autoLogin',autoLogin,hour)
 							localStorage.USERTOKEN = this.loginParams.user_name
+              localStorage.M0TOEKN = token
 							setTimeout(()=>{
-								location.href  = '/main/privatekeyManagement';
+								// location.href  = '/main/privatekeyManagement';
+                this.$router.push('/main/privatekeyManagement')
 							},1500)
 							this.$message ({
 								message: '登录成功',

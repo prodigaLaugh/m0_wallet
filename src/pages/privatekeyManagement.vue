@@ -153,8 +153,9 @@
 					.then(({data})=>{
             console.log(data,111)
 						if(data.status =='success'){
+              const lists = data.data.list_keys || []
 							if(data.data){
-								this.lists.splice(0,999,...data.data.list_keys);
+								this.lists.splice(0,999,...lists);
 							}
 
 						}
@@ -179,7 +180,9 @@
 		        })
 		    },
 			create(){
-				let para  = Object.assign({},this.params)
+        let user_name = localStorage.USERTOKEN;
+        
+				let para  = Object.assign({},this.params, {user_name: user_name})
         const { alias, password, againPassword } = this.params;
 
         if(!alias){

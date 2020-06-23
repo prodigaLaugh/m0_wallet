@@ -75,8 +75,7 @@
     <el-dialog
       title="提示"
       :visible.sync="deleteWalletModalFlag"
-      width="30%"
-      :before-close="handleClose">
+      width="30%">
       <span>是否确认删除钱包?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="deleteWalletModalFlag = false">取 消</el-button>

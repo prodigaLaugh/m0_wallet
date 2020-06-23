@@ -98,6 +98,12 @@ export async function  login(para){
 	let result = await this.$http.post(url, Object.assign({}, baseParams, para) )
 	return result;
 }
+//登出接口
+export async function  logout(para){
+	let url = `/v1/user/log_out`; 
+	let result = await this.$http.post(url, Object.assign({}, baseParams, para) )
+	return result;
+}
 
 
 //秘钥管理接口

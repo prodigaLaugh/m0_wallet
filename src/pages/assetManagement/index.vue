@@ -617,6 +617,9 @@
         }
 
 		},
+    destroyed(){
+        window.onscroll = null
+    },
 		data(){
 			return {
         time:'',
