@@ -36,7 +36,7 @@
       <div class="inpItemWrap"   >
         <div>
           <span></span>
-           <span class="submit" @click="create">创建钱包</span>
+           <span class="submit" @click="create"  :class="[ !submitFlag ? 'loadingBtn' : '']">创建钱包</span>
         </div>
 
       </div>

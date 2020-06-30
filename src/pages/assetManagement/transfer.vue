@@ -100,7 +100,7 @@
       <div class="inpItemWrap">
         <div>
           <span></span>
-           <span class="submit" @click="transfer">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
+           <span :class="['submit', !submitFlag ? 'loadingBtn' : '']" @click="transfer">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
         </div>
 
       </div>
@@ -215,6 +215,7 @@
 					from_address:'',
 					receive_info:[{to_address:'',to_amount:''}]
 				},
+        submitFlag:true,
 
 
 			}
@@ -308,6 +309,10 @@
 
 
 
+        if(!this.submitFlag){
+          return;
+        }
+        this.submitFlag = false;
 
 
 				if(this.isSingleSign){
@@ -324,7 +329,7 @@
 			signleSignFn(para){
 				transferSinglesign.bind(this)(para)
 					.then(({data})=>{
-						console.log(data,111)
+						this.submitFlag = true;
 						if(data.status=='success'){
 							this.$message({
 								type:'success',
@@ -340,11 +345,14 @@
 							})
 						}
 					})
+          .catch(()=>{
+            this.submitFlag = true;
+          })
 			},
 			mutiSignFn(para){
 				transferMultsign.bind(this)(para)
 					.then(({data})=>{
-						console.log(data,222)
+             this.submitFlag = true;
 						if(data.status=='error'){
 							this.$message({
 								type:'error',
@@ -356,6 +364,9 @@
 
 
 					})
+          .catch(()=>{
+            this.submitFlag = true;
+          })
 			}
 		},
 	}

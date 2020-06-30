@@ -19,8 +19,8 @@
   }
   .el-button--primary,
   .el-button--primary:hover{
-    background-color: $btnBg;
-    border-color: $btnBg;
+    background-color: $btnBg!important;
+    border-color: $btnBg!important;
   }
   .el-button--default:hover{
     color:#606266;

@@ -61,7 +61,7 @@
       <div class="inpItemWrap"   >
         <div>
           <span></span>
-           <span class="submit" @click="issue">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
+           <span :class="['submit', !submitFlag ? 'loadingBtn' : '']" @click="issue">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
         </div>
 
       </div>
@@ -150,6 +150,7 @@
 					asset_id:"",
 					receive_info:[]
 				},
+        submitFlag:true,
 
 
 			}
@@ -187,6 +188,11 @@
 				para.amount = amount;
 				para.receive_info = receive_info;
 
+        if(!this.submitFlag){
+          return;
+        }
+        this.submitFlag = false;
+
 				if(this.isSingleSign){
 					this.issueSingle(para)
 				}else{
@@ -199,7 +205,7 @@
 			issueSingle(para){
 				issueSinglesign.bind(this)(para)
 					.then(({data})=>{
-						console.log(data,89888)
+						 this.submitFlag = true;
 						if(data.status=='success'){
 							this.$message({
 								type:'success',
@@ -215,13 +221,15 @@
 							})
 						}
 					})
+          .catch(()=>{
+             this.submitFlag = true;
+          })
 			},
 			issueMutil(para){
 				issueMultsign.bind(this)(para)
 					.then(({data})=>{
-						console.log(data,89888)
+						this.submitFlag = true;
 						if(data.status=='error'){
-							console.log(1)
 
 							this.$message({
 								type:'error',
@@ -232,6 +240,9 @@
 
 						}
 					})
+          .catch(()=>{
+             this.submitFlag = true;
+          })
 			}
 
 		},

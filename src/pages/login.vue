@@ -46,7 +46,7 @@
 
         <div class="loginInpWrap loginBtnWrap">
           <span></span>
-        	<div @click="login" class="btn">登录</div>
+        	<div @click="login" :class="['btn', !loginFlag ? 'loadingBtn' : '']" >登录</div>
         </div>
 
         <div class="loginInpWrap registerWrap">

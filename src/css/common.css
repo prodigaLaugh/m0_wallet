@@ -133,3 +133,6 @@ body{
 .el-table .cell .cell{
   padding-left:0!important;
 }
+.loadingBtn{
+  opacity: .5;
+}

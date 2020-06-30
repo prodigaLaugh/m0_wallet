@@ -3,7 +3,7 @@
 
     <div class="commonTitle_one">
       <span @click="$router.go(-1)">可信存证</span>/存证详情
-     
+
     </div>
 
     <div class="detailInfoListsWrap itemWrap">
@@ -84,7 +84,7 @@
 						<div v-if="fileName" class="filename">{{fileName}}</div>
 					</div>
 					<span slot="footer" class="dialog-footer">
-						<el-button type="primary" @click="verifyFile">上传文件</el-button>
+						<el-button type="primary" @click="verifyFile" :class="[ !submitFlag ? 'loadingBtn' : '']">上传文件</el-button>
 					</span>
 				</el-dialog>
 
@@ -167,6 +167,7 @@
 
 				uploadfileCompleteFlag:false,
 				uploadSuccess:false,
+        submitFlag: true
 			}
 		},
 		methods:{
@@ -206,12 +207,30 @@
 			},
 			verifyFile(){
 
+        if( !this.params.myfile ){
+          this.$message ({
+          	message: '请选择文件',
+          	type: 'error'
+          });
+          return;
+        }
+
+
 				var formdata = new FormData();
 				formdata.append('myfile',this.params.myfile);
 				formdata.append('tx_id',this.params.file_hash);
-				this.uploadfileDialFlag = false;
+
+        if(!this.submitFlag){
+          return
+        }
+        this.submitFlag = false
+
 				evidenceVerifyFile.bind(this)(formdata)
 					.then(({data})=>{
+            this.submitFlag = true
+            
+            this.uploadfileDialFlag = false;
+
 						this.uploadfileCompleteFlag = true;
 						if(data.status ==='success'){
 							this.uploadSuccess = true

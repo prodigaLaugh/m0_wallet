@@ -69,7 +69,7 @@
     <div class="inpItemWrap">
       <div>
         <span></span>
-         <span class="submit" @click="save">提交上链</span>
+         <span @click="save" :class="['submit', !submitFlag ? 'loadingBtn' : '']">提交上链</span>
       </div>
     </div>
 

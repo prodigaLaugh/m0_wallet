@@ -53,7 +53,7 @@
        <div class="inpItemWrap">
          <div>
            <span></span>
-            <span class="submit" @click="save">保存</span>
+            <span @click="save" :class="['submit', !submitFlag ? 'loadingBtn' : '']">保存</span>
          </div>
 
        </div>

@@ -78,7 +78,7 @@
       <div class="inpItemWrap"   >
         <div>
           <span></span>
-           <span class="submit" @click="retire">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
+           <span :class="['submit', !submitFlag ? 'loadingBtn' : '']" @click="retire">{{isSingleSign?'提交交易':'生成签名文件'}}</span>
         </div>
 
       </div>
@@ -221,7 +221,6 @@
 				para.amount-=0;
 
         if(!this.submitFlag){
-          this.amount
           return;
         }
         this.submitFlag = false;

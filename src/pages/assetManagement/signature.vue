@@ -94,16 +94,16 @@
        <div class="inpItemWrap" v-if="uploadFlag">
          <div>
            <span></span>
-            <span class="submit" @click="signFn">{{isTxFlag?'提交交易':'生成签名文件'}}</span>
+            <span :class="['submit', !submitFlag ? 'loadingBtn' : '']" @click="signFn">{{isTxFlag?'提交交易':'生成签名文件'}}</span>
          </div>
 
        </div>
-       
+
     </div>
 
 
 
-		
+
 	</div>
 </template>
 
@@ -141,6 +141,7 @@
 					signfile:'',
 					password:''
 				},
+        submitFlag:true,
 
 
 			}
@@ -176,7 +177,7 @@
 							var leftNum = parseInt(nums[0]);
 							var rightNum = parseInt(nums[1]) ;
 							this.isTxFlag = (rightNum - leftNum)==1
-              console.log(this.isTxFlag,rightNum , leftNum,1111)
+
               this.uploadFlag = true;
 						}else{
 							this.$message({
@@ -195,10 +196,14 @@
 				formdata.append('account_type',this.uploadParams.account_type)
 				formdata.append('password',this.uploadParams.password)
 
+        if(!this.submitFlag){
+          return;
+        }
+        this.submitFlag = false;
 
 				sign.bind(this)(formdata)
 					.then(({data})=>{
-
+             this.submitFlag = true;
             if(data.status === 'error'){
               this.$message({
               	type:'error',
@@ -223,6 +228,9 @@
 
 						console.log(data,87797)
 					})
+          .catch(()=>{
+             this.submitFlag = true;
+          })
 			}
 		},
 	}

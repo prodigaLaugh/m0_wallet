@@ -6,7 +6,7 @@
     <div class="commonTitle_two">
       账户地址
       <!-- <span @click="dialogVisible=true">创建地址</span> -->
-      <span @click="create">创建地址</span>
+      <span @click="create" :class="[ !submitFlag ? 'loadingBtn' : '']">创建地址</span>
 
     </div>
 
